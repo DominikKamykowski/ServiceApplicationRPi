@@ -34,6 +34,7 @@ public:
 
 private:
     std::string apiAddress = "";
+    std::vector<uint8_t>parseReceiveData(std::string);
 }
 
 
