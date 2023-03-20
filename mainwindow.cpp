@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ClientApi api;
+    std::vector<uint8_t> _data = api.getTemperature();
+    std::cout<< std::string(_data.begin(),_data.end())<<std::endl;
 
 }
 
