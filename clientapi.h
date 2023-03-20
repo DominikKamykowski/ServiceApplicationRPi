@@ -6,7 +6,7 @@
 class ClientApi
 {
 public:
-    ClientApi();
+    ClientApi(std::string api_address);
     ~ClientApi();
 
     typedef struct Mainteance_t
@@ -31,8 +31,25 @@ public:
     std::vector<uint8_t> getDateTime();
 
 
-private:
 
-};
+private:
+    std::string apiAddress = "";
+}
+
+
+#define __temperature       "/mainteance/temperature"
+#define __cpu_volts         "/mainteance/volts"
+#define __clocks            "/mainteance/clock"
+#define __displays          "/mainteance/display"
+#define __cpu_usage         "/mainteance/cpu"
+#define __load_average      "/mainteance/load"
+#define __virtual_memory    "/mainteance/virtual_memory"
+#define __disk_usage        "/mainteance/disk_usage"
+#define __net_connections   "/mainteance/net_connections"
+#define __users             "/mainteance/users"
+#define __datetime          "/mainteance/detetime"
+
+
+;
 
 #endif // CLIENTAPI_H
