@@ -26,6 +26,15 @@ public:
         uint32_t DPI = 0;
     }Clocks_t;
 
+    typedef struct Display
+    {
+        bool MainLCD = false;
+        bool SecondaryLCD = false;
+        bool HDMI0 = false;
+        bool Composite = false;
+        bool HDMI1 = false;
+    }Displays_t;
+
 
 
     // Getters
@@ -33,7 +42,7 @@ public:
     float getTemperature();
     float getCpuVolts();
     Clocks_t getClocks();
-    std::vector<uint8_t> getDisplays();
+    Displays_t getDisplays();
     std::vector<uint8_t> getCpuUsage();
     std::vector<uint8_t> getLoadAverage();
     std::vector<uint8_t> getVirtualMemory();
@@ -51,6 +60,7 @@ private:
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
     nlohmann::json jsonFromVc(std::string);
+    bool strToBool(std::string);
 
 }
 

@@ -46,25 +46,18 @@ ClientApi::Clocks_t ClientApi::getClocks()
     clocks.HDMI =       _json["HDMI"].get<uint32_t>();
     clocks.DPI =        _json["Display Peripheral Interface"].get<uint32_t>();
     return clocks;
-
-
-
-//            "ARM cores": 600169920,
-//            "VC4 scaler cores": 199995120,
-//            "Image Signal Processor": 0,
-//            "3D block": 250000496,
-//            "UART": 48001464,
-//            "pwm": 107143064,
-//            "emmc": 250000496,
-//            "Pixel valve": 81000000,
-//            "Analogue video encoder": 0,
-//            "HDMI": 150002928,
-//            "Display Peripheral Interface": 0
 }
 
-std::vector<uint8_t> ClientApi::getDisplays()
+ClientApi::Displays_t ClientApi::getDisplays()
 {
-    return parseReceiveData(__displays);
+    nlohmann::json _json = jsonFromVc(__displays);
+    Displays_t displays;
+    displays.MainLCD = strToBool(_json["MainLCD"].get<std::string>());
+    displays.SecondaryLCD = strToBool(_json["SecondaryLCD"].get<std::string>());
+    displays.HDMI0 = strToBool(_json["HDMI0"].get<std::string>());
+    displays.Composite = strToBool(_json["Composite"].get<std::string>());
+    displays.HDMI1 = strToBool(_json["HDMI1"].get<std::string>());
+    return displays;
 }
 
 std::vector<uint8_t> ClientApi::getCpuUsage()
@@ -148,4 +141,10 @@ nlohmann::json ClientApi::jsonFromVc(std::string value)
 {
     nlohmann::json json = nlohmann::json::parse(parseReceiveData(value));
     return json;
+}
+
+bool ClientApi::strToBool(std::string value)
+{
+    if(value == "on") return true;
+    else return false;
 }
