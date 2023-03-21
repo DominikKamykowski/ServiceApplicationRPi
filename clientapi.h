@@ -6,6 +6,7 @@
 class ClientApi
 {
 public:
+    ClientApi(std::string api_address, int port);
     ClientApi(std::string api_address);
     ~ClientApi();
 
@@ -34,7 +35,10 @@ public:
 
 private:
     std::string apiAddress = "";
+    int apiPort = 0;
     std::vector<uint8_t>parseReceiveData(std::string);
+    std::vector<std::string> split(std::string, std::string);
+    std::string httpApiAddress();
 }
 
 
