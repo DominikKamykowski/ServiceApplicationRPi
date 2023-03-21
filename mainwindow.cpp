@@ -8,8 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ClientApi api("192.168.1.25:8000");
-    float _data = api.getCpuVolts();
-    std::cout<< _data<<std::endl;
+    ClientApi::Clocks_t clock = api.getClocks();
+    std::cout<< clock.ARM_cores<<std::endl;
 
 }
 

@@ -30,6 +30,38 @@ float ClientApi::getCpuVolts()
     return jsonFromVc(__cpu_volts)["cpu volts"].get<float>();
 }
 
+ClientApi::Clocks_t ClientApi::getClocks()
+{
+    nlohmann::json _json = jsonFromVc(__clocks);
+    Clocks_t clocks;
+    clocks.ARM_cores =  _json["ARM cores"].get<uint32_t>();
+    clocks.VC4 =        _json["VC4 scaler cores"].get<uint32_t>();
+    clocks.ISP =        _json["Image Signal Processor"].get<uint32_t>();
+    clocks.block_3D =   _json["3D block"].get<uint32_t>();
+    clocks.UART =       _json["UART"].get<uint32_t>();
+    clocks.PWM =        _json["pwm"].get<uint32_t>();
+    clocks.EMMC =       _json["emmc"].get<uint32_t>();
+    clocks.Pixel =      _json["Pixel valve"].get<uint32_t>();
+    clocks.AVE =        _json["Analogue video encoder"].get<uint32_t>();
+    clocks.HDMI =       _json["HDMI"].get<uint32_t>();
+    clocks.DPI =        _json["Display Peripheral Interface"].get<uint32_t>();
+    return clocks;
+
+
+
+//            "ARM cores": 600169920,
+//            "VC4 scaler cores": 199995120,
+//            "Image Signal Processor": 0,
+//            "3D block": 250000496,
+//            "UART": 48001464,
+//            "pwm": 107143064,
+//            "emmc": 250000496,
+//            "Pixel valve": 81000000,
+//            "Analogue video encoder": 0,
+//            "HDMI": 150002928,
+//            "Display Peripheral Interface": 0
+}
+
 std::vector<uint8_t> ClientApi::getDisplays()
 {
     return parseReceiveData(__displays);

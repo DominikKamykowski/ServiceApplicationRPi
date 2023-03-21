@@ -11,18 +11,28 @@ public:
     ClientApi(std::string api_address);
     ~ClientApi();
 
-    typedef struct Mainteance_t
+    typedef struct Clock
     {
-        float temperature;
-        float cpu_volts;
+        uint32_t ARM_cores = 0;
+        uint32_t VC4 = 0;
+        uint32_t ISP = 0;
+        uint32_t block_3D = 0;
+        uint32_t UART = 0;
+        uint32_t PWM = 0;
+        uint32_t EMMC = 0;
+        uint32_t Pixel = 0;
+        uint32_t AVE = 0;
+        uint32_t HDMI = 0;
+        uint32_t DPI = 0;
+    }Clocks_t;
 
-    }Mainteance;
+
 
     // Getters
 
     float getTemperature();
     float getCpuVolts();
-    std::vector<uint8_t> getClocks();
+    Clocks_t getClocks();
     std::vector<uint8_t> getDisplays();
     std::vector<uint8_t> getCpuUsage();
     std::vector<uint8_t> getLoadAverage();
