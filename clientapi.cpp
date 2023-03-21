@@ -1,5 +1,5 @@
 #include "clientapi.h"
-#include <http.hpp>
+#include <ExternalLibs/http.hpp>
 
 ClientApi::ClientApi(std::string api_address, int port)
 {
@@ -20,14 +20,14 @@ ClientApi::~ClientApi()
 
 }
 
-std::vector<uint8_t> ClientApi::getTemperature()
+float ClientApi::getTemperature()
 {
-    return parseReceiveData(__temperature);
+    return jsonFromVc(__temperature)["cpu temperature"].get<float>();
 }
 
-std::vector<uint8_t> ClientApi::getCpuVolts()
+float ClientApi::getCpuVolts()
 {
-    return parseReceiveData(__cpu_volts);
+    return jsonFromVc(__cpu_volts)["cpu volts"].get<float>();
 }
 
 std::vector<uint8_t> ClientApi::getDisplays()
@@ -110,4 +110,10 @@ std::vector<std::string> ClientApi::split(std::string sentence, std::string spli
 std::string ClientApi::httpApiAddress()
 {
     return "http://" + apiAddress + ":" + std::to_string(apiPort);
+}
+
+nlohmann::json ClientApi::jsonFromVc(std::string value)
+{
+    nlohmann::json json = nlohmann::json::parse(parseReceiveData(value));
+    return json;
 }

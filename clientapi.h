@@ -2,6 +2,7 @@
 #define CLIENTAPI_H
 #include<vector>
 #include <iostream>
+#include <ExternalLibs/json.hpp>
 
 class ClientApi
 {
@@ -19,8 +20,8 @@ public:
 
     // Getters
 
-    std::vector<uint8_t> getTemperature();
-    std::vector<uint8_t> getCpuVolts();
+    float getTemperature();
+    float getCpuVolts();
     std::vector<uint8_t> getClocks();
     std::vector<uint8_t> getDisplays();
     std::vector<uint8_t> getCpuUsage();
@@ -39,6 +40,8 @@ private:
     std::vector<uint8_t>parseReceiveData(std::string);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
+    nlohmann::json jsonFromVc(std::string);
+
 }
 
 

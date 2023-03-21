@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include "clientapi.h"
-#include "http.hpp"
 #include <iostream>
 
 QT_BEGIN_NAMESPACE
