@@ -43,8 +43,8 @@ public:
     float getCpuVolts();
     Clocks_t getClocks();
     Displays_t getDisplays();
-    std::vector<uint8_t> getCpuUsage();
-    std::vector<uint8_t> getLoadAverage();
+    float getCpuUsage();
+    std::vector<float> getLoadAverage();
     std::vector<uint8_t> getVirtualMemory();
     std::vector<uint8_t> getDiskUsage(std::string disk_label);
     std::vector<uint8_t> getNetConnections();

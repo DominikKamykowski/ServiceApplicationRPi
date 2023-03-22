@@ -60,14 +60,14 @@ ClientApi::Displays_t ClientApi::getDisplays()
     return displays;
 }
 
-std::vector<uint8_t> ClientApi::getCpuUsage()
+float ClientApi::getCpuUsage()
 {
-    return parseReceiveData(__cpu_usage);
+    return jsonFromVc(__cpu_usage)["Cpu usage"].get<float>();
 }
 
-std::vector<uint8_t> ClientApi::getLoadAverage()
+std::vector<float> ClientApi::getLoadAverage()
 {
-    return parseReceiveData(__load_average);
+    return jsonFromVc(__load_average)["Load average"].get<std::vector<float>>();
 }
 
 std::vector<uint8_t> ClientApi::getVirtualMemory()
