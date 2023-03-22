@@ -51,12 +51,13 @@ ClientApi::Clocks_t ClientApi::getClocks()
 ClientApi::Displays_t ClientApi::getDisplays()
 {
     nlohmann::json _json = jsonFromVc(__displays);
-    Displays_t displays;
-    displays.MainLCD = strToBool(_json["MainLCD"].get<std::string>());
-    displays.SecondaryLCD = strToBool(_json["SecondaryLCD"].get<std::string>());
-    displays.HDMI0 = strToBool(_json["HDMI0"].get<std::string>());
-    displays.Composite = strToBool(_json["Composite"].get<std::string>());
-    displays.HDMI1 = strToBool(_json["HDMI1"].get<std::string>());
+    Displays_t displays{
+    strToBool(_json["MainLCD"].get<std::string>()),
+    strToBool(_json["SecondaryLCD"].get<std::string>()),
+    strToBool(_json["HDMI0"].get<std::string>()),
+    strToBool(_json["Composite"].get<std::string>()),
+    strToBool(_json["HDMI1"].get<std::string>())
+    };
     return displays;
 }
 
@@ -65,9 +66,14 @@ float ClientApi::getCpuUsage()
     return jsonFromVc(__cpu_usage)["Cpu usage"].get<float>();
 }
 
-std::vector<float> ClientApi::getLoadAverage()
+ClientApi::LoadAvg_t ClientApi::getLoadAverage()
 {
-    return jsonFromVc(__load_average)["Load average"].get<std::vector<float>>();
+    std::vector<float> _data = jsonFromVc(__load_average)["Load average"].get<std::vector<float>>();
+    LoadAvg_t load
+    {
+        _data.at(0), _data.at(1), _data.at(2)
+    };
+    return load;
 }
 
 std::vector<uint8_t> ClientApi::getVirtualMemory()

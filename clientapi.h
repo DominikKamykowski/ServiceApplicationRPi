@@ -35,6 +35,13 @@ public:
         bool HDMI1 = false;
     }Displays_t;
 
+    typedef struct LoadAvg
+    {
+        float L1 = 0;
+        float L2 = 0;
+        float L3 = 0;
+    }LoadAvg_t;
+
 
 
     // Getters
@@ -44,7 +51,7 @@ public:
     Clocks_t getClocks();
     Displays_t getDisplays();
     float getCpuUsage();
-    std::vector<float> getLoadAverage();
+    LoadAvg_t getLoadAverage();
     std::vector<uint8_t> getVirtualMemory();
     std::vector<uint8_t> getDiskUsage(std::string disk_label);
     std::vector<uint8_t> getNetConnections();
