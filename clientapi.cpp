@@ -33,18 +33,19 @@ float ClientApi::getCpuVolts()
 ClientApi::Clocks_t ClientApi::getClocks()
 {
     nlohmann::json _json = jsonFromVc(__clocks);
-    Clocks_t clocks;
-    clocks.ARM_cores =  _json["ARM cores"].get<uint32_t>();
-    clocks.VC4 =        _json["VC4 scaler cores"].get<uint32_t>();
-    clocks.ISP =        _json["Image Signal Processor"].get<uint32_t>();
-    clocks.block_3D =   _json["3D block"].get<uint32_t>();
-    clocks.UART =       _json["UART"].get<uint32_t>();
-    clocks.PWM =        _json["pwm"].get<uint32_t>();
-    clocks.EMMC =       _json["emmc"].get<uint32_t>();
-    clocks.Pixel =      _json["Pixel valve"].get<uint32_t>();
-    clocks.AVE =        _json["Analogue video encoder"].get<uint32_t>();
-    clocks.HDMI =       _json["HDMI"].get<uint32_t>();
-    clocks.DPI =        _json["Display Peripheral Interface"].get<uint32_t>();
+    Clocks_t clocks{
+    _json["ARM cores"].get<uint32_t>(),
+    _json["VC4 scaler cores"].get<uint32_t>(),
+    _json["Image Signal Processor"].get<uint32_t>(),
+    _json["3D block"].get<uint32_t>(),
+    _json["UART"].get<uint32_t>(),
+    _json["pwm"].get<uint32_t>(),
+    _json["emmc"].get<uint32_t>(),
+    _json["Pixel valve"].get<uint32_t>(),
+    _json["Analogue video encoder"].get<uint32_t>(),
+    _json["HDMI"].get<uint32_t>(),
+    _json["Display Peripheral Interface"].get<uint32_t>()
+    };
     return clocks;
 }
 

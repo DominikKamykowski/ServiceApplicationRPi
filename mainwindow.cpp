@@ -9,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ClientApi api("192.168.1.25:8000");
 //    ClientApi::Clocks_t clock = api.getClocks();
-    std::vector<float> data = api.getLoadAverage();
-    std::cout<< data.at(1)<<std::endl;
+    ClientApi::LoadAvg_t data = api.getLoadAverage();
+    std::cout<< data.L1<< data.L2<< data.L3<<std::endl;
 
 }
 
