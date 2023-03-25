@@ -77,9 +77,15 @@ ClientApi::LoadAvg_t ClientApi::getLoadAverage()
     return load;
 }
 
-std::vector<uint8_t> ClientApi::getVirtualMemory()
+ClientApi::VirtualMemory_t ClientApi::getVirtualMemory()
 {
-    return parseReceiveData(__virtual_memory);
+    std::vector<uint64_t> _data = jsonFromVc(__virtual_memory)["Virtual memory"].get<std::vector<uint64_t>>();
+    VirtualMemory_t memory{
+        _data.at(0), _data.at(1), _data.at(2), _data.at(3), _data.at(4), _data.at(5), _data.at(6),
+        _data.at(7), _data.at(8), _data.at(9), _data.at(10)
+    };
+
+    return memory;
 }
 
 //std::vector<uint8_t> ClientApi::getDiskUsage(std::string disk_label)

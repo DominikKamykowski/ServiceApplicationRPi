@@ -11,7 +11,7 @@ public:
     ClientApi(std::string api_address);
     ~ClientApi();
 
-    typedef struct Clock
+    typedef struct Clocks_t
     {
         uint32_t ARM_cores = 0;
         uint32_t VC4 = 0;
@@ -26,7 +26,7 @@ public:
         uint32_t DPI = 0;
     }Clocks_t;
 
-    typedef struct Display
+    typedef struct Displays_t
     {
         bool MainLCD = false;
         bool SecondaryLCD = false;
@@ -35,13 +35,29 @@ public:
         bool HDMI1 = false;
     }Displays_t;
 
-    typedef struct LoadAvg
+    typedef struct LoadAvg_t
     {
         float L1 = 0;
         float L2 = 0;
         float L3 = 0;
     }LoadAvg_t;
 
+    typedef struct VirtualMemory_t
+    {
+
+        uint64_t total = 0;       //: total physical memory (exclusive swap).
+        uint64_t available = 0;   //: the memory that can be given instantly to processes without the system going into swap. This is calculated by summing different memory values depending on the platform and it is supposed to be used to monitor actual memory usage in a cross platform fashion.
+        uint64_t used = 0;        //: memory used, calculated differently depending on the platform and designed for informational purposes only. total - free does not necessarily match used.
+        uint64_t free = 0;        //: memory not being used at all (zeroed) that is readily available; note that this doesn’t reflect the actual memory available (use available instead). total - used does not necessarily match free.
+        uint64_t active = 0;      //(UNIX): memory currently in use or very recently used, and so it is in RAM.
+        uint64_t inactive = 0;    //(UNIX)memory that is marked as not used.
+        uint64_t buffers = 0;     //(Linux, BSD): cache for things like file system metadata.
+        uint64_t cached = 0;      //(Linux, BSD): cache for various things.
+        uint64_t shared = 0;      //(Linux, BSD): memory that may be simultaneously accessed by multiple processes.
+        uint64_t slab = 0;        //(Linux): in-kernel data structures cache.
+        uint64_t wired = 0;       //(BSD, macOS): memory that is marked to always stay in RAM. It is never moved to disk.
+
+    }VirtualMemory_t;
 
 
     // Getters
@@ -52,7 +68,7 @@ public:
     Displays_t getDisplays();
     float getCpuUsage();
     LoadAvg_t getLoadAverage();
-    std::vector<uint8_t> getVirtualMemory();
+    VirtualMemory_t getVirtualMemory();
     std::vector<uint8_t> getDiskUsage(std::string disk_label);
     std::vector<uint8_t> getNetConnections();
     std::vector<uint8_t> getUsers();
