@@ -98,9 +98,13 @@ std::vector<uint8_t> ClientApi::getNetConnections()
     return parseReceiveData(__net_connections);
 }
 
-std::vector<uint8_t> ClientApi::getUsers()
+ClientApi::Users_t ClientApi::getUsers()
 {
-    return parseReceiveData(__users);
+    nlohmann::json users = jsonFromVc(__virtual_memory);
+//    nlohmann::json obcject = users.find("Connected users");
+//    std::cout<<<<std::endl;
+    Users_t user;
+    return user;
 }
 
 std::vector<uint8_t> ClientApi::getDateTime()

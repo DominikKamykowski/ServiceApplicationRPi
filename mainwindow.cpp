@@ -8,9 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ClientApi api("192.168.1.25:8000");
-//    ClientApi::Clocks_t clock = api.getClocks();
-    ClientApi::VirtualMemory_t data = api.getVirtualMemory();
-    std::cout<<"total: "<< data.total<<" free: "<< data.free<<std::endl;
+    ClientApi::Users_t data = api.getUsers();
+//    std::cout<<"total: "<< data<<" free: "<< data.free<<std::endl;
 
 }
 

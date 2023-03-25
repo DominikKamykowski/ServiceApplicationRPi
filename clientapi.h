@@ -59,6 +59,16 @@ public:
 
     }VirtualMemory_t;
 
+    typedef struct Users_t
+    {
+
+        std::string name = "";           //: the name of the user.
+        std::string terminal = "";       //: the tty or pseudo-tty associated with the user, if any, else None.
+        std::string host = "";           //: the host name associated with the entry, if any.
+        uint64_t started = 0;            //: the creation time as a floating point number expressed in seconds since the epoch.
+        uint32_t pid = 0;                //: the PID of the login process (like sshd, tmux, gdm-session-worker, …). On Windows and OpenBSD this is always set to None.
+
+    }Users_t;
 
     // Getters
 
@@ -71,7 +81,7 @@ public:
     VirtualMemory_t getVirtualMemory();
     std::vector<uint8_t> getDiskUsage(std::string disk_label);
     std::vector<uint8_t> getNetConnections();
-    std::vector<uint8_t> getUsers();
+    Users_t getUsers();
     std::vector<uint8_t> getDateTime();
 
 
