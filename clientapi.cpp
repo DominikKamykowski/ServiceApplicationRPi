@@ -5,6 +5,8 @@ ClientApi::ClientApi(std::string api_address, int port)
 {
     apiAddress = api_address;
     apiPort = port;
+    mainteance = {};
+    fillMainteanceData();
 }
 
 ClientApi::ClientApi(std::string api_address)
@@ -13,6 +15,8 @@ ClientApi::ClientApi(std::string api_address)
     data = split(api_address,":");
     apiAddress = data.at(0);
     apiPort = std::stoi(data.at(1));
+    mainteance = {};
+    fillMainteanceData();
 }
 
 ClientApi::~ClientApi()
@@ -164,4 +168,20 @@ bool ClientApi::strToBool(std::string value)
 {
     if(value == "on") return true;
     else return false;
+}
+
+void ClientApi::fillMainteanceData()
+{
+    mainteance.temperature = getTemperature();
+    mainteance.cpu_volts = getCpuVolts();
+    mainteance.clocks = getClocks();
+    mainteance.displays = getDisplays();
+    mainteance.cpu_usage = getCpuUsage();
+    mainteance.load_average = getLoadAverage();
+    mainteance.virtual_memory = getVirtualMemory();
+}
+
+ClientApi::Mainteance_t ClientApi::getMainteance() const
+{
+    return mainteance;
 }

@@ -70,6 +70,19 @@ public:
 
     }Users_t;
 
+
+    typedef struct Mainteance_t
+    {
+        float temperature;
+        float cpu_volts;
+        Clocks_t clocks;
+        Displays_t displays;
+        float cpu_usage;
+        LoadAvg_t load_average;
+        VirtualMemory_t virtual_memory;
+
+    }Mainteance_t;
+
     // Getters
 
     float getTemperature();
@@ -86,6 +99,8 @@ public:
 
 
 
+    Mainteance_t getMainteance() const;
+
 private:
     std::string apiAddress = "";
     int apiPort = 0;
@@ -94,6 +109,7 @@ private:
     std::string httpApiAddress();
     nlohmann::json jsonFromVc(std::string);
     bool strToBool(std::string);
+    Mainteance_t mainteance;
 
 }
 
