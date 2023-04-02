@@ -92,10 +92,15 @@ ClientApi::VirtualMemory_t ClientApi::getVirtualMemory()
     return memory;
 }
 
-std::vector<float> ClientApi::getDiskUsage()
+ClientApi::DiskUsage_t ClientApi::getDiskUsage()
 {
     std::vector<float> disk_usage = jsonFromVc(__disk_usage)["Disk usage"].get<std::vector<float>>();
-    return disk_usage;
+    DiskUsage_t disks {static_cast<uint32_t>(disk_usage.at(0)),
+                       static_cast<uint32_t>(disk_usage.at(1)),
+                       static_cast<uint32_t>(disk_usage.at(2)),
+                       disk_usage.at(3)};
+
+    return disks;
 }
 
 //std::vector<uint8_t> ClientApi::getNetConnections()
@@ -173,9 +178,11 @@ void ClientApi::fillMainteanceData()
     mainteance.cpu_usage = getCpuUsage();
     mainteance.load_average = getLoadAverage();
     mainteance.virtual_memory = getVirtualMemory();
+    mainteance.disk_usage = getDiskUsage();
 }
 
-ClientApi::Mainteance_t ClientApi::getMainteance() const
+ClientApi::Mainteance_t ClientApi::getMainteance()
 {
+    this->fillMainteanceData();
     return mainteance;
 }

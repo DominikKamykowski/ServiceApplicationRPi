@@ -70,6 +70,15 @@ public:
 
     }Users_t;
 
+    typedef struct DiskUsage_t
+    {
+        uint32_t total = 0;
+        uint32_t used = 0;
+        uint32_t free = 0;
+        float percent = 0;
+        // total=21378641920, used=4809781248, free=15482871808, percent=22.5
+    }DiskUsage_t;
+
 
     typedef struct Mainteance_t
     {
@@ -79,6 +88,7 @@ public:
         Displays_t displays;
         float cpu_usage;
         LoadAvg_t load_average;
+        DiskUsage_t disk_usage;
         VirtualMemory_t virtual_memory;
 
     }Mainteance_t;
@@ -92,12 +102,12 @@ public:
     float getCpuUsage();
     LoadAvg_t getLoadAverage();
     VirtualMemory_t getVirtualMemory();
-    std::vector<float> getDiskUsage();
+    DiskUsage_t getDiskUsage();
     Users_t getUsers();
 
 
 
-    Mainteance_t getMainteance() const;
+    Mainteance_t getMainteance();
 
 private:
     std::string apiAddress = "";
