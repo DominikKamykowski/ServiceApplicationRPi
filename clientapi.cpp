@@ -92,28 +92,22 @@ ClientApi::VirtualMemory_t ClientApi::getVirtualMemory()
     return memory;
 }
 
-//std::vector<uint8_t> ClientApi::getDiskUsage(std::string disk_label)
-//{
-////    return parseReceiveData(__cpu_volts);
-//}
-
-std::vector<uint8_t> ClientApi::getNetConnections()
+std::vector<float> ClientApi::getDiskUsage()
 {
-    return parseReceiveData(__net_connections);
+    std::vector<float> disk_usage = jsonFromVc(__disk_usage)["Disk usage"].get<std::vector<float>>();
+    return disk_usage;
 }
+
+//std::vector<uint8_t> ClientApi::getNetConnections()
+//{
+//    return parseReceiveData(__net_connections);
+//}
 
 ClientApi::Users_t ClientApi::getUsers()
 {
     nlohmann::json users = jsonFromVc(__virtual_memory);
-//    nlohmann::json obcject = users.find("Connected users");
-//    std::cout<<<<std::endl;
     Users_t user;
     return user;
-}
-
-std::vector<uint8_t> ClientApi::getDateTime()
-{
-    return parseReceiveData(__datetime);
 }
 
 

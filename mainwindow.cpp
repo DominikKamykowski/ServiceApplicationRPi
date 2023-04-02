@@ -8,8 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     ClientApi api("192.168.1.25:8000");
-    ClientApi::Users_t data = api.getUsers();
-//    std::cout<<"total: "<< data<<" free: "<< data.free<<std::endl;
+    std::vector<float> data = api.getDiskUsage();
+    std::cout<<data.at(3)<<std::endl;
 
 }
 

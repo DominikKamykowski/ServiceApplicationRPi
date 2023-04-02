@@ -92,10 +92,8 @@ public:
     float getCpuUsage();
     LoadAvg_t getLoadAverage();
     VirtualMemory_t getVirtualMemory();
-    std::vector<uint8_t> getDiskUsage(std::string disk_label);
-    std::vector<uint8_t> getNetConnections();
+    std::vector<float> getDiskUsage();
     Users_t getUsers();
-    std::vector<uint8_t> getDateTime();
 
 
 
@@ -104,12 +102,16 @@ public:
 private:
     std::string apiAddress = "";
     int apiPort = 0;
+
     std::vector<uint8_t>parseReceiveData(std::string);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
     nlohmann::json jsonFromVc(std::string);
     bool strToBool(std::string);
+
+
     Mainteance_t mainteance;
+    void fillMainteanceData();
 
 }
 
