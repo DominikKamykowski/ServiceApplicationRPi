@@ -2,11 +2,11 @@
 #define CLIENTAPI_H
 #include<vector>
 #include <iostream>
-#include <ExternalLibs/json.hpp>
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QTimer>
+#include <cmath>
 
 class ClientApiEventListener;
 
@@ -114,26 +114,26 @@ public:
 
     // Getters
 
-    float getCpuTemperature();
-    float getCpuVolts();
-    Clocks_t getClocks();
-    Displays_t getDisplays();
-    float getCpuUsage();
-    LoadAvg_t getLoadAverage();
-    VirtualMemory_t getVirtualMemory();
-    DiskUsage_t getDiskUsage();
-    Users_t getUsers();
-
+    void getCpuTemperature();
+    void getCpuVolts();
+    void getClocks();
+    void getDisplays();
+    void getCpuUsage();
+    void getLoadAverage();
+    void getVirtualMemory();
+    void getDiskUsage();
+    void getUsers();
+    void getMainteance();
 
     void addEventListener(ClientApiEventListener * listener);
     void removeEventListener(ClientApiEventListener * listener);
 
-    Mainteance_t getMainteance();
+
     void timerTimeout();
     bool startTimer(uint time);
     bool stopTimer();
 
-    void httpRequest();
+    void httpRequest(QString);
 
 private:
     ClientApiEventListeners_t listenersVector;
@@ -148,7 +148,6 @@ private:
     std::vector<uint8_t>parseReceiveData(std::string);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
-    nlohmann::json jsonFromVc(std::string);
     bool strToBool(std::string);
 
     QTimer *timer = nullptr;

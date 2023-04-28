@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pbDataRefresh_clicked()
 {
-    api->httpRequest();
+    api->getMainteance();
 }
 
 void MainWindow::uiSettings()
@@ -148,7 +148,8 @@ void MainWindow::on_cbAutoRefresh_clicked()
     {
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
-        api->startTimer(this->ui->dsbRefreshPeriod->value());
+        qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
+        api->startTimer(this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
     {

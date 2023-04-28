@@ -14,8 +14,6 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    ExternalLibs/http.hpp \
-    ExternalLibs/json.hpp \
     clientapi.h \
     http.hpp \
     mainwindow.h
