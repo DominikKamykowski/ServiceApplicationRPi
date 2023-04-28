@@ -7,6 +7,8 @@
 #include <QNetworkReply>
 #include <QTimer>
 #include <cmath>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 class ClientApiEventListener;
 
@@ -145,14 +147,14 @@ private:
     std::string apiAddress = "";
     int apiPort = 0;
 
-    std::vector<uint8_t>parseReceiveData(std::string);
+    void parseReceiveData(QJsonObject*);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
     bool strToBool(std::string);
 
     QTimer *timer = nullptr;
 
-    void compareCpuData();
+    void compareCpuData(QJsonObject*);
     void compareClocksData();
     void compareDisplaysData();
     void compareLoadAvgData();

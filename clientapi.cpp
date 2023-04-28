@@ -130,19 +130,13 @@ void ClientApi::removeEventListener(ClientApiEventListener *listener)
 }
 
 
-std::vector<uint8_t> ClientApi::parseReceiveData(std::string url)
+void ClientApi::parseReceiveData(QJsonObject *m_json_object)
 {
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    // DO ZMIANY NA RETURN QSTRING ORAZ QNETWORKACCESMANAGER
-
+    if(m_json_object->keys().contains("Full"))
+    {
+        QJsonObject mainteance_json = m_json_object->value("Full").toObject();
+        compareCpuData(&mainteance_json);
+    }
 }
 
 std::vector<std::string> ClientApi::split(std::string sentence, std::string splitter)
@@ -173,26 +167,25 @@ bool ClientApi::strToBool(std::string value)
     else return false;
 }
 
-void ClientApi::compareCpuData()
+void ClientApi::compareCpuData(QJsonObject* cpu_json)
 {
-//    const float m_cpu_temperature;
-//    if(compareValues(mainteance.cpu_temperature,m_cpu_temperature,0.01f))
-//    {
-//        mainteance.cpu_temperature = m_cpu_temperature;
-//        _emit(ClientApi_onCpuTemperatureChanged(mainteance.cpu_temperature));
-//    }
-//    const float m_cpu_volts;
-//    if(compareValues(mainteance.cpu_volts,m_cpu_volts,0.01f))
-//    {
-//        mainteance.cpu_volts = m_cpu_volts;
-//        _emit(ClientApi_onCpuVoltsChanged(mainteance.cpu_volts));
-//    }
-//    const float m_cpu_usage;
-//    if(compareValues(mainteance.cpu_usage,m_cpu_usage,0.01f))
-//    {
-//        mainteance.cpu_usage = m_cpu_usage;
-//        _emit(ClientApi_onCpuUsageChanged(mainteance.cpu_usage));
-//    }
+    QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
+
+    if(!compareValues(mainteance.cpu_temperature,static_cast<float>(cpu_json->value("cpu temperature").toDouble()),0.01f))
+    {
+        mainteance.cpu_temperature = static_cast<float>(cpu_json->value("cpu temperature").toDouble());
+        _emit(ClientApi_onCpuTemperatureChanged(mainteance.cpu_temperature));
+    }
+    if(!compareValues(mainteance.cpu_volts,static_cast<float>(cpu_json->value("cpu volts").toDouble()),0.01f))
+    {
+        mainteance.cpu_volts = static_cast<float>(cpu_json->value("cpu volts").toDouble());
+        _emit(ClientApi_onCpuVoltsChanged(mainteance.cpu_volts));
+    }
+    if(!compareValues(mainteance.cpu_usage,static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble()),0.01f))
+    {
+        mainteance.cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+        _emit(ClientApi_onCpuUsageChanged(mainteance.cpu_usage));
+    }
 }
 
 void ClientApi::compareClocksData()
@@ -393,7 +386,6 @@ void ClientApi::compareVirtualMemoryData()
 
 void ClientApi::fillMainteanceData()
 {
-    compareCpuData();
     compareClocksData();
     compareDisplaysData();
     compareLoadAvgData();
@@ -409,7 +401,12 @@ void ClientApi::managerFinished(QNetworkReply *reply)
     }
 
     QString answer = reply->readAll();
-    qDebug() << answer;
+    QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
+    if(!doc.isEmpty())
+    {
+        QJsonObject obj = doc.object();
+        parseReceiveData(&obj);
+    }
 }
 
 void ClientApi::getMainteance()
