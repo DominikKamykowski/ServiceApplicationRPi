@@ -3,13 +3,32 @@
 #include<vector>
 #include <iostream>
 #include <ExternalLibs/json.hpp>
+#include <Timer/ctimer.h>
+#include <QObject>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
-class ClientApi
+class ClientApiEventListener;
+
+class ClientApi : public QObject
 {
+    Q_OBJECT
+
+    typedef std::vector<ClientApiEventListener *> ClientApiEventListeners_t;
 public:
     ClientApi(std::string api_address, int port);
     ClientApi(std::string api_address);
     ~ClientApi();
+
+    //! \brief Porownanie dwoch liczb (double, float).
+    //! \param Liczba 1.
+    //! \param Liczba 2.
+    //! \param Epsilon - dokladnosc porownania.
+    template <typename T>
+    bool compareValues(T a, T b, T epsilon)
+    {
+        return(fabs(a - b) <= epsilon);
+    }
 
     typedef struct Clocks_t
     {
@@ -82,7 +101,7 @@ public:
 
     typedef struct Mainteance_t
     {
-        float temperature;
+        float cpu_temperature;
         float cpu_volts;
         Clocks_t clocks;
         Displays_t displays;
@@ -95,7 +114,7 @@ public:
 
     // Getters
 
-    float getTemperature();
+    float getCpuTemperature();
     float getCpuVolts();
     Clocks_t getClocks();
     Displays_t getDisplays();
@@ -106,10 +125,23 @@ public:
     Users_t getUsers();
 
 
+    void addEventListener(ClientApiEventListener * listener);
+    void removeEventListener(ClientApiEventListener * listener);
 
     Mainteance_t getMainteance();
+    void timerTimeout();
+    bool startTimer(uint time);
+    bool stopTimer();
+
+    void httpRequest();
 
 private:
+    ClientApiEventListeners_t listenersVector;
+    ClientApiEventListener * mlistener = nullptr;
+
+    QNetworkAccessManager *manager = nullptr;
+    QNetworkRequest request;
+
     std::string apiAddress = "";
     int apiPort = 0;
 
@@ -119,9 +151,20 @@ private:
     nlohmann::json jsonFromVc(std::string);
     bool strToBool(std::string);
 
+    CTimer *timer = nullptr;
+
+    void compareCpuData();
+    void compareClocksData();
+    void compareDisplaysData();
+    void compareLoadAvgData();
+    void compareDiskUsageData();
+    void compareVirtualMemoryData();
 
     Mainteance_t mainteance;
     void fillMainteanceData();
+
+public slots:
+    void managerFinished(QNetworkReply *reply);
 
 }
 
@@ -140,5 +183,56 @@ private:
 
 
 ;
+
+class ClientApiEventListener{
+public:
+    virtual ~ClientApiEventListener(){};
+    virtual void ClientApi_onCpuTemperatureChanged(float){};
+    virtual void ClientApi_onCpuVoltsChanged(float){};
+    virtual void ClientApi_onCpuUsageChanged(float){};
+
+    virtual void ClientApi_onClockArmCoresChanged(uint32_t){};
+    virtual void ClientApi_onClockVC4Changed(uint32_t){};
+    virtual void ClientApi_onClockISPChanged(uint32_t){};
+    virtual void ClientApi_onClockBlock3DChanged(uint32_t){};
+    virtual void ClientApi_onClockUARTChanged(uint32_t){};
+    virtual void ClientApi_onClockPWMChanged(uint32_t){};
+    virtual void ClientApi_onClockEMMCChanged(uint32_t){};
+    virtual void ClientApi_onClockPixelChanged(uint32_t){};
+    virtual void ClientApi_onClockAVEChanged(uint32_t){};
+    virtual void ClientApi_onClockHDMIChanged(uint32_t){};
+    virtual void ClientApi_onClockDPIChanged(uint32_t){};
+
+    virtual void ClientApi_onDisplaysMainLcdChanged(bool){};
+    virtual void ClientApi_onDisplaysSecondaryLcdChanged(bool){};
+    virtual void ClientApi_onDisplaysHDMI0Changed(bool){};
+    virtual void ClientApi_onDisplaysCompositeChanged(bool){};
+    virtual void ClientApi_onDisplaysHDMI1Changed(bool){};
+
+    virtual void ClientApi_onLoadAvgL1Changed(float){};
+    virtual void ClientApi_onLoadAvgL2Changed(float){};
+    virtual void ClientApi_onLoadAvgL3Changed(float){};
+
+    virtual void ClientApi_onVirtualMemoryTotalChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryAvailableChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryUsedChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryFreeChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryActiveChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryInactiveChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryBuffersChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryCachedChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemorySharedChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemorySlabChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryWiredChanged(uint64_t){};
+
+    virtual void ClientApi_onDiskUsageTotalChanged(uint32_t){};
+    virtual void ClientApi_onDiskUsageUsedChanged(uint32_t){};
+    virtual void ClientApi_onDiskUsageFreeChanged(uint32_t){};
+    virtual void ClientApi_onDiskUsagePercentChanged(float){};
+
+};
+
+
+
 
 #endif // CLIENTAPI_H
