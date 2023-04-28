@@ -138,6 +138,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
         compareCpuData(&mainteance_json);
         compareClocksData(&mainteance_json);
         compareDisplaysData(&mainteance_json);
+        compareLoadAvgData(&mainteance_json);
     }
 }
 
@@ -285,23 +286,26 @@ void ClientApi::compareDisplaysData(QJsonObject* display_json)
 
 }
 
-void ClientApi::compareLoadAvgData(QJsonObject*)
+void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
 {
-    const LoadAvg_t m_loadAvg ;
-    if(compareValues(mainteance.load_average.L1,m_loadAvg.L1,0.01f))
+    QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
+    QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
+    qDebug()<<m_load_avg_array;
+
+    if(!compareValues(mainteance.load_average.L1,static_cast<float>(m_load_avg_array.at(0).toDouble()),0.01f))
     {
-        mainteance.load_average.L1 = m_loadAvg.L1;
-        _emit(ClientApi_onLoadAvgL1Changed(m_loadAvg.L1));
+        mainteance.load_average.L1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
+        _emit(ClientApi_onLoadAvgL1Changed(mainteance.load_average.L1));
     }
-    if(compareValues(mainteance.load_average.L2,m_loadAvg.L2,0.01f))
+    if(!compareValues(mainteance.load_average.L2,static_cast<float>(m_load_avg_array.at(1).toDouble()),0.01f))
     {
-        mainteance.load_average.L2 = m_loadAvg.L2;
-        _emit(ClientApi_onLoadAvgL2Changed(m_loadAvg.L2));
+        mainteance.load_average.L2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
+        _emit(ClientApi_onLoadAvgL2Changed(mainteance.load_average.L2));
     }
-    if(compareValues(mainteance.load_average.L3,m_loadAvg.L3,0.01f))
+    if(!compareValues(mainteance.load_average.L3,static_cast<float>(m_load_avg_array.at(2).toDouble()),0.01f))
     {
-        mainteance.load_average.L3 = m_loadAvg.L3;
-        _emit(ClientApi_onLoadAvgL3Changed(m_loadAvg.L3));
+        mainteance.load_average.L3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
+        _emit(ClientApi_onLoadAvgL3Changed(mainteance.load_average.L3));
     }
 }
 
@@ -389,10 +393,6 @@ void ClientApi::compareVirtualMemoryData(QJsonObject*)
         _emit(ClientApi_onVirtualMemoryWiredChanged(m_virtual.wired));
     }
 
-}
-
-void ClientApi::fillMainteanceData()
-{
 }
 
 void ClientApi::managerFinished(QNetworkReply *reply)

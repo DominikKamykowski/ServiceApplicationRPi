@@ -9,6 +9,7 @@
 #include <cmath>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 class ClientApiEventListener;
 
@@ -130,7 +131,6 @@ public:
     void addEventListener(ClientApiEventListener * listener);
     void removeEventListener(ClientApiEventListener * listener);
 
-
     void timerTimeout();
     bool startTimer(uint time);
     bool stopTimer();
@@ -162,7 +162,6 @@ private:
     void compareVirtualMemoryData(QJsonObject*);
 
     Mainteance_t mainteance;
-    void fillMainteanceData();
 
 public slots:
     void managerFinished(QNetworkReply *reply);
