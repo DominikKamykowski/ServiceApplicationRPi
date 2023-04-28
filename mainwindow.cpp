@@ -148,12 +148,12 @@ void MainWindow::on_cbAutoRefresh_clicked()
     {
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
-//        api->startTimer(this->ui->dsbRefreshPeriod->value());
+        api->startTimer(this->ui->dsbRefreshPeriod->value());
     }
     else
     {
         this->ui->pbDataRefresh->setEnabled(true);
         this->ui->dsbRefreshPeriod->setEnabled(true);
-//        api->stopTimer();
+        api->stopTimer();
     }
 }

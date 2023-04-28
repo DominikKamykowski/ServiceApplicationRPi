@@ -14,7 +14,7 @@ ClientApi::ClientApi(std::string api_address, int port)
 
 
     manager = new QNetworkAccessManager(this);
-//    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
+    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
         this, SLOT(managerFinished(QNetworkReply*)));
 }
@@ -446,9 +446,6 @@ void ClientApi::managerFinished(QNetworkReply *reply)
     }
 
     QString answer = reply->readAll();
-    std::string json_answer = answer.toStdString();
-    nlohmann::json json = nlohmann::json::parse(json_answer);
-    std::cout<< json["origin"].get<std::string>()<<std::endl;;
     qDebug() << answer;
 }
 
@@ -475,12 +472,18 @@ bool ClientApi::startTimer(uint time)
 
 bool ClientApi::stopTimer()
 {
-
+    if(timer->isActive())
+    {
+        timer->stop();
+        return true;
+    }
+    else return false;
 }
 
 void ClientApi::httpRequest()
 {
-    QUrl url("https://httpbin.org/ip");
+    std::string api_address = httpApiAddress()+__full_mainteance;
+    QUrl url(QString::fromStdString(api_address));
     request.setUrl(url);
     manager->get(request);
 }

@@ -180,7 +180,7 @@ public slots:
 #define __net_connections   "/mainteance/net_connections"
 #define __users             "/mainteance/users"
 #define __datetime          "/mainteance/detetime"
-
+#define __full_mainteance   "/mainteance/mainteance"
 
 ;
 

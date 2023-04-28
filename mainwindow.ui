@@ -16,7 +16,11 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="1">
-     <widget class="QLineEdit" name="leSystemIP"/>
+     <widget class="QLineEdit" name="leSystemIP">
+      <property name="text">
+       <string>192.168.1.25</string>
+      </property>
+     </widget>
     </item>
     <item row="0" column="2">
      <widget class="QLabel" name="label_5">
