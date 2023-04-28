@@ -9,10 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     api = new ClientApi("192.168.1.25:8000");
 
-
-//    ClientApi::DiskUsage_t data = api.getDiskUsage();
-//    std::cout<<data.total<<std::endl;
-
 }
 
 MainWindow::~MainWindow()
