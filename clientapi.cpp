@@ -136,6 +136,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     {
         QJsonObject mainteance_json = m_json_object->value("Full").toObject();
         compareCpuData(&mainteance_json);
+        compareClocksData(&mainteance_json);
     }
 }
 
@@ -188,67 +189,69 @@ void ClientApi::compareCpuData(QJsonObject* cpu_json)
     }
 }
 
-void ClientApi::compareClocksData()
+void ClientApi::compareClocksData(QJsonObject* clock_json)
 {
-    const Clocks_t m_clocks;
-    if(mainteance.clocks.ARM_cores != m_clocks.ARM_cores)
+    QJsonObject m_clocks = clock_json->value("clocks").toObject();
+    qDebug()<<m_clocks;
+
+    if(mainteance.clocks.ARM_cores != static_cast<uint32_t>(m_clocks.value("ARM cores").toInt()))
     {
-        mainteance.clocks.ARM_cores = m_clocks.ARM_cores;
-        _emit(ClientApi_onClockArmCoresChanged(m_clocks.ARM_cores));
+        mainteance.clocks.ARM_cores = static_cast<uint32_t>(m_clocks.value("ARM cores").toInt());
+        _emit(ClientApi_onClockArmCoresChanged(mainteance.clocks.ARM_cores));
     }
-    if(mainteance.clocks.VC4 != m_clocks.VC4)
+    if(mainteance.clocks.VC4 != static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt()))
     {
-        mainteance.clocks.VC4 = m_clocks.VC4;
-        _emit(ClientApi_onClockVC4Changed(m_clocks.VC4));
+        mainteance.clocks.VC4 = static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt());
+        _emit(ClientApi_onClockVC4Changed(mainteance.clocks.VC4));
     }
-    if(mainteance.clocks.ISP != m_clocks.ISP)
+    if(mainteance.clocks.ISP != static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt()))
     {
-        mainteance.clocks.ISP = m_clocks.ISP;
-        _emit(ClientApi_onClockISPChanged(m_clocks.ISP));
+        mainteance.clocks.ISP = static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt());
+        _emit(ClientApi_onClockISPChanged(mainteance.clocks.ISP));
     }
-    if(mainteance.clocks.block_3D != m_clocks.block_3D)
+    if(mainteance.clocks.block_3D != static_cast<uint32_t>(m_clocks.value("3D block").toInt()))
     {
-        mainteance.clocks.block_3D = m_clocks.block_3D;
-        _emit(ClientApi_onClockBlock3DChanged(m_clocks.block_3D));
+        mainteance.clocks.block_3D = static_cast<uint32_t>(m_clocks.value("3D block").toInt());
+        _emit(ClientApi_onClockBlock3DChanged(mainteance.clocks.block_3D));
     }
-    if(mainteance.clocks.UART != m_clocks.UART)
+    if(mainteance.clocks.UART != static_cast<uint32_t>(m_clocks.value("UART").toInt()))
     {
-        mainteance.clocks.UART = m_clocks.UART;
-        _emit(ClientApi_onClockUARTChanged(m_clocks.UART));
+        mainteance.clocks.UART = static_cast<uint32_t>(m_clocks.value("UART").toInt());
+        _emit(ClientApi_onClockUARTChanged(mainteance.clocks.UART));
     }
-    if(mainteance.clocks.PWM != m_clocks.PWM)
+    if(mainteance.clocks.PWM != static_cast<uint32_t>(m_clocks.value("pwm").toInt()))
     {
-        mainteance.clocks.PWM = m_clocks.PWM;
-        _emit(ClientApi_onClockPWMChanged(m_clocks.PWM));
+        mainteance.clocks.PWM = static_cast<uint32_t>(m_clocks.value("pwm").toInt());
+        _emit(ClientApi_onClockPWMChanged(mainteance.clocks.PWM));
     }
-    if(mainteance.clocks.EMMC != m_clocks.EMMC)
+    if(mainteance.clocks.EMMC != static_cast<uint32_t>(m_clocks.value("emmc").toInt()))
     {
-        mainteance.clocks.EMMC = m_clocks.EMMC;
-        _emit(ClientApi_onClockEMMCChanged(m_clocks.EMMC));
+        mainteance.clocks.EMMC = static_cast<uint32_t>(m_clocks.value("emmc").toInt());
+        _emit(ClientApi_onClockEMMCChanged(mainteance.clocks.EMMC));
     }
-    if(mainteance.clocks.Pixel != m_clocks.Pixel)
+    if(mainteance.clocks.Pixel != static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt()))
     {
-        mainteance.clocks.Pixel = m_clocks.Pixel;
-        _emit(ClientApi_onClockPixelChanged(m_clocks.Pixel));
+        mainteance.clocks.Pixel = static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt());
+        _emit(ClientApi_onClockPixelChanged(mainteance.clocks.Pixel));
     }
-    if(mainteance.clocks.AVE != m_clocks.AVE)
+    if(mainteance.clocks.AVE != static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt()))
     {
-        mainteance.clocks.AVE = m_clocks.AVE;
-        _emit(ClientApi_onClockAVEChanged(m_clocks.AVE));
+        mainteance.clocks.AVE = static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt());
+        _emit(ClientApi_onClockAVEChanged(mainteance.clocks.AVE));
     }
-    if(mainteance.clocks.HDMI != m_clocks.HDMI)
+    if(mainteance.clocks.HDMI != static_cast<uint32_t>(m_clocks.value("HDMI").toInt()))
     {
-        mainteance.clocks.HDMI = m_clocks.HDMI;
-        _emit(ClientApi_onClockHDMIChanged(m_clocks.HDMI));
+        mainteance.clocks.HDMI = static_cast<uint32_t>(m_clocks.value("HDMI").toInt());
+        _emit(ClientApi_onClockHDMIChanged(mainteance.clocks.HDMI));
     }
-    if(mainteance.clocks.DPI != m_clocks.DPI)
+    if(mainteance.clocks.DPI != static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt()))
     {
-        mainteance.clocks.DPI = m_clocks.DPI;
-        _emit(ClientApi_onClockDPIChanged(m_clocks.DPI));
+        mainteance.clocks.DPI = static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt());
+        _emit(ClientApi_onClockDPIChanged(mainteance.clocks.DPI));
     }
 }
 
-void ClientApi::compareDisplaysData()
+void ClientApi::compareDisplaysData(QJsonObject*)
 {
     const Displays_t m_displays;
     if(mainteance.displays.MainLCD != m_displays.MainLCD)
@@ -278,7 +281,7 @@ void ClientApi::compareDisplaysData()
     }
 }
 
-void ClientApi::compareLoadAvgData()
+void ClientApi::compareLoadAvgData(QJsonObject*)
 {
     const LoadAvg_t m_loadAvg ;
     if(compareValues(mainteance.load_average.L1,m_loadAvg.L1,0.01f))
@@ -298,7 +301,7 @@ void ClientApi::compareLoadAvgData()
     }
 }
 
-void ClientApi::compareDiskUsageData()
+void ClientApi::compareDiskUsageData(QJsonObject*)
 {
     const DiskUsage_t m_disk ;
     if(mainteance.disk_usage.total != m_disk.total)
@@ -323,7 +326,7 @@ void ClientApi::compareDiskUsageData()
     }
 }
 
-void ClientApi::compareVirtualMemoryData()
+void ClientApi::compareVirtualMemoryData(QJsonObject*)
 {
     const VirtualMemory_t m_virtual;
     if(mainteance.virtual_memory.total != m_virtual.total)
@@ -386,11 +389,6 @@ void ClientApi::compareVirtualMemoryData()
 
 void ClientApi::fillMainteanceData()
 {
-    compareClocksData();
-    compareDisplaysData();
-    compareLoadAvgData();
-    compareVirtualMemoryData();
-    compareDiskUsageData();
 }
 
 void ClientApi::managerFinished(QNetworkReply *reply)

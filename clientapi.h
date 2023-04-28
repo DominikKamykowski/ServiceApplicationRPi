@@ -155,11 +155,11 @@ private:
     QTimer *timer = nullptr;
 
     void compareCpuData(QJsonObject*);
-    void compareClocksData();
-    void compareDisplaysData();
-    void compareLoadAvgData();
-    void compareDiskUsageData();
-    void compareVirtualMemoryData();
+    void compareClocksData(QJsonObject*);
+    void compareDisplaysData(QJsonObject*);
+    void compareLoadAvgData(QJsonObject*);
+    void compareDiskUsageData(QJsonObject*);
+    void compareVirtualMemoryData(QJsonObject*);
 
     Mainteance_t mainteance;
     void fillMainteanceData();
