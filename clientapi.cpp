@@ -10,8 +10,8 @@ ClientApi::ClientApi(std::string api_address, int port)
     apiAddress = api_address;
     apiPort = port;
     mainteance = {};
-    timer = new CTimer();
-    timer->connect<ClientApi, &ClientApi::timerTimeout>(this);
+    timer = new QTimer(this);
+
 
     manager = new QNetworkAccessManager(this);
 //    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
@@ -26,10 +26,9 @@ ClientApi::ClientApi(std::string api_address)
     apiAddress = data.at(0);
     apiPort = std::stoi(data.at(1));
     mainteance = {};
-    timer = new CTimer();
-    timer->connect<ClientApi, &ClientApi::timerTimeout>(this);
+    timer = new QTimer(this);
     manager = new QNetworkAccessManager(this);
-//    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
+    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
         this, SLOT(managerFinished(QNetworkReply*)));
 }
@@ -448,7 +447,6 @@ void ClientApi::managerFinished(QNetworkReply *reply)
 
     QString answer = reply->readAll();
     std::string json_answer = answer.toStdString();
-    parse
     nlohmann::json json = nlohmann::json::parse(json_answer);
     std::cout<< json["origin"].get<std::string>()<<std::endl;;
     qDebug() << answer;
@@ -477,12 +475,7 @@ bool ClientApi::startTimer(uint time)
 
 bool ClientApi::stopTimer()
 {
-    timer->stop();
-    if(timer->isActive() == CTimer::CTimerState_Stopped)
-    {
-        return true;
-    }
-    else return false;
+
 }
 
 void ClientApi::httpRequest()

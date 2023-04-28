@@ -3,10 +3,10 @@
 #include<vector>
 #include <iostream>
 #include <ExternalLibs/json.hpp>
-#include <Timer/ctimer.h>
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QTimer>
 
 class ClientApiEventListener;
 
@@ -151,7 +151,7 @@ private:
     nlohmann::json jsonFromVc(std::string);
     bool strToBool(std::string);
 
-    CTimer *timer = nullptr;
+    QTimer *timer = nullptr;
 
     void compareCpuData();
     void compareClocksData();
