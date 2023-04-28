@@ -137,6 +137,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
         QJsonObject mainteance_json = m_json_object->value("Full").toObject();
         compareCpuData(&mainteance_json);
         compareClocksData(&mainteance_json);
+        compareDisplaysData(&mainteance_json);
     }
 }
 
@@ -162,7 +163,7 @@ std::string ClientApi::httpApiAddress()
     return "http://" + apiAddress + ":" + std::to_string(apiPort);
 }
 
-bool ClientApi::strToBool(std::string value)
+bool ClientApi::strToBool(QString value)
 {
     if(value == "on") return true;
     else return false;
@@ -192,7 +193,7 @@ void ClientApi::compareCpuData(QJsonObject* cpu_json)
 void ClientApi::compareClocksData(QJsonObject* clock_json)
 {
     QJsonObject m_clocks = clock_json->value("clocks").toObject();
-    qDebug()<<m_clocks;
+//    qDebug()<<m_clocks;
 
     if(mainteance.clocks.ARM_cores != static_cast<uint32_t>(m_clocks.value("ARM cores").toInt()))
     {
@@ -251,34 +252,37 @@ void ClientApi::compareClocksData(QJsonObject* clock_json)
     }
 }
 
-void ClientApi::compareDisplaysData(QJsonObject*)
+void ClientApi::compareDisplaysData(QJsonObject* display_json)
 {
-    const Displays_t m_displays;
-    if(mainteance.displays.MainLCD != m_displays.MainLCD)
+    QJsonObject m_displays = display_json->value("displays").toObject();
+//    qDebug()<<m_displays;
+
+    if(mainteance.displays.Composite != strToBool(m_displays.value("Composite").toString()))
     {
-        mainteance.displays.MainLCD = m_displays.MainLCD;
-        _emit(ClientApi_onDisplaysMainLcdChanged(m_displays.MainLCD));
+        mainteance.displays.Composite = strToBool(m_displays.value("Composite").toString());
+        _emit(ClientApi_onDisplaysCompositeChanged(mainteance.displays.Composite));
     }
-    if(mainteance.displays.SecondaryLCD != m_displays.SecondaryLCD)
+    if(mainteance.displays.MainLCD != strToBool(m_displays.value("MainLCD").toString()))
     {
-        mainteance.displays.SecondaryLCD = m_displays.SecondaryLCD;
-        _emit(ClientApi_onDisplaysSecondaryLcdChanged(m_displays.SecondaryLCD));
+        mainteance.displays.MainLCD = strToBool(m_displays.value("MainLCD").toString());
+        _emit(ClientApi_onDisplaysMainLcdChanged(mainteance.displays.MainLCD));
     }
-    if(mainteance.displays.HDMI0 != m_displays.HDMI0)
+    if(mainteance.displays.SecondaryLCD != strToBool(m_displays.value("SecondaryLCD").toString()))
     {
-        mainteance.displays.HDMI0 = m_displays.HDMI0;
-        _emit(ClientApi_onDisplaysHDMI0Changed(m_displays.HDMI0));
+        mainteance.displays.SecondaryLCD = strToBool(m_displays.value("SecondaryLCD").toString());
+        _emit(ClientApi_onDisplaysSecondaryLcdChanged(mainteance.displays.SecondaryLCD));
     }
-    if(mainteance.displays.Composite != m_displays.Composite)
+    if(mainteance.displays.HDMI0 != strToBool(m_displays.value("HDMI0").toString()))
     {
-        mainteance.displays.Composite = m_displays.Composite;
-        _emit(ClientApi_onDisplaysCompositeChanged(m_displays.Composite));
+        mainteance.displays.HDMI0 = strToBool(m_displays.value("HDMI0").toString());
+        _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI0));
     }
-    if(mainteance.displays.HDMI1 != m_displays.HDMI1)
+    if(mainteance.displays.HDMI1 != strToBool(m_displays.value("HDMI1").toString()))
     {
-        mainteance.displays.HDMI1 = m_displays.HDMI1;
-        _emit(ClientApi_onDisplaysHDMI1Changed(m_displays.HDMI1));
+        mainteance.displays.HDMI1 = strToBool(m_displays.value("HDMI1").toString());
+        _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI1));
     }
+
 }
 
 void ClientApi::compareLoadAvgData(QJsonObject*)

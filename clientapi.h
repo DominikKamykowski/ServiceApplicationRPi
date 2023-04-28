@@ -150,7 +150,7 @@ private:
     void parseReceiveData(QJsonObject*);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
-    bool strToBool(std::string);
+    bool strToBool(QString);
 
     QTimer *timer = nullptr;
 
