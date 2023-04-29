@@ -134,7 +134,7 @@
         <item row="1" column="0" colspan="5">
          <widget class="QTabWidget" name="tabWidget_2">
           <property name="currentIndex">
-           <number>5</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab">
            <attribute name="title">
@@ -471,6 +471,13 @@
             <string>Displays</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_7">
+            <item row="3" column="0">
+             <widget class="QLabel" name="lbHDMI1">
+              <property name="text">
+               <string>HDMI1</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="lbSecondaryLCD">
               <property name="text">
@@ -478,10 +485,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbMainLCD">
+            <item row="4" column="0">
+             <widget class="QLabel" name="lbComposite">
               <property name="text">
-               <string>Main LCD</string>
+               <string>Composite</string>
               </property>
              </widget>
             </item>
@@ -498,7 +505,14 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="1">
+            <item row="2" column="0">
+             <widget class="QLabel" name="lbHDMI0">
+              <property name="text">
+               <string>HDMI0</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
              <spacer name="horizontalSpacer_4">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -511,24 +525,45 @@
               </property>
              </spacer>
             </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="lbComposite">
+            <item row="0" column="0">
+             <widget class="QLabel" name="lbMainLCD">
               <property name="text">
-               <string>Composite</string>
+               <string>Main LCD</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lbHDMI0">
+            <item row="0" column="1">
+             <widget class="QLabel" name="lbMainLCDStatus">
               <property name="text">
-               <string>HDMI0</string>
+               <string>Inactive</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="lbHDMI1">
+            <item row="1" column="1">
+             <widget class="QLabel" name="lbSecondaryLCDStatus">
               <property name="text">
-               <string>HDMI1</string>
+               <string>Inactive</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="lbHDMI0Status">
+              <property name="text">
+               <string>Inactive</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="lbHDMI1Status">
+              <property name="text">
+               <string>Inactive</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLabel" name="lbCompositeStatus">
+              <property name="text">
+               <string>Inactive</string>
               </property>
              </widget>
             </item>

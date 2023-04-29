@@ -69,19 +69,64 @@ void MainWindow::ClientApi_onClockDPIChanged(uint32_t dpi_clock)
 { this->ui->dsbDPI->setValue(dpi_clock/1000000.0f); }
 
 void MainWindow::ClientApi_onDisplaysMainLcdChanged(bool main_lcd)
-{}
+{
+    if(main_lcd)
+    {
+        this->ui->lbMainLCDStatus->setText("Active");
+    }
+    else
+    {
+        this->ui->lbMainLCDStatus->setText("Inactive");
+    }
+}
 
 void MainWindow::ClientApi_onDisplaysSecondaryLcdChanged(bool secondary_lcd)
-{}
+{
+    if(secondary_lcd)
+    {
+        this->ui->lbSecondaryLCDStatus->setText("Active");
+    }
+    else
+    {
+        this->ui->lbSecondaryLCDStatus->setText("Inactive");
+    }
+}
 
 void MainWindow::ClientApi_onDisplaysHDMI0Changed(bool hdmi0)
-{}
+{
+    if(hdmi0)
+    {
+        this->ui->lbHDMI0Status->setText("Active");
+    }
+    else
+    {
+        this->ui->lbHDMI0Status->setText("Inactive");
+    }
+}
 
 void MainWindow::ClientApi_onDisplaysCompositeChanged(bool composite)
-{}
+{
+    if(composite)
+    {
+        this->ui->lbCompositeStatus->setText("Active");
+    }
+    else
+    {
+        this->ui->lbCompositeStatus->setText("Inactive");
+    }
+}
 
 void MainWindow::ClientApi_onDisplaysHDMI1Changed(bool hdmi1)
-{}
+{
+    if(hdmi1)
+    {
+        this->ui->lbHDMI1Status->setText("Active");
+    }
+    else
+    {
+        this->ui->lbHDMI1Status->setText("Inactive");
+    }
+}
 
 void MainWindow::ClientApi_onLoadAvgL1Changed(float l1)
 { this->ui->dsbLoadL1->setValue(static_cast<double>(l1)); }
