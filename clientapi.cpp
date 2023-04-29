@@ -292,8 +292,11 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
 {
     QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
     QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
-//    qDebug()<<m_load_avg_array;
-
+    if(m_load_avg_array.size()!= 3)
+    {
+        //TODO
+        return;
+    }
     if(!compareValues(mainteance.load_average.L1,static_cast<float>(m_load_avg_array.at(0).toDouble()),0.01f))
     {
         mainteance.load_average.L1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
@@ -315,9 +318,13 @@ void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
 {
     QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
     QJsonArray m_disk_usage_array = m_disk_usage_obj.value("Disk usage").toArray();
+    if(m_disk_usage_array.size()!= 4)
+    {
+        //TODO
+        return;
+    }
     if(mainteance.disk_usage.total != static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble()))
     {
-
         mainteance.disk_usage.total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
         _emit(ClientApi_onDiskUsageTotalChanged(mainteance.disk_usage.total));
     }
@@ -342,6 +349,11 @@ void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
 {
     QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
     QJsonArray m_virtual_memory_array = m_virtual_memory_obj.value("Virtual memory").toArray();
+    if(m_virtual_memory_array.size()!= 11)
+    {
+        //TODO
+        return;
+    }
 
     if(mainteance.virtual_memory.total != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble()))
     {
