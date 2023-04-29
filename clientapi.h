@@ -94,9 +94,9 @@ public:
 
     typedef struct DiskUsage_t
     {
-        uint32_t total = 0;
-        uint32_t used = 0;
-        uint32_t free = 0;
+        uint64_t total = 0;
+        uint64_t used = 0;
+        uint64_t free = 0;
         float percent = 0;
         // total=21378641920, used=4809781248, free=15482871808, percent=22.5
     }DiskUsage_t;
@@ -225,9 +225,9 @@ public:
     virtual void ClientApi_onVirtualMemorySlabChanged(uint64_t){};
     virtual void ClientApi_onVirtualMemoryWiredChanged(uint64_t){};
 
-    virtual void ClientApi_onDiskUsageTotalChanged(uint32_t){};
-    virtual void ClientApi_onDiskUsageUsedChanged(uint32_t){};
-    virtual void ClientApi_onDiskUsageFreeChanged(uint32_t){};
+    virtual void ClientApi_onDiskUsageTotalChanged(uint64_t){};
+    virtual void ClientApi_onDiskUsageUsedChanged(uint64_t){};
+    virtual void ClientApi_onDiskUsageFreeChanged(uint64_t){};
     virtual void ClientApi_onDiskUsagePercentChanged(float){};
 
 };

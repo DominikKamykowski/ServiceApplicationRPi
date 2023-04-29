@@ -24,9 +24,6 @@ void MainWindow::on_pbDataRefresh_clicked()
 
 void MainWindow::uiSettings()
 {
-    this->ui->dsbArmCores->setSuffix("MHz");
-    this->ui->dsbVC4->setSuffix("MHz");
-    this->ui->dsbISP->setSuffix("MHz");
 }
 
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
@@ -128,17 +125,19 @@ void MainWindow::ClientApi_onVirtualMemorySlabChanged(uint64_t vm_slab)
 void MainWindow::ClientApi_onVirtualMemoryWiredChanged(uint64_t vm_wired)
 { this->ui->dsbWiredVM->setValue(vm_wired); }
 
-void MainWindow::ClientApi_onDiskUsageTotalChanged(uint32_t disk_total)
-{ this->ui->dsbTotalDiskSpace->setValue(disk_total); }
+void MainWindow::ClientApi_onDiskUsageTotalChanged(uint64_t disk_total)
+{ this->ui->dsbTotalDiskSpace->setValue(disk_total/(pow(1024,3))); }
 
-void MainWindow::ClientApi_onDiskUsageUsedChanged(uint32_t disk_used)
-{ this->ui->dsbUsedDiskSpace->setValue(disk_used); }
+void MainWindow::ClientApi_onDiskUsageUsedChanged(uint64_t disk_used)
+{ this->ui->dsbUsedDiskSpace->setValue(disk_used/(pow(1024,3))); }
 
-void MainWindow::ClientApi_onDiskUsageFreeChanged(uint32_t disk_free)
-{ this->ui->dsbFreeDiskSpace->setValue(disk_free); }
+void MainWindow::ClientApi_onDiskUsageFreeChanged(uint64_t disk_free)
+{ this->ui->dsbFreeDiskSpace->setValue(disk_free/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onDiskUsagePercentChanged(float disk_percentage)
-{ this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage)); }
+{
+    qDebug()<<disk_percentage;
+    this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage)); }
 
 
 

@@ -139,6 +139,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
         compareClocksData(&mainteance_json);
         compareDisplaysData(&mainteance_json);
         compareLoadAvgData(&mainteance_json);
+        compareDiskUsageData(&mainteance_json);
     }
 }
 
@@ -290,7 +291,7 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
 {
     QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
     QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
-    qDebug()<<m_load_avg_array;
+//    qDebug()<<m_load_avg_array;
 
     if(!compareValues(mainteance.load_average.L1,static_cast<float>(m_load_avg_array.at(0).toDouble()),0.01f))
     {
@@ -309,28 +310,30 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
     }
 }
 
-void ClientApi::compareDiskUsageData(QJsonObject*)
+void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
 {
-    const DiskUsage_t m_disk ;
-    if(mainteance.disk_usage.total != m_disk.total)
+    QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
+    QJsonArray m_disk_usage_array = m_disk_usage_obj.value("Disk usage").toArray();
+    if(mainteance.disk_usage.total != static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble()))
     {
-        mainteance.disk_usage.total = m_disk.total;
-        _emit(ClientApi_onDiskUsageTotalChanged(m_disk.total));
+
+        mainteance.disk_usage.total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
+        _emit(ClientApi_onDiskUsageTotalChanged(mainteance.disk_usage.total));
     }
-    if(mainteance.disk_usage.used != m_disk.used)
+    if(mainteance.disk_usage.used != static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble()))
     {
-        mainteance.disk_usage.used = m_disk.used;
-        _emit(ClientApi_onDiskUsageUsedChanged(m_disk.used));
+        mainteance.disk_usage.used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
+        _emit(ClientApi_onDiskUsageUsedChanged(mainteance.disk_usage.used));
     }
-    if(mainteance.disk_usage.free != m_disk.free)
+    if(mainteance.disk_usage.free != static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble()))
     {
-        mainteance.disk_usage.free = m_disk.free;
-        _emit(ClientApi_onDiskUsageFreeChanged(m_disk.free));
+        mainteance.disk_usage.free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
+        _emit(ClientApi_onDiskUsageFreeChanged(mainteance.disk_usage.free));
     }
-    if(compareValues(mainteance.disk_usage.percent,m_disk.percent,0.01f))
+    if(!compareValues(mainteance.disk_usage.percent,static_cast<float>(m_disk_usage_array.at(3).toDouble()),0.01f))
     {
-        mainteance.disk_usage.percent = m_disk.percent;
-        _emit(ClientApi_onDiskUsagePercentChanged(m_disk.percent));
+        mainteance.disk_usage.percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
+        _emit(ClientApi_onDiskUsagePercentChanged(mainteance.disk_usage.percent));
     }
 }
 

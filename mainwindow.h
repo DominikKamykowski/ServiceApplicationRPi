@@ -67,9 +67,9 @@ public:
     void ClientApi_onVirtualMemorySlabChanged(uint64_t vm_slab);
     void ClientApi_onVirtualMemoryWiredChanged(uint64_t vm_wired);
 
-    void ClientApi_onDiskUsageTotalChanged(uint32_t disk_total);
-    void ClientApi_onDiskUsageUsedChanged(uint32_t disk_used);
-    void ClientApi_onDiskUsageFreeChanged(uint32_t disk_free);
+    void ClientApi_onDiskUsageTotalChanged(uint64_t disk_total);
+    void ClientApi_onDiskUsageUsedChanged(uint64_t disk_used);
+    void ClientApi_onDiskUsageFreeChanged(uint64_t disk_free);
     void ClientApi_onDiskUsagePercentChanged(float disk_percentage);
 };
 #endif // MAINWINDOW_H
