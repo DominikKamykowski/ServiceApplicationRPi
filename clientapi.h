@@ -33,6 +33,7 @@ public:
         return(fabs(a - b) <= epsilon);
     }
 
+
     typedef struct Clocks_t
     {
         uint32_t ARM_cores = 0;
@@ -63,6 +64,21 @@ public:
         float L2 = 0;
         float L3 = 0;
     }LoadAvg_t;
+
+
+    enum class VIRTUAL_MEMORY{
+        TOTAL = 0,
+        AVAILABLE = 1,
+        USED = 2,
+        FREE = 3,
+        ACTIVE = 4,
+        INACTIVE = 5,
+        BUFFERS = 6,
+        CACHED = 7,
+        SHARED = 8,
+        SLAB = 9,
+        WIRED = 10
+    };
 
     typedef struct VirtualMemory_t
     {
