@@ -93,37 +93,37 @@ void MainWindow::ClientApi_onLoadAvgL3Changed(float l3)
 { this->ui->dsbLoadL3->setValue(static_cast<double>(l3)); }
 
 void MainWindow::ClientApi_onVirtualMemoryTotalChanged(uint64_t vm_total)
-{ this->ui->dsbTotalVM->setValue(vm_total); }
+{ this->ui->dsbTotalVM->setValue(vm_total/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryAvailableChanged(uint64_t vm_available)
-{ this->ui->dsbAvailableVM->setValue(vm_available); }
+{ this->ui->dsbAvailableVM->setValue(vm_available/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryUsedChanged(uint64_t vm_used)
-{ this->ui->dsbUsedVM->setValue(vm_used); }
+{ this->ui->dsbUsedVM->setValue(vm_used/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryFreeChanged(uint64_t vm_free)
-{ this->ui->dsbFreeVM->setValue(vm_free); }
+{ this->ui->dsbFreeVM->setValue(vm_free/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryActiveChanged(uint64_t vm_active)
-{ this->ui->dsbActiveVM->setValue(vm_active); }
+{ this->ui->dsbActiveVM->setValue(vm_active/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryInactiveChanged(uint64_t vm_inactive)
-{ this->ui->dsbInactiveVM->setValue(vm_inactive); }
+{ this->ui->dsbInactiveVM->setValue(vm_inactive/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryBuffersChanged(uint64_t vm_buffers)
-{ this->ui->dsbBuffersVM->setValue(vm_buffers); }
+{ this->ui->dsbBuffersVM->setValue(vm_buffers/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryCachedChanged(uint64_t vm_cached)
-{ this->ui->dsbCachedVM->setValue(vm_cached); }
+{ this->ui->dsbCachedVM->setValue(vm_cached/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemorySharedChanged(uint64_t vm_shared)
-{ this->ui->dsbSharedVM->setValue(vm_shared); }
+{ this->ui->dsbSharedVM->setValue(vm_shared/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemorySlabChanged(uint64_t vm_slab)
-{ this->ui->dsbSlabVM->setValue(vm_slab); }
+{ this->ui->dsbSlabVM->setValue(vm_slab/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onVirtualMemoryWiredChanged(uint64_t vm_wired)
-{ this->ui->dsbWiredVM->setValue(vm_wired); }
+{ this->ui->dsbWiredVM->setValue(vm_wired/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onDiskUsageTotalChanged(uint64_t disk_total)
 { this->ui->dsbTotalDiskSpace->setValue(disk_total/(pow(1024,3))); }

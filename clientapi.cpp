@@ -140,6 +140,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
         compareDisplaysData(&mainteance_json);
         compareLoadAvgData(&mainteance_json);
         compareDiskUsageData(&mainteance_json);
+        compareVirtualMemoryData(&mainteance_json);
     }
 }
 
@@ -337,65 +338,66 @@ void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
     }
 }
 
-void ClientApi::compareVirtualMemoryData(QJsonObject*)
+void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
 {
-    const VirtualMemory_t m_virtual;
-    if(mainteance.virtual_memory.total != m_virtual.total)
-    {
-        mainteance.virtual_memory.total = m_virtual.total;
-        _emit(ClientApi_onVirtualMemoryTotalChanged(m_virtual.total));
-    }
-    if(mainteance.virtual_memory.available != m_virtual.available)
-    {
-        mainteance.virtual_memory.available = m_virtual.available;
-        _emit(ClientApi_onVirtualMemoryAvailableChanged(m_virtual.available));
-    }
-    if(mainteance.virtual_memory.used != m_virtual.used)
-    {
-        mainteance.virtual_memory.used = m_virtual.used;
-        _emit(ClientApi_onVirtualMemoryUsedChanged(m_virtual.used));
-    }
-    if(mainteance.virtual_memory.free != m_virtual.free)
-    {
-        mainteance.virtual_memory.free = m_virtual.free;
-        _emit(ClientApi_onVirtualMemoryFreeChanged(m_virtual.free));
-    }
-    if(mainteance.virtual_memory.active != m_virtual.active)
-    {
-        mainteance.virtual_memory.active = m_virtual.active;
-        _emit(ClientApi_onVirtualMemoryActiveChanged(m_virtual.active));
-    }
-    if(mainteance.virtual_memory.inactive != m_virtual.inactive)
-    {
-        mainteance.virtual_memory.inactive = m_virtual.inactive;
-        _emit(ClientApi_onVirtualMemoryInactiveChanged(m_virtual.inactive));
-    }
-    if(mainteance.virtual_memory.buffers != m_virtual.buffers)
-    {
-        mainteance.virtual_memory.buffers = m_virtual.buffers;
-        _emit(ClientApi_onVirtualMemoryBuffersChanged(m_virtual.buffers));
-    }
-    if(mainteance.virtual_memory.cached != m_virtual.cached)
-    {
-        mainteance.virtual_memory.cached = m_virtual.cached;
-        _emit(ClientApi_onVirtualMemoryCachedChanged(m_virtual.cached));
-    }
-    if(mainteance.virtual_memory.shared != m_virtual.shared)
-    {
-        mainteance.virtual_memory.shared = m_virtual.shared;
-        _emit(ClientApi_onVirtualMemorySharedChanged(m_virtual.shared));
-    }
-    if(mainteance.virtual_memory.slab != m_virtual.slab)
-    {
-        mainteance.virtual_memory.slab = m_virtual.slab;
-        _emit(ClientApi_onVirtualMemorySlabChanged(m_virtual.slab));
-    }
-    if(mainteance.virtual_memory.wired != m_virtual.wired)
-    {
-        mainteance.virtual_memory.wired = m_virtual.wired;
-        _emit(ClientApi_onVirtualMemoryWiredChanged(m_virtual.wired));
-    }
+    QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
+    QJsonArray m_virtual_memory_array = m_virtual_memory_obj.value("Virtual memory").toArray();
 
+    if(mainteance.virtual_memory.total != static_cast<uint64_t>(m_virtual_memory_array.at(0).toDouble()))
+    {
+        mainteance.virtual_memory.total = static_cast<uint64_t>(m_virtual_memory_array.at(0).toDouble());
+        _emit(ClientApi_onVirtualMemoryTotalChanged(mainteance.virtual_memory.total));
+    }
+    if(mainteance.virtual_memory.available != static_cast<uint64_t>(m_virtual_memory_array.at(1).toDouble()))
+    {
+        mainteance.virtual_memory.available = static_cast<uint64_t>(m_virtual_memory_array.at(1).toDouble());
+        _emit(ClientApi_onVirtualMemoryAvailableChanged(mainteance.virtual_memory.available));
+    }
+    if(mainteance.virtual_memory.used != static_cast<uint64_t>(m_virtual_memory_array.at(2).toDouble()))
+    {
+        mainteance.virtual_memory.used = static_cast<uint64_t>(m_virtual_memory_array.at(2).toDouble());
+        _emit(ClientApi_onVirtualMemoryUsedChanged(mainteance.virtual_memory.used));
+    }
+    if(mainteance.virtual_memory.free != static_cast<uint64_t>(m_virtual_memory_array.at(3).toDouble()))
+    {
+        mainteance.virtual_memory.free = static_cast<uint64_t>(m_virtual_memory_array.at(3).toDouble());
+        _emit(ClientApi_onVirtualMemoryFreeChanged(mainteance.virtual_memory.free));
+    }
+    if(mainteance.virtual_memory.active != static_cast<uint64_t>(m_virtual_memory_array.at(4).toDouble()))
+    {
+        mainteance.virtual_memory.active = static_cast<uint64_t>(m_virtual_memory_array.at(4).toDouble());
+        _emit(ClientApi_onVirtualMemoryActiveChanged(mainteance.virtual_memory.active));
+    }
+    if(mainteance.virtual_memory.inactive != static_cast<uint64_t>(m_virtual_memory_array.at(5).toDouble()))
+    {
+        mainteance.virtual_memory.inactive = static_cast<uint64_t>(m_virtual_memory_array.at(5).toDouble());
+        _emit(ClientApi_onVirtualMemoryInactiveChanged(mainteance.virtual_memory.inactive));
+    }
+    if(mainteance.virtual_memory.buffers != static_cast<uint64_t>(m_virtual_memory_array.at(6).toDouble()))
+    {
+        mainteance.virtual_memory.buffers = static_cast<uint64_t>(m_virtual_memory_array.at(6).toDouble());
+        _emit(ClientApi_onVirtualMemoryBuffersChanged(mainteance.virtual_memory.buffers));
+    }
+    if(mainteance.virtual_memory.cached != static_cast<uint64_t>(m_virtual_memory_array.at(7).toDouble()))
+    {
+        mainteance.virtual_memory.cached = static_cast<uint64_t>(m_virtual_memory_array.at(7).toDouble());
+        _emit(ClientApi_onVirtualMemoryCachedChanged(mainteance.virtual_memory.cached));
+    }
+    if(mainteance.virtual_memory.shared != static_cast<uint64_t>(m_virtual_memory_array.at(8).toDouble()))
+    {
+        mainteance.virtual_memory.shared = static_cast<uint64_t>(m_virtual_memory_array.at(8).toDouble());
+        _emit(ClientApi_onVirtualMemorySharedChanged(mainteance.virtual_memory.shared));
+    }
+    if(mainteance.virtual_memory.slab != static_cast<uint64_t>(m_virtual_memory_array.at(9).toDouble()))
+    {
+        mainteance.virtual_memory.slab = static_cast<uint64_t>(m_virtual_memory_array.at(9).toDouble());
+        _emit(ClientApi_onVirtualMemorySlabChanged(mainteance.virtual_memory.slab));
+    }
+    if(mainteance.virtual_memory.wired != static_cast<uint64_t>(m_virtual_memory_array.at(10).toDouble()))
+    {
+        mainteance.virtual_memory.wired = static_cast<uint64_t>(m_virtual_memory_array.at(10).toDouble());
+        _emit(ClientApi_onVirtualMemoryWiredChanged(mainteance.virtual_memory.wired));
+    }
 }
 
 void ClientApi::managerFinished(QNetworkReply *reply)
