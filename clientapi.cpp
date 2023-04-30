@@ -9,13 +9,9 @@ ClientApi::ClientApi(std::string api_address, int port)
     apiAddress = api_address;
     apiPort = port;
     mainteance = {};
-    timer = new QTimer(this);
-    QObject::connect(timer, &QTimer::timeout, this, &ClientApi::timerTimeout);
 
-    manager = new QNetworkAccessManager(this);
-    QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
-        this, SLOT(managerFinished(QNetworkReply*)));
+    configureTimers();
+    configureNetworkManager();
 }
 
 ClientApi::ClientApi(std::string api_address)
@@ -25,14 +21,26 @@ ClientApi::ClientApi(std::string api_address)
     apiAddress = data.at(0);
     apiPort = std::stoi(data.at(1));
     mainteance = {};
-    timer = new QTimer(this);
-    QObject::connect(timer, &QTimer::timeout, this, &ClientApi::timerTimeout);
 
+    configureTimers();
+    configureNetworkManager();
+
+}
+
+void ClientApi::configureNetworkManager()
+{
     manager = new QNetworkAccessManager(this);
     QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
         this, SLOT(managerFinished(QNetworkReply*)));
 }
+
+void ClientApi::configureTimers()
+{
+    timer = new QTimer(this);
+    QObject::connect(timer, &QTimer::timeout, this, &ClientApi::timerTimeout);
+}
+
 
 ClientApi::~ClientApi()
 {
@@ -41,40 +49,22 @@ ClientApi::~ClientApi()
 
 void ClientApi::getCpuTemperature()
 {
+
 }
 
 void ClientApi::getCpuVolts()
 {
+
 }
 
 void ClientApi::getClocks()
 {
-//    Clocks_t clocks{
-//    _json["ARM cores"].get<uint32_t>(),
-//    _json["VC4 scaler cores"].get<uint32_t>(),
-//    _json["Image Signal Processor"].get<uint32_t>(),
-//    _json["3D block"].get<uint32_t>(),
-//    _json["UART"].get<uint32_t>(),
-//    _json["pwm"].get<uint32_t>(),
-//    _json["emmc"].get<uint32_t>(),
-//    _json["Pixel valve"].get<uint32_t>(),
-//    _json["Analogue video encoder"].get<uint32_t>(),
-//    _json["HDMI"].get<uint32_t>(),
-//    _json["Display Peripheral Interface"].get<uint32_t>()
-//    };
-//    return clocks;
+
 }
 
 void ClientApi::getDisplays()
 {
-//    Displays_t displays{
-//    strToBool(_json["MainLCD"].get<std::string>()),
-//    strToBool(_json["SecondaryLCD"].get<std::string>()),
-//    strToBool(_json["HDMI0"].get<std::string>()),
-//    strToBool(_json["Composite"].get<std::string>()),
-//    strToBool(_json["HDMI1"].get<std::string>())
-//    };
-//    return displays;
+
 }
 
 void ClientApi::getCpuUsage()
@@ -83,31 +73,17 @@ void ClientApi::getCpuUsage()
 
 void ClientApi::getLoadAverage()
 {
-//    LoadAvg_t load
-//    {
-//        _data.at(0), _data.at(1), _data.at(2)
-//    };
-//    return load;
+
 }
 
 void ClientApi::getVirtualMemory()
 {
-//    VirtualMemory_t memory{
-//        _data.at(0), _data.at(1), _data.at(2), _data.at(3), _data.at(4), _data.at(5), _data.at(6),
-//        _data.at(7), _data.at(8), _data.at(9), _data.at(10)
-//    };
 
-//    return memory;
 }
 
 void ClientApi::getDiskUsage()
 {
-//    DiskUsage_t disks {static_cast<uint32_t>(disk_usage.at(0)),
-//                       static_cast<uint32_t>(disk_usage.at(1)),
-//                       static_cast<uint32_t>(disk_usage.at(2)),
-//                       disk_usage.at(3)};
 
-//    return disks;
 }
 
 void ClientApi::addEventListener(ClientApiEventListener *listener)
@@ -135,12 +111,19 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     if(m_json_object->keys().contains("Full"))
     {
         QJsonObject mainteance_json = m_json_object->value("Full").toObject();
-        compareCpuData(&mainteance_json);
-        compareClocksData(&mainteance_json);
-        compareDisplaysData(&mainteance_json);
-        compareLoadAvgData(&mainteance_json);
-        compareDiskUsageData(&mainteance_json);
-        compareVirtualMemoryData(&mainteance_json);
+        if(mainteance_json.isEmpty())
+        {
+            _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        }
+        else
+        {
+            compareCpuData(&mainteance_json);
+            compareClocksData(&mainteance_json);
+            compareDisplaysData(&mainteance_json);
+            compareLoadAvgData(&mainteance_json);
+            compareDiskUsageData(&mainteance_json);
+            compareVirtualMemoryData(&mainteance_json);
+        }
     }
 }
 
@@ -172,9 +155,15 @@ bool ClientApi::strToBool(QString value)
     else return false;
 }
 
+
 void ClientApi::compareCpuData(QJsonObject* cpu_json)
 {
     QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
+    if(m_cpu_usage.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
 
     if(!compareValues(mainteance.cpu_temperature,static_cast<float>(cpu_json->value("cpu temperature").toDouble()),0.01f))
     {
@@ -197,6 +186,12 @@ void ClientApi::compareClocksData(QJsonObject* clock_json)
 {
     QJsonObject m_clocks = clock_json->value("clocks").toObject();
 //    qDebug()<<m_clocks;
+
+    if(m_clocks.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
 
     if(mainteance.clocks.ARM_cores != static_cast<uint32_t>(m_clocks.value("ARM cores").toInt()))
     {
@@ -259,6 +254,11 @@ void ClientApi::compareDisplaysData(QJsonObject* display_json)
 {
     QJsonObject m_displays = display_json->value("displays").toObject();
 //    qDebug()<<m_displays;
+    if(m_displays.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
 
     if(mainteance.displays.Composite != strToBool(m_displays.value("Composite").toString()))
     {
@@ -291,6 +291,11 @@ void ClientApi::compareDisplaysData(QJsonObject* display_json)
 void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
 {
     QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
+    if(m_load_avg_obj.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
     QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
     if(m_load_avg_array.size()!= 3)
     {
@@ -317,6 +322,11 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
 void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
 {
     QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
+    if(m_disk_usage_obj.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
     QJsonArray m_disk_usage_array = m_disk_usage_obj.value("Disk usage").toArray();
     if(m_disk_usage_array.size()!= 4)
     {
@@ -348,6 +358,11 @@ void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
 void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
 {
     QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
+    if(m_virtual_memory_obj.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
     QJsonArray m_virtual_memory_array = m_virtual_memory_obj.value("Virtual memory").toArray();
     if(m_virtual_memory_array.size()!= 11)
     {
@@ -418,14 +433,30 @@ void ClientApi::managerFinished(QNetworkReply *reply)
         qDebug() << reply->errorString();
         return;
     }
-
+    QJsonParseError parse_error;
     QString answer = reply->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8());
-    if(!doc.isEmpty())
+    QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8(),&parse_error);
+    if(parse_error.error == QJsonParseError::NoError)
     {
-        QJsonObject obj = doc.object();
-        parseReceiveData(&obj);
+        if(!doc.isEmpty())
+        {
+            QJsonObject obj = doc.object();
+            if(obj.isEmpty())
+            {
+                _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+                return;
+            }
+            else
+            {
+                parseReceiveData(&obj);
+            }
+        }
     }
+    else
+    {
+        _emit(ClientApi_onJsonParseError(parse_error.errorString().toStdString()));
+    }
+
 }
 
 void ClientApi::getMainteance()

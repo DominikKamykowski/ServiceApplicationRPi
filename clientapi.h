@@ -167,6 +167,8 @@ private:
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
     bool strToBool(QString);
+    void configureNetworkManager();
+    void configureTimers();
 
     QTimer *timer = nullptr;
 
@@ -203,6 +205,10 @@ public slots:
 class ClientApiEventListener{
 public:
     virtual ~ClientApiEventListener(){};
+
+    virtual void ClientApi_onJsonParseError(std::string){};
+    virtual void ClientApi_onJsonObjectNull(std::string){};
+
     virtual void ClientApi_onCpuTemperatureChanged(float){};
     virtual void ClientApi_onCpuVoltsChanged(float){};
     virtual void ClientApi_onCpuUsageChanged(float){};

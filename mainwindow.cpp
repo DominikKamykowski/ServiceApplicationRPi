@@ -182,8 +182,8 @@ void MainWindow::ClientApi_onDiskUsageFreeChanged(uint64_t disk_free)
 void MainWindow::ClientApi_onDiskUsagePercentChanged(float disk_percentage)
 {
     qDebug()<<disk_percentage;
-    this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage)); }
-
+    this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage));
+}
 
 
 void MainWindow::on_cbAutoRefresh_clicked()
