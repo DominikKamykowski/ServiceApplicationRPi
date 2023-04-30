@@ -178,6 +178,7 @@ private:
     void compareLoadAvgData(QJsonObject*);
     void compareDiskUsageData(QJsonObject*);
     void compareVirtualMemoryData(QJsonObject*);
+    void compareServerTimeData(QJsonObject*);
 
     Mainteance_t mainteance;
 
@@ -186,7 +187,7 @@ public slots:
 
 }
 
-
+//Url defines
 #define __temperature       "/mainteance/temperature"
 #define __cpu_volts         "/mainteance/volts"
 #define __clocks            "/mainteance/clock"
@@ -199,6 +200,8 @@ public slots:
 #define __users             "/mainteance/users"
 #define __datetime          "/mainteance/detetime"
 #define __full_mainteance   "/mainteance/mainteance"
+
+
 
 ;
 
@@ -251,6 +254,8 @@ public:
     virtual void ClientApi_onDiskUsageUsedChanged(uint64_t){};
     virtual void ClientApi_onDiskUsageFreeChanged(uint64_t){};
     virtual void ClientApi_onDiskUsagePercentChanged(float){};
+
+    virtual void ClientApi_onServerTimeChanged(std::string){};
 
 };
 

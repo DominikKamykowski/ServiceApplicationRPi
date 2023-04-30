@@ -71,5 +71,7 @@ public:
     void ClientApi_onDiskUsageUsedChanged(uint64_t disk_used);
     void ClientApi_onDiskUsageFreeChanged(uint64_t disk_free);
     void ClientApi_onDiskUsagePercentChanged(float disk_percentage);
+
+    void ClientApi_onServerTimeChanged(std::string);
 };
 #endif // MAINWINDOW_H

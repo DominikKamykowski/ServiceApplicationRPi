@@ -123,6 +123,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
             compareLoadAvgData(&mainteance_json);
             compareDiskUsageData(&mainteance_json);
             compareVirtualMemoryData(&mainteance_json);
+            compareServerTimeData(&mainteance_json);
         }
     }
 }
@@ -424,6 +425,21 @@ void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
     {
         mainteance.virtual_memory.wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
         _emit(ClientApi_onVirtualMemoryWiredChanged(mainteance.virtual_memory.wired));
+    }
+}
+
+void ClientApi::compareServerTimeData(QJsonObject *server_time_json)
+{
+    QJsonObject m_server_time_obj = server_time_json->value("Time").toObject();
+    if(m_server_time_obj.isEmpty())
+    {
+        _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        return;
+    }
+    else
+    {
+        QString server_time = m_server_time_obj.value("Server time").toString();
+        _emit(ClientApi_onServerTimeChanged(server_time.toStdString()));
     }
 }
 

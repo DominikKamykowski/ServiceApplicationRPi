@@ -185,6 +185,11 @@ void MainWindow::ClientApi_onDiskUsagePercentChanged(float disk_percentage)
     this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage));
 }
 
+void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
+{
+    this->ui->lbServerTime->setText(QString::fromStdString(m_time));
+}
+
 
 void MainWindow::on_cbAutoRefresh_clicked()
 {
