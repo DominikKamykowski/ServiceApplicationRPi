@@ -1,19 +1,22 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <future>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    api = new ClientApi("192.168.1.25:8000");
-    api->addEventListener(this);
+    uiSettings();
 }
 
 MainWindow::~MainWindow()
 {
-    delete api;
+    if(api != nullptr)
+    {
+        qDebug()<<"Destroy api";
+        delete api;
+    }
+
     delete ui;
 }
 
@@ -24,6 +27,9 @@ void MainWindow::on_pbDataRefresh_clicked()
 
 void MainWindow::uiSettings()
 {
+    this->ui->pbConnect->setCheckable(true);
+    this->ui->tabWidgeMain->setEnabled(false);
+
 }
 
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
@@ -190,7 +196,6 @@ void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
     this->ui->lbServerTime->setText(QString::fromStdString(m_time));
 }
 
-
 void MainWindow::on_cbAutoRefresh_clicked()
 {
     if(this->ui->cbAutoRefresh->isChecked())
@@ -207,3 +212,22 @@ void MainWindow::on_cbAutoRefresh_clicked()
         api->stopTimer();
     }
 }
+
+void MainWindow::on_pbConnect_clicked()
+{
+    if(this->ui->pbConnect->isChecked())
+    {
+        api = new ClientApi("192.168.1.25:8000");
+        api->addEventListener(this);
+        this->ui->tabWidgeMain->setEnabled(true);
+    }
+    else
+    {
+        this->ui->tabWidgeMain->setEnabled(false);
+        this->ui->cbAutoRefresh->setCheckState(Qt::CheckState::Unchecked);
+        this->ui->pbDataRefresh->setEnabled(true);
+        api->removeEventListener(this);
+        delete api;
+    }
+}
+

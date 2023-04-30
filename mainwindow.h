@@ -21,6 +21,8 @@ private slots:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
 
+    void on_pbConnect_clicked();
+
 private:
     ClientApi *api = nullptr;
 

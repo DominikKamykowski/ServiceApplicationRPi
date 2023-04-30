@@ -1,5 +1,4 @@
 #include "clientapi.h"
-#include <future>
 
 #define _emit(x) for (uint8_t i = 0; i < listenersVector.size(); i++) \
     listenersVector.at(i)->x
