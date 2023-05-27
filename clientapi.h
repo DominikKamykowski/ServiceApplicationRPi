@@ -131,8 +131,8 @@ public:
 
     }Mainteance_t;
 
-    // Getters
-
+    // --------------------------------------- Getters ------------------------------------------
+    // --------------------------Mainteance
     void getCpuTemperature();
     void getCpuVolts();
     void getClocks();
@@ -143,6 +143,17 @@ public:
     void getDiskUsage();
     void getUsers();
     void getMainteance();
+
+    // --------------------------Sensors
+
+    void getExtermalTemperature();
+    void getHumidity();
+    void getPressure();
+    void getBME280AllData();
+
+
+
+
 
     void addEventListener(ClientApiEventListener * listener);
     void removeEventListener(ClientApiEventListener * listener);
@@ -200,6 +211,11 @@ public slots:
 #define __users             "/mainteance/users"
 #define __datetime          "/mainteance/detetime"
 #define __full_mainteance   "/mainteance/mainteance"
+
+
+// API Json Keys
+#define __FullMainteanceKey "Full"
+#define __FullBME280All     "BME280All"
 
 
 

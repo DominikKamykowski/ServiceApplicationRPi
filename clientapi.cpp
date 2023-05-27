@@ -107,9 +107,11 @@ void ClientApi::removeEventListener(ClientApiEventListener *listener)
 
 void ClientApi::parseReceiveData(QJsonObject *m_json_object)
 {
-    if(m_json_object->keys().contains("Full"))
+    qDebug() << m_json_object->keys();
+
+    if(m_json_object->keys().contains(__FullMainteanceKey))
     {
-        QJsonObject mainteance_json = m_json_object->value("Full").toObject();
+        QJsonObject mainteance_json = m_json_object->value(__FullMainteanceKey).toObject();
         if(mainteance_json.isEmpty())
         {
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -123,6 +125,18 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
             compareDiskUsageData(&mainteance_json);
             compareVirtualMemoryData(&mainteance_json);
             compareServerTimeData(&mainteance_json);
+        }
+    }
+    else if (m_json_object->keys().contains(__FullBME280All))
+    {
+        QJsonObject sensor_data = m_json_object->value(__FullBME280All).toObject();
+        if(sensor_data.isEmpty())
+        {
+            _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        }
+        else
+        {
+            //TODO
         }
     }
 }
