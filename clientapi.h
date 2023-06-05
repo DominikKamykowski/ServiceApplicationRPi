@@ -131,6 +131,13 @@ public:
 
     }Mainteance_t;
 
+    typedef struct BME280_t
+    {
+        float temperature = 0;
+        float humidity = 0;
+        float pressure = 0;
+    }BME280_t;
+
     // Getters
 
     void getCpuTemperature();
@@ -181,6 +188,9 @@ private:
     void compareServerTimeData(QJsonObject*);
 
     Mainteance_t mainteance;
+    BME280_t bme280;
+
+    void compareBME280Data(QJsonObject*);
 
 public slots:
     void managerFinished(QNetworkReply *reply);
@@ -256,6 +266,10 @@ public:
     virtual void ClientApi_onDiskUsagePercentChanged(float){};
 
     virtual void ClientApi_onServerTimeChanged(std::string){};
+
+    virtual void ClientApi_onBME280TemperatureChanged(float){};
+    virtual void ClientApi_onBME280HumidityChanged(float){};
+    virtual void ClientApi_onBME280PressureChanged(float){};
 
 };
 

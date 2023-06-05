@@ -125,7 +125,20 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
             compareServerTimeData(&mainteance_json);
         }
     }
+    else if(m_json_object->keys().contains("BME280"))
+    {
+        QJsonObject bme280_json = m_json_object->value("BME280").toObject();
+        if(bme280_json.isEmpty())
+        {
+            _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+        }
+        else
+        {
+            compareBME280Data(&bme280_json);
+        }
+    }
 }
+
 
 std::vector<std::string> ClientApi::split(std::string sentence, std::string splitter)
 {
@@ -155,6 +168,28 @@ bool ClientApi::strToBool(QString value)
     else return false;
 }
 
+void ClientApi::compareBME280Data(QJsonObject * m_json_object)
+{
+    float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
+    float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
+    float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
+
+    if(!compareValues(bme280.temperature, _temperature, 0.01f))
+    {
+        bme280.temperature = _temperature;
+        _emit(ClientApi_onBME280TemperatureChanged(bme280.temperature));
+    }
+    if(!compareValues(bme280.humidity, _humidity, 0.01f))
+    {
+        bme280.humidity = _humidity;
+        _emit(ClientApi_onBME280HumidityChanged(bme280.humidity));
+    }
+    if(!compareValues(bme280.pressure, _pressure, 0.01f))
+    {
+        bme280.pressure = _pressure;
+        _emit(ClientApi_onBME280PressureChanged(bme280.pressure));
+    }
+}
 
 void ClientApi::compareCpuData(QJsonObject* cpu_json)
 {
@@ -441,6 +476,7 @@ void ClientApi::compareServerTimeData(QJsonObject *server_time_json)
         _emit(ClientApi_onServerTimeChanged(server_time.toStdString()));
     }
 }
+
 
 void ClientApi::managerFinished(QNetworkReply *reply)
 {
