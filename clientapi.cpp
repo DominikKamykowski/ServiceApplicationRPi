@@ -313,29 +313,35 @@ void ClientApi::compareDisplaysData(QJsonObject* display_json)
         return;
     }
 
-    if(mainteance.displays.Composite != strToBool(m_displays.value("Composite").toString()))
+    bool _composite = strToBool(m_displays.value("Composite").toString());
+    bool  _main_lcd = strToBool(m_displays.value("MainLCD").toString());
+    bool _secondary_lcd = strToBool(m_displays.value("SecondaryLCD").toString());
+    bool _hdmi0 = strToBool(m_displays.value("HDMI0").toString());
+    bool _hdmi1 = strToBool(m_displays.value("HDMI1").toString());
+
+    if(mainteance.displays.Composite != _composite )
     {
-        mainteance.displays.Composite = strToBool(m_displays.value("Composite").toString());
+        mainteance.displays.Composite = _composite ;
         _emit(ClientApi_onDisplaysCompositeChanged(mainteance.displays.Composite));
     }
-    if(mainteance.displays.MainLCD != strToBool(m_displays.value("MainLCD").toString()))
+    if(mainteance.displays.MainLCD != _main_lcd )
     {
-        mainteance.displays.MainLCD = strToBool(m_displays.value("MainLCD").toString());
+        mainteance.displays.MainLCD = _main_lcd ;
         _emit(ClientApi_onDisplaysMainLcdChanged(mainteance.displays.MainLCD));
     }
-    if(mainteance.displays.SecondaryLCD != strToBool(m_displays.value("SecondaryLCD").toString()))
+    if(mainteance.displays.SecondaryLCD != _secondary_lcd )
     {
-        mainteance.displays.SecondaryLCD = strToBool(m_displays.value("SecondaryLCD").toString());
+        mainteance.displays.SecondaryLCD = _secondary_lcd ;
         _emit(ClientApi_onDisplaysSecondaryLcdChanged(mainteance.displays.SecondaryLCD));
     }
-    if(mainteance.displays.HDMI0 != strToBool(m_displays.value("HDMI0").toString()))
+    if(mainteance.displays.HDMI0 != _hdmi0)
     {
-        mainteance.displays.HDMI0 = strToBool(m_displays.value("HDMI0").toString());
+        mainteance.displays.HDMI0 = _hdmi0;
         _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI0));
     }
-    if(mainteance.displays.HDMI1 != strToBool(m_displays.value("HDMI1").toString()))
+    if(mainteance.displays.HDMI1 != _hdmi1)
     {
-        mainteance.displays.HDMI1 = strToBool(m_displays.value("HDMI1").toString());
+        mainteance.displays.HDMI1 = _hdmi1;
         _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI1));
     }
 
