@@ -441,60 +441,71 @@ void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
     }
 
     uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
+    uint64_t _available = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble());
+    uint64_t _used = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble());
+    uint64_t _free = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble());
+    uint64_t _active = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble());
+    uint64_t _inactive = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble());
+    uint64_t _buffers = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble());
+    uint64_t _cached = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble());
+    uint64_t _shared = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble());
+    uint64_t _slab = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble());
+    uint64_t _wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
+
 
     if(mainteance.virtual_memory.total != _total)
     {
         mainteance.virtual_memory.total = _total;
         _emit(ClientApi_onVirtualMemoryTotalChanged(mainteance.virtual_memory.total));
     }
-    if(mainteance.virtual_memory.available != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble()))
+    if(mainteance.virtual_memory.available != _available )
     {
-        mainteance.virtual_memory.available = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble());
+        mainteance.virtual_memory.available = _available ;
         _emit(ClientApi_onVirtualMemoryAvailableChanged(mainteance.virtual_memory.available));
     }
-    if(mainteance.virtual_memory.used != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble()))
+    if(mainteance.virtual_memory.used != _used )
     {
-        mainteance.virtual_memory.used = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble());
+        mainteance.virtual_memory.used = _used ;
         _emit(ClientApi_onVirtualMemoryUsedChanged(mainteance.virtual_memory.used));
     }
-    if(mainteance.virtual_memory.free != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble()))
+    if(mainteance.virtual_memory.free != _free )
     {
-        mainteance.virtual_memory.free = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble());
+        mainteance.virtual_memory.free = _free ;
         _emit(ClientApi_onVirtualMemoryFreeChanged(mainteance.virtual_memory.free));
     }
-    if(mainteance.virtual_memory.active != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble()))
+    if(mainteance.virtual_memory.active != _active )
     {
-        mainteance.virtual_memory.active = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble());
+        mainteance.virtual_memory.active = _active ;
         _emit(ClientApi_onVirtualMemoryActiveChanged(mainteance.virtual_memory.active));
     }
-    if(mainteance.virtual_memory.inactive != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble()))
+    if(mainteance.virtual_memory.inactive != _inactive )
     {
-        mainteance.virtual_memory.inactive = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble());
+        mainteance.virtual_memory.inactive = _inactive ;
         _emit(ClientApi_onVirtualMemoryInactiveChanged(mainteance.virtual_memory.inactive));
     }
-    if(mainteance.virtual_memory.buffers != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble()))
+    if(mainteance.virtual_memory.buffers != _buffers )
     {
-        mainteance.virtual_memory.buffers = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble());
+        mainteance.virtual_memory.buffers = _buffers ;
         _emit(ClientApi_onVirtualMemoryBuffersChanged(mainteance.virtual_memory.buffers));
     }
-    if(mainteance.virtual_memory.cached != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble()))
+    if(mainteance.virtual_memory.cached != _cached )
     {
-        mainteance.virtual_memory.cached = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble());
+        mainteance.virtual_memory.cached = _cached ;
         _emit(ClientApi_onVirtualMemoryCachedChanged(mainteance.virtual_memory.cached));
     }
-    if(mainteance.virtual_memory.shared != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble()))
+    if(mainteance.virtual_memory.shared != _shared )
     {
-        mainteance.virtual_memory.shared = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble());
+        mainteance.virtual_memory.shared = _shared ;
         _emit(ClientApi_onVirtualMemorySharedChanged(mainteance.virtual_memory.shared));
     }
-    if(mainteance.virtual_memory.slab != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble()))
+    if(mainteance.virtual_memory.slab != _slab )
     {
-        mainteance.virtual_memory.slab = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble());
+        mainteance.virtual_memory.slab = _slab ;
         _emit(ClientApi_onVirtualMemorySlabChanged(mainteance.virtual_memory.slab));
     }
-    if(mainteance.virtual_memory.wired != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble()))
+    if(mainteance.virtual_memory.wired != _wired )
     {
-        mainteance.virtual_memory.wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
+        mainteance.virtual_memory.wired = _wired ;
         _emit(ClientApi_onVirtualMemoryWiredChanged(mainteance.virtual_memory.wired));
     }
 }
