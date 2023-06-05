@@ -133,21 +133,31 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
 
         else compareBME280Data(&bme280_json);
     }
-    else if (m_json_object->keys().contains("cpu temperature"))
+    else
     {
-        float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
-        _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
-    }
-    else if (m_json_object->keys().contains("cpu volts"))
-    {
-        float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
-        _emit(ClientApi_onCpuVoltsChanged(_cpu_volts));
-    }
-    else if (m_json_object->keys().contains("Cpu usage"))
-    {
-        QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
-        float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
-        _emit(ClientApi_onCpuUsageChanged(_cpu_usage));
+        if (m_json_object->keys().contains("cpu temperature"))
+        {
+            float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
+            _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
+        }
+        else if (m_json_object->keys().contains("cpu volts"))
+        {
+            float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
+            _emit(ClientApi_onCpuVoltsChanged(_cpu_volts));
+        }
+        else if (m_json_object->keys().contains("Cpu usage"))
+        {
+            QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
+            float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+            _emit(ClientApi_onCpuUsageChanged(_cpu_usage));
+        }
+        else if (m_json_object->keys().contains("clocks")) compareClocksData(m_json_object);
+        else if (m_json_object->keys().contains("displays")) compareDisplaysData(m_json_object);
+        else if (m_json_object->keys().contains("Load average")) compareLoadAvgData(m_json_object);
+        else if (m_json_object->keys().contains("Virtual memory")) compareVirtualMemoryData(m_json_object);
+        else if (m_json_object->keys().contains("Disk usage")) compareDiskUsageData(m_json_object);
+        else if (m_json_object->keys().contains("Time")) compareServerTimeData(m_json_object);
+
     }
 }
 
