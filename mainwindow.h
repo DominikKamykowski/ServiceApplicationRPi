@@ -23,6 +23,8 @@ private slots:
 
     void on_pbConnect_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     ClientApi *api = nullptr;
 

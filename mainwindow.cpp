@@ -231,3 +231,9 @@ void MainWindow::on_pbConnect_clicked()
     }
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    api->getCpuUsage();
+}
+

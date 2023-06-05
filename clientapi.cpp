@@ -31,7 +31,7 @@ void ClientApi::configureNetworkManager()
     manager = new QNetworkAccessManager(this);
     QObject::connect(manager, &QNetworkAccessManager::finished,this,&ClientApi::managerFinished);
     QObject::connect(manager, SIGNAL(finished(QNetworkReply*)),
-        this, SLOT(managerFinished(QNetworkReply*)));
+                     this, SLOT(managerFinished(QNetworkReply*)));
 }
 
 void ClientApi::configureTimers()
@@ -48,41 +48,42 @@ ClientApi::~ClientApi()
 
 void ClientApi::getCpuTemperature()
 {
-
+    httpRequest(__temperature);
 }
 
 void ClientApi::getCpuVolts()
 {
-
+    httpRequest(__cpu_volts);
 }
 
 void ClientApi::getClocks()
 {
-
+    httpRequest(__clocks);
 }
 
 void ClientApi::getDisplays()
 {
-
+    httpRequest(__displays);
 }
 
 void ClientApi::getCpuUsage()
 {
+    httpRequest(__cpu_usage);
 }
 
 void ClientApi::getLoadAverage()
 {
-
+    httpRequest(__load_average);
 }
 
 void ClientApi::getVirtualMemory()
 {
-
+    httpRequest(__virtual_memory);
 }
 
 void ClientApi::getDiskUsage()
 {
-
+    httpRequest(__disk_usage);
 }
 
 void ClientApi::addEventListener(ClientApiEventListener *listener)
@@ -111,9 +112,8 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     {
         QJsonObject mainteance_json = m_json_object->value("Full").toObject();
         if(mainteance_json.isEmpty())
-        {
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
-        }
+
         else
         {
             compareCpuData(&mainteance_json);
@@ -129,13 +129,25 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     {
         QJsonObject bme280_json = m_json_object->value("BME280").toObject();
         if(bme280_json.isEmpty())
-        {
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
-        }
-        else
-        {
-            compareBME280Data(&bme280_json);
-        }
+
+        else compareBME280Data(&bme280_json);
+    }
+    else if (m_json_object->keys().contains("cpu temperature"))
+    {
+        float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
+        _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
+    }
+    else if (m_json_object->keys().contains("cpu volts"))
+    {
+        float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
+        _emit(ClientApi_onCpuVoltsChanged(_cpu_volts));
+    }
+    else if (m_json_object->keys().contains("Cpu usage"))
+    {
+        QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
+        float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+        _emit(ClientApi_onCpuUsageChanged(_cpu_usage));
     }
 }
 
@@ -226,7 +238,7 @@ void ClientApi::compareCpuData(QJsonObject* cpu_json)
 void ClientApi::compareClocksData(QJsonObject* clock_json)
 {
     QJsonObject m_clocks = clock_json->value("clocks").toObject();
-//    qDebug()<<m_clocks;
+    //    qDebug()<<m_clocks;
 
     if(m_clocks.isEmpty())
     {
@@ -306,7 +318,7 @@ void ClientApi::compareClocksData(QJsonObject* clock_json)
 void ClientApi::compareDisplaysData(QJsonObject* display_json)
 {
     QJsonObject m_displays = display_json->value("displays").toObject();
-//    qDebug()<<m_displays;
+    //    qDebug()<<m_displays;
     if(m_displays.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
