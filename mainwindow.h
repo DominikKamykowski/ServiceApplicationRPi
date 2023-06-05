@@ -25,6 +25,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pbGetAllBME280_clicked();
+
 private:
     ClientApi *api = nullptr;
 
