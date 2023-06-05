@@ -174,6 +174,8 @@ void ClientApi::compareBME280Data(QJsonObject * m_json_object)
     float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
     float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
 
+    qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
+
     if(!compareValues(bme280.temperature, _temperature, 0.01f))
     {
         bme280.temperature = _temperature;
@@ -200,19 +202,23 @@ void ClientApi::compareCpuData(QJsonObject* cpu_json)
         return;
     }
 
-    if(!compareValues(mainteance.cpu_temperature,static_cast<float>(cpu_json->value("cpu temperature").toDouble()),0.01f))
+    float _cpu_temperature =    static_cast<float>(cpu_json->value("cpu temperature").toDouble());
+    float _cpu_volts =          static_cast<float>(cpu_json->value("cpu volts").toDouble());
+    float _cpu_usage =          static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+
+    if(!compareValues(mainteance.cpu_temperature,_cpu_temperature,0.01f))
     {
-        mainteance.cpu_temperature = static_cast<float>(cpu_json->value("cpu temperature").toDouble());
+        mainteance.cpu_temperature = _cpu_temperature;
         _emit(ClientApi_onCpuTemperatureChanged(mainteance.cpu_temperature));
     }
-    if(!compareValues(mainteance.cpu_volts,static_cast<float>(cpu_json->value("cpu volts").toDouble()),0.01f))
+    if(!compareValues(mainteance.cpu_volts,_cpu_volts,0.01f))
     {
-        mainteance.cpu_volts = static_cast<float>(cpu_json->value("cpu volts").toDouble());
+        mainteance.cpu_volts = _cpu_volts;
         _emit(ClientApi_onCpuVoltsChanged(mainteance.cpu_volts));
     }
-    if(!compareValues(mainteance.cpu_usage,static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble()),0.01f))
+    if(!compareValues(mainteance.cpu_usage,_cpu_usage,0.01f))
     {
-        mainteance.cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+        mainteance.cpu_usage = _cpu_usage;
         _emit(ClientApi_onCpuUsageChanged(mainteance.cpu_usage));
     }
 }
@@ -228,59 +234,71 @@ void ClientApi::compareClocksData(QJsonObject* clock_json)
         return;
     }
 
-    if(mainteance.clocks.ARM_cores != static_cast<uint32_t>(m_clocks.value("ARM cores").toInt()))
+    uint32_t _arm = static_cast<uint32_t>(m_clocks.value("ARM cores").toInt());
+    uint32_t _vc4 = static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt());
+    uint32_t _isp = static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt());
+    uint32_t _3d = static_cast<uint32_t>(m_clocks.value("3D block").toInt());
+    uint32_t _uart = static_cast<uint32_t>(m_clocks.value("UART").toInt());
+    uint32_t _pwm = static_cast<uint32_t>(m_clocks.value("pwm").toInt());
+    uint32_t _emmc = static_cast<uint32_t>(m_clocks.value("emmc").toInt());
+    uint32_t _pix = static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt());
+    uint32_t _ave = static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt());
+    uint32_t _hdmi = static_cast<uint32_t>(m_clocks.value("HDMI").toInt());
+    uint32_t _dpi = static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt());
+
+    if(mainteance.clocks.ARM_cores != _arm)
     {
-        mainteance.clocks.ARM_cores = static_cast<uint32_t>(m_clocks.value("ARM cores").toInt());
+        mainteance.clocks.ARM_cores = _arm;
         _emit(ClientApi_onClockArmCoresChanged(mainteance.clocks.ARM_cores));
     }
-    if(mainteance.clocks.VC4 != static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt()))
+    if(mainteance.clocks.VC4 != _vc4)
     {
-        mainteance.clocks.VC4 = static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt());
+        mainteance.clocks.VC4 = _vc4;
         _emit(ClientApi_onClockVC4Changed(mainteance.clocks.VC4));
     }
-    if(mainteance.clocks.ISP != static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt()))
+    if(mainteance.clocks.ISP != _isp)
     {
-        mainteance.clocks.ISP = static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt());
+        mainteance.clocks.ISP = _isp;
         _emit(ClientApi_onClockISPChanged(mainteance.clocks.ISP));
     }
-    if(mainteance.clocks.block_3D != static_cast<uint32_t>(m_clocks.value("3D block").toInt()))
+    if(mainteance.clocks.block_3D != _3d)
     {
-        mainteance.clocks.block_3D = static_cast<uint32_t>(m_clocks.value("3D block").toInt());
+        mainteance.clocks.block_3D = _3d;
         _emit(ClientApi_onClockBlock3DChanged(mainteance.clocks.block_3D));
     }
-    if(mainteance.clocks.UART != static_cast<uint32_t>(m_clocks.value("UART").toInt()))
+    if(mainteance.clocks.UART != _uart)
     {
-        mainteance.clocks.UART = static_cast<uint32_t>(m_clocks.value("UART").toInt());
+        mainteance.clocks.UART = _uart;
         _emit(ClientApi_onClockUARTChanged(mainteance.clocks.UART));
     }
-    if(mainteance.clocks.PWM != static_cast<uint32_t>(m_clocks.value("pwm").toInt()))
+    if(mainteance.clocks.PWM != _pwm)
     {
-        mainteance.clocks.PWM = static_cast<uint32_t>(m_clocks.value("pwm").toInt());
+        mainteance.clocks.PWM = _pwm;
         _emit(ClientApi_onClockPWMChanged(mainteance.clocks.PWM));
     }
-    if(mainteance.clocks.EMMC != static_cast<uint32_t>(m_clocks.value("emmc").toInt()))
+    if(mainteance.clocks.EMMC != _emmc)
     {
-        mainteance.clocks.EMMC = static_cast<uint32_t>(m_clocks.value("emmc").toInt());
+        mainteance.clocks.EMMC = _emmc;
         _emit(ClientApi_onClockEMMCChanged(mainteance.clocks.EMMC));
     }
-    if(mainteance.clocks.Pixel != static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt()))
+    if(mainteance.clocks.Pixel != _pix)
     {
-        mainteance.clocks.Pixel = static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt());
+        mainteance.clocks.Pixel = _pix;
         _emit(ClientApi_onClockPixelChanged(mainteance.clocks.Pixel));
     }
-    if(mainteance.clocks.AVE != static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt()))
+    if(mainteance.clocks.AVE != _ave)
     {
-        mainteance.clocks.AVE = static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt());
+        mainteance.clocks.AVE = _ave;
         _emit(ClientApi_onClockAVEChanged(mainteance.clocks.AVE));
     }
-    if(mainteance.clocks.HDMI != static_cast<uint32_t>(m_clocks.value("HDMI").toInt()))
+    if(mainteance.clocks.HDMI != _hdmi)
     {
-        mainteance.clocks.HDMI = static_cast<uint32_t>(m_clocks.value("HDMI").toInt());
+        mainteance.clocks.HDMI = _hdmi;
         _emit(ClientApi_onClockHDMIChanged(mainteance.clocks.HDMI));
     }
-    if(mainteance.clocks.DPI != static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt()))
+    if(mainteance.clocks.DPI != _dpi)
     {
-        mainteance.clocks.DPI = static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt());
+        mainteance.clocks.DPI = _dpi;
         _emit(ClientApi_onClockDPIChanged(mainteance.clocks.DPI));
     }
 }
