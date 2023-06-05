@@ -361,19 +361,24 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
         //TODO
         return;
     }
-    if(!compareValues(mainteance.load_average.L1,static_cast<float>(m_load_avg_array.at(0).toDouble()),0.01f))
+
+    float _l1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
+    float _l2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
+    float _l3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
+
+    if(!compareValues(mainteance.load_average.L1,_l1,0.01f))
     {
-        mainteance.load_average.L1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
+        mainteance.load_average.L1 = _l1;
         _emit(ClientApi_onLoadAvgL1Changed(mainteance.load_average.L1));
     }
-    if(!compareValues(mainteance.load_average.L2,static_cast<float>(m_load_avg_array.at(1).toDouble()),0.01f))
+    if(!compareValues(mainteance.load_average.L2,_l2,0.01f))
     {
-        mainteance.load_average.L2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
+        mainteance.load_average.L2 = _l2;
         _emit(ClientApi_onLoadAvgL2Changed(mainteance.load_average.L2));
     }
-    if(!compareValues(mainteance.load_average.L3,static_cast<float>(m_load_avg_array.at(2).toDouble()),0.01f))
+    if(!compareValues(mainteance.load_average.L3,_l3 ,0.01f))
     {
-        mainteance.load_average.L3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
+        mainteance.load_average.L3 = _l3 ;
         _emit(ClientApi_onLoadAvgL3Changed(mainteance.load_average.L3));
     }
 }
@@ -392,24 +397,30 @@ void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
         //TODO
         return;
     }
-    if(mainteance.disk_usage.total != static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble()))
+
+    uint64_t _total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
+    uint64_t _used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
+    uint64_t _free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
+    float _percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
+
+    if(mainteance.disk_usage.total != _total)
     {
-        mainteance.disk_usage.total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
+        mainteance.disk_usage.total = _total;
         _emit(ClientApi_onDiskUsageTotalChanged(mainteance.disk_usage.total));
     }
-    if(mainteance.disk_usage.used != static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble()))
+    if(mainteance.disk_usage.used != _used )
     {
-        mainteance.disk_usage.used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
+        mainteance.disk_usage.used = _used ;
         _emit(ClientApi_onDiskUsageUsedChanged(mainteance.disk_usage.used));
     }
-    if(mainteance.disk_usage.free != static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble()))
+    if(mainteance.disk_usage.free != _free)
     {
-        mainteance.disk_usage.free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
+        mainteance.disk_usage.free = _free;
         _emit(ClientApi_onDiskUsageFreeChanged(mainteance.disk_usage.free));
     }
-    if(!compareValues(mainteance.disk_usage.percent,static_cast<float>(m_disk_usage_array.at(3).toDouble()),0.01f))
+    if(!compareValues(mainteance.disk_usage.percent,_percent ,0.01f))
     {
-        mainteance.disk_usage.percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
+        mainteance.disk_usage.percent = _percent ;
         _emit(ClientApi_onDiskUsagePercentChanged(mainteance.disk_usage.percent));
     }
 }
@@ -429,9 +440,11 @@ void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
         return;
     }
 
-    if(mainteance.virtual_memory.total != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble()))
+    uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
+
+    if(mainteance.virtual_memory.total != _total)
     {
-        mainteance.virtual_memory.total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
+        mainteance.virtual_memory.total = _total;
         _emit(ClientApi_onVirtualMemoryTotalChanged(mainteance.virtual_memory.total));
     }
     if(mainteance.virtual_memory.available != static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble()))
