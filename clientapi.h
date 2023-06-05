@@ -34,7 +34,7 @@ public:
     }
 
 
-    typedef struct Clocks_t
+    struct Clocks_t
     {
         uint32_t ARM_cores = 0;
         uint32_t VC4 = 0;
@@ -47,23 +47,23 @@ public:
         uint32_t AVE = 0;
         uint32_t HDMI = 0;
         uint32_t DPI = 0;
-    }Clocks_t;
+    };
 
-    typedef struct Displays_t
+    struct Displays_t
     {
         bool MainLCD = false;
         bool SecondaryLCD = false;
         bool HDMI0 = false;
         bool Composite = false;
         bool HDMI1 = false;
-    }Displays_t;
+    };
 
-    typedef struct LoadAvg_t
+    struct LoadAvg_t
     {
         float L1 = 0;
         float L2 = 0;
         float L3 = 0;
-    }LoadAvg_t;
+    };
 
 
     enum class VIRTUAL_MEMORY{
@@ -80,7 +80,7 @@ public:
         WIRED = 10
     };
 
-    typedef struct VirtualMemory_t
+    struct VirtualMemory_t
     {
 
         uint64_t total = 0;       //: total physical memory (exclusive swap).
@@ -95,9 +95,9 @@ public:
         uint64_t slab = 0;        //(Linux): in-kernel data structures cache.
         uint64_t wired = 0;       //(BSD, macOS): memory that is marked to always stay in RAM. It is never moved to disk.
 
-    }VirtualMemory_t;
+    };
 
-    typedef struct Users_t
+    struct Users_t
     {
 
         std::string name = "";           //: the name of the user.
@@ -106,19 +106,19 @@ public:
         uint64_t started = 0;            //: the creation time as a floating point number expressed in seconds since the epoch.
         uint32_t pid = 0;                //: the PID of the login process (like sshd, tmux, gdm-session-worker, …). On Windows and OpenBSD this is always set to None.
 
-    }Users_t;
+    };
 
-    typedef struct DiskUsage_t
+    struct DiskUsage_t
     {
         uint64_t total = 0;
         uint64_t used = 0;
         uint64_t free = 0;
         float percent = 0;
         // total=21378641920, used=4809781248, free=15482871808, percent=22.5
-    }DiskUsage_t;
+    };
 
 
-    typedef struct Mainteance_t
+    struct Mainteance_t
     {
         float cpu_temperature;
         float cpu_volts;
@@ -129,14 +129,14 @@ public:
         DiskUsage_t disk_usage;
         VirtualMemory_t virtual_memory;
 
-    }Mainteance_t;
+    };
 
-    typedef struct BME280_t
+    struct BME280_t
     {
         float temperature = 0;
         float humidity = 0;
         float pressure = 0;
-    }BME280_t;
+    };
 
     // Getters
 
