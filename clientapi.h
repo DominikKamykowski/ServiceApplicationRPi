@@ -170,7 +170,7 @@ private:
     std::string apiAddress = "";
     int apiPort = 0;
 
-    void parseReceiveData(QJsonObject*);
+    void parseReceiveData(const QJsonObject*);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
     bool strToBool(const QString);
@@ -190,7 +190,7 @@ private:
     Mainteance_t mainteance;
     BME280_t bme280;
 
-    void compareBME280Data(QJsonObject*);
+    void compareBME280Data(const QJsonObject*);
 
 public slots:
     void managerFinished(QNetworkReply *reply);

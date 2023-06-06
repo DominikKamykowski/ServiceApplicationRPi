@@ -106,11 +106,11 @@ void ClientApi::removeEventListener(ClientApiEventListener *listener)
 }
 
 
-void ClientApi::parseReceiveData(QJsonObject *m_json_object)
+void ClientApi::parseReceiveData(const QJsonObject *m_json_object)
 {
     if(m_json_object->keys().contains("Full"))
     {
-        QJsonObject mainteance_json = m_json_object->value("Full").toObject();
+        const QJsonObject mainteance_json = m_json_object->value("Full").toObject();
         if(mainteance_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
@@ -127,7 +127,7 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     }
     else if(m_json_object->keys().contains("BME280"))
     {
-        QJsonObject bme280_json = m_json_object->value("BME280").toObject();
+        const QJsonObject bme280_json = m_json_object->value("BME280").toObject();
         if(bme280_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
@@ -137,18 +137,18 @@ void ClientApi::parseReceiveData(QJsonObject *m_json_object)
     {
         if (m_json_object->keys().contains("cpu temperature"))
         {
-            float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
+            const float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
             _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
         }
         else if (m_json_object->keys().contains("cpu volts"))
         {
-            float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
+            const float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
             _emit(ClientApi_onCpuVoltsChanged(_cpu_volts));
         }
         else if (m_json_object->keys().contains("Cpu usage"))
         {
-            QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
-            float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+            const QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
+            const float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
             _emit(ClientApi_onCpuUsageChanged(_cpu_usage));
         }
         else if (m_json_object->keys().contains("clocks")) compareClocksData(m_json_object);
@@ -184,17 +184,17 @@ std::string ClientApi::httpApiAddress()
     return "http://" + apiAddress + ":" + std::to_string(apiPort);
 }
 
-bool ClientApi::strToBool(QString value)
+bool ClientApi::strToBool(const QString value)
 {
     if(value == "on") return true;
     else return false;
 }
 
-void ClientApi::compareBME280Data(QJsonObject * m_json_object)
+void ClientApi::compareBME280Data(const QJsonObject * m_json_object)
 {
-    float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
-    float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
-    float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
+    const float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
+    const float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
+    const float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
 
     qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
 
@@ -217,16 +217,16 @@ void ClientApi::compareBME280Data(QJsonObject * m_json_object)
 
 void ClientApi::compareCpuData(const QJsonObject* cpu_json)
 {
-    QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
+    const QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
     if(m_cpu_usage.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
         return;
     }
 
-    float _cpu_temperature =    static_cast<float>(cpu_json->value("cpu temperature").toDouble());
-    float _cpu_volts =          static_cast<float>(cpu_json->value("cpu volts").toDouble());
-    float _cpu_usage =          static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
+    const float _cpu_temperature =    static_cast<float>(cpu_json->value("cpu temperature").toDouble());
+    const float _cpu_volts =          static_cast<float>(cpu_json->value("cpu volts").toDouble());
+    const float _cpu_usage =          static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
 
     if(!compareValues(mainteance.cpu_temperature,_cpu_temperature,0.01f))
     {
@@ -247,7 +247,7 @@ void ClientApi::compareCpuData(const QJsonObject* cpu_json)
 
 void ClientApi::compareClocksData(const QJsonObject* clock_json)
 {
-    QJsonObject m_clocks = clock_json->value("clocks").toObject();
+    const QJsonObject m_clocks = clock_json->value("clocks").toObject();
     //    qDebug()<<m_clocks;
 
     if(m_clocks.isEmpty())
@@ -256,17 +256,17 @@ void ClientApi::compareClocksData(const QJsonObject* clock_json)
         return;
     }
 
-    uint32_t _arm = static_cast<uint32_t>(m_clocks.value("ARM cores").toInt());
-    uint32_t _vc4 = static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt());
-    uint32_t _isp = static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt());
-    uint32_t _3d = static_cast<uint32_t>(m_clocks.value("3D block").toInt());
-    uint32_t _uart = static_cast<uint32_t>(m_clocks.value("UART").toInt());
-    uint32_t _pwm = static_cast<uint32_t>(m_clocks.value("pwm").toInt());
-    uint32_t _emmc = static_cast<uint32_t>(m_clocks.value("emmc").toInt());
-    uint32_t _pix = static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt());
-    uint32_t _ave = static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt());
-    uint32_t _hdmi = static_cast<uint32_t>(m_clocks.value("HDMI").toInt());
-    uint32_t _dpi = static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt());
+    const uint32_t _arm = static_cast<uint32_t>(m_clocks.value("ARM cores").toInt());
+    const uint32_t _vc4 = static_cast<uint32_t>(m_clocks.value("VC4 scaler cores").toInt());
+    const uint32_t _isp = static_cast<uint32_t>(m_clocks.value("Image Signal Processor").toInt());
+    const uint32_t _3d = static_cast<uint32_t>(m_clocks.value("3D block").toInt());
+    const uint32_t _uart = static_cast<uint32_t>(m_clocks.value("UART").toInt());
+    const uint32_t _pwm = static_cast<uint32_t>(m_clocks.value("pwm").toInt());
+    const uint32_t _emmc = static_cast<uint32_t>(m_clocks.value("emmc").toInt());
+    const uint32_t _pix = static_cast<uint32_t>(m_clocks.value("Pixel valve").toInt());
+    const uint32_t _ave = static_cast<uint32_t>(m_clocks.value("Analogue video encoder").toInt());
+    const uint32_t _hdmi = static_cast<uint32_t>(m_clocks.value("HDMI").toInt());
+    const uint32_t _dpi = static_cast<uint32_t>(m_clocks.value("Display Peripheral Interface").toInt());
 
     if(mainteance.clocks.ARM_cores != _arm)
     {
@@ -327,7 +327,7 @@ void ClientApi::compareClocksData(const QJsonObject* clock_json)
 
 void ClientApi::compareDisplaysData(const QJsonObject* display_json)
 {
-    QJsonObject m_displays = display_json->value("displays").toObject();
+    const QJsonObject m_displays = display_json->value("displays").toObject();
     //    qDebug()<<m_displays;
     if(m_displays.isEmpty())
     {
@@ -335,11 +335,11 @@ void ClientApi::compareDisplaysData(const QJsonObject* display_json)
         return;
     }
 
-    bool _composite = strToBool(m_displays.value("Composite").toString());
-    bool  _main_lcd = strToBool(m_displays.value("MainLCD").toString());
-    bool _secondary_lcd = strToBool(m_displays.value("SecondaryLCD").toString());
-    bool _hdmi0 = strToBool(m_displays.value("HDMI0").toString());
-    bool _hdmi1 = strToBool(m_displays.value("HDMI1").toString());
+    const bool _composite = strToBool(m_displays.value("Composite").toString());
+    const bool  _main_lcd = strToBool(m_displays.value("MainLCD").toString());
+    const bool _secondary_lcd = strToBool(m_displays.value("SecondaryLCD").toString());
+    const bool _hdmi0 = strToBool(m_displays.value("HDMI0").toString());
+    const bool _hdmi1 = strToBool(m_displays.value("HDMI1").toString());
 
     if(mainteance.displays.Composite != _composite )
     {
@@ -555,7 +555,7 @@ void ClientApi::managerFinished(QNetworkReply *reply)
         return;
     }
     QJsonParseError parse_error;
-    QString answer = reply->readAll();
+    const QString answer = reply->readAll();
     const QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8(),&parse_error);
     if(parse_error.error == QJsonParseError::NoError)
     {
