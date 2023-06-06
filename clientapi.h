@@ -28,7 +28,7 @@ public:
     //! \param Liczba 2.
     //! \param Epsilon - dokladnosc porownania.
     template <typename T>
-    bool compareValues(T a, T b, T epsilon)
+    bool compareValues(const T a,const  T b, T epsilon)
     {
         return(fabs(a - b) <= epsilon);
     }
