@@ -158,7 +158,7 @@ public:
     bool startTimer(uint time);
     bool stopTimer();
 
-    void httpRequest(QString);
+    void httpRequest(const QString);
 
 private:
     ClientApiEventListeners_t listenersVector;
@@ -173,19 +173,19 @@ private:
     void parseReceiveData(QJsonObject*);
     std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
-    bool strToBool(QString);
+    bool strToBool(const QString);
     void configureNetworkManager();
     void configureTimers();
 
     QTimer *timer = nullptr;
 
-    void compareCpuData(QJsonObject*);
-    void compareClocksData(QJsonObject*);
-    void compareDisplaysData(QJsonObject*);
-    void compareLoadAvgData(QJsonObject*);
-    void compareDiskUsageData(QJsonObject*);
-    void compareVirtualMemoryData(QJsonObject*);
-    void compareServerTimeData(QJsonObject*);
+    void compareCpuData(const QJsonObject*);
+    void compareClocksData(const QJsonObject*);
+    void compareDisplaysData(const QJsonObject*);
+    void compareLoadAvgData(const QJsonObject*);
+    void compareDiskUsageData(const QJsonObject*);
+    void compareVirtualMemoryData(const QJsonObject*);
+    void compareServerTimeData(const QJsonObject*);
 
     Mainteance_t mainteance;
     BME280_t bme280;

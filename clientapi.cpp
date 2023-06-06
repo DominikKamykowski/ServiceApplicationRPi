@@ -215,7 +215,7 @@ void ClientApi::compareBME280Data(QJsonObject * m_json_object)
     }
 }
 
-void ClientApi::compareCpuData(QJsonObject* cpu_json)
+void ClientApi::compareCpuData(const QJsonObject* cpu_json)
 {
     QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
     if(m_cpu_usage.isEmpty())
@@ -245,7 +245,7 @@ void ClientApi::compareCpuData(QJsonObject* cpu_json)
     }
 }
 
-void ClientApi::compareClocksData(QJsonObject* clock_json)
+void ClientApi::compareClocksData(const QJsonObject* clock_json)
 {
     QJsonObject m_clocks = clock_json->value("clocks").toObject();
     //    qDebug()<<m_clocks;
@@ -325,7 +325,7 @@ void ClientApi::compareClocksData(QJsonObject* clock_json)
     }
 }
 
-void ClientApi::compareDisplaysData(QJsonObject* display_json)
+void ClientApi::compareDisplaysData(const QJsonObject* display_json)
 {
     QJsonObject m_displays = display_json->value("displays").toObject();
     //    qDebug()<<m_displays;
@@ -369,24 +369,24 @@ void ClientApi::compareDisplaysData(QJsonObject* display_json)
 
 }
 
-void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
+void ClientApi::compareLoadAvgData(const QJsonObject* load_avg_json)
 {
-    QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
+    const QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
     if(m_load_avg_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
         return;
     }
-    QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
+    const QJsonArray m_load_avg_array = m_load_avg_obj.value("Load average").toArray();
     if(m_load_avg_array.size()!= 3)
     {
         //TODO
         return;
     }
 
-    float _l1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
-    float _l2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
-    float _l3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
+    const float _l1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
+    const float _l2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
+    const float _l3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
 
     if(!compareValues(mainteance.load_average.L1,_l1,0.01f))
     {
@@ -405,25 +405,25 @@ void ClientApi::compareLoadAvgData(QJsonObject* load_avg_json)
     }
 }
 
-void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
+void ClientApi::compareDiskUsageData(const QJsonObject* disk_usage_json)
 {
-    QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
+    const QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
     if(m_disk_usage_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
         return;
     }
-    QJsonArray m_disk_usage_array = m_disk_usage_obj.value("Disk usage").toArray();
+    const QJsonArray m_disk_usage_array = m_disk_usage_obj.value("Disk usage").toArray();
     if(m_disk_usage_array.size()!= 4)
     {
         //TODO
         return;
     }
 
-    uint64_t _total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
-    uint64_t _used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
-    uint64_t _free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
-    float _percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
+    const uint64_t _total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
+    const uint64_t _used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
+    const uint64_t _free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
+    const float _percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
 
     if(mainteance.disk_usage.total != _total)
     {
@@ -447,32 +447,32 @@ void ClientApi::compareDiskUsageData(QJsonObject* disk_usage_json)
     }
 }
 
-void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
+void ClientApi::compareVirtualMemoryData(const QJsonObject* virtual_memory_json)
 {
-    QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
+    const QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
     if(m_virtual_memory_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
         return;
     }
-    QJsonArray m_virtual_memory_array = m_virtual_memory_obj.value("Virtual memory").toArray();
+    const QJsonArray m_virtual_memory_array = m_virtual_memory_obj.value("Virtual memory").toArray();
     if(m_virtual_memory_array.size()!= 11)
     {
         //TODO
         return;
     }
 
-    uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
-    uint64_t _available = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble());
-    uint64_t _used = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble());
-    uint64_t _free = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble());
-    uint64_t _active = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble());
-    uint64_t _inactive = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble());
-    uint64_t _buffers = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble());
-    uint64_t _cached = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble());
-    uint64_t _shared = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble());
-    uint64_t _slab = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble());
-    uint64_t _wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
+    const uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
+    const uint64_t _available = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble());
+    const uint64_t _used = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble());
+    const uint64_t _free = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble());
+    const uint64_t _active = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble());
+    const uint64_t _inactive = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble());
+    const uint64_t _buffers = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble());
+    const uint64_t _cached = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble());
+    const uint64_t _shared = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble());
+    const uint64_t _slab = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble());
+    const uint64_t _wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
 
 
     if(mainteance.virtual_memory.total != _total)
@@ -532,9 +532,9 @@ void ClientApi::compareVirtualMemoryData(QJsonObject* virtual_memory_json)
     }
 }
 
-void ClientApi::compareServerTimeData(QJsonObject *server_time_json)
+void ClientApi::compareServerTimeData(const QJsonObject *server_time_json)
 {
-    QJsonObject m_server_time_obj = server_time_json->value("Time").toObject();
+    const QJsonObject m_server_time_obj = server_time_json->value("Time").toObject();
     if(m_server_time_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -542,7 +542,7 @@ void ClientApi::compareServerTimeData(QJsonObject *server_time_json)
     }
     else
     {
-        QString server_time = m_server_time_obj.value("Server time").toString();
+        const QString server_time = m_server_time_obj.value("Server time").toString();
         _emit(ClientApi_onServerTimeChanged(server_time.toStdString()));
     }
 }
@@ -556,7 +556,7 @@ void ClientApi::managerFinished(QNetworkReply *reply)
     }
     QJsonParseError parse_error;
     QString answer = reply->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8(),&parse_error);
+    const QJsonDocument doc = QJsonDocument::fromJson(answer.toUtf8(),&parse_error);
     if(parse_error.error == QJsonParseError::NoError)
     {
         if(!doc.isEmpty())
@@ -610,9 +610,9 @@ bool ClientApi::stopTimer()
     else return false;
 }
 
-void ClientApi::httpRequest(QString url_string)
+void ClientApi::httpRequest(const QString url_string)
 {
-    QString api_address = QString::fromStdString(httpApiAddress())+url_string;
+    const QString api_address = QString::fromStdString(httpApiAddress())+url_string;
     request.setUrl(api_address);
     manager->get(request);
 }
