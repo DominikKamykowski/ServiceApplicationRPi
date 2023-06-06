@@ -122,7 +122,7 @@ void ClientApi::parseReceiveData(const QJsonObject *m_json_object)
         _emit(ClientApi_onErrorMessageOccured(error_json.toStdString()));
     }
 
-    if(m_json_object->keys().contains("Full"))
+    else if(m_json_object->keys().contains("Full"))
     {
         const QJsonObject mainteance_json = m_json_object->value("Full").toObject();
         if(mainteance_json.isEmpty())

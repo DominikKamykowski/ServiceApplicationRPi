@@ -29,7 +29,6 @@ void MainWindow::uiSettings()
 {
     this->ui->pbConnect->setCheckable(true);
     this->ui->tabWidgeMain->setEnabled(false);
-
 }
 
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
@@ -194,6 +193,11 @@ void MainWindow::ClientApi_onDiskUsagePercentChanged(float disk_percentage)
 void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
 {
     this->ui->lbServerTime->setText(QString::fromStdString(m_time));
+}
+
+void MainWindow::ClientApi_onErrorMessageOccured(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString(message),1000);
 }
 
 void MainWindow::on_cbAutoRefresh_clicked()
