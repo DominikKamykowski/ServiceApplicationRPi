@@ -240,6 +240,23 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pbGetAllBME280_clicked()
 {
+    api->getBme280();
+}
 
+
+void MainWindow::on_cbAutoGetBME280_clicked()
+{
+    if(this->ui->cbAutoGetBME280->isChecked())
+    {
+        this->ui->pbGetAllBME280->setEnabled(false);
+        this->ui->dsbAutoBmeDuration->setEnabled(false);
+        api->startBme280Timer(this->ui->dsbAutoBmeDuration->value()*1000);
+    }
+    else
+    {
+        this->ui->pbGetAllBME280->setEnabled(true);
+        this->ui->dsbAutoBmeDuration->setEnabled(true);
+        api->stopBme280Timer();
+    }
 }
 
