@@ -36,14 +36,17 @@ void ClientApi::configureNetworkManager()
 
 void ClientApi::configureTimers()
 {
-    timer = new QTimer(this);
-    QObject::connect(timer, &QTimer::timeout, this, &ClientApi::timerTimeout);
+    mainteance_timer = new QTimer(this);
+    QObject::connect(mainteance_timer, &QTimer::timeout, this, &ClientApi::mainteanceTimerTimeout);
+
+    bme280_timer = new QTimer(this);
+    QObject::connect(bme280_timer, &QTimer::timeout, this, &ClientApi::bme280TimerTimeout);
 }
 
 
 ClientApi::~ClientApi()
 {
-    delete timer;
+    delete mainteance_timer;
 }
 
 void ClientApi::getCpuTemperature()
@@ -103,6 +106,11 @@ void ClientApi::removeEventListener(ClientApiEventListener *listener)
 
     if (it == listenersVector.end()) return;
     listenersVector.erase(it);
+}
+
+void ClientApi::bme280TimerTimeout()
+{
+    getBme280();
 }
 
 
@@ -585,26 +593,51 @@ void ClientApi::getMainteance()
     httpRequest(__full_mainteance);
 }
 
-void ClientApi::timerTimeout()
+void ClientApi::getBme280()
+{
+    httpRequest(__full_bme280);
+}
+
+void ClientApi::mainteanceTimerTimeout()
 {
     getMainteance();
 }
 
-bool ClientApi::startTimer(uint time)
+bool ClientApi::startMainteanceTimer(uint time)
 {
     if(time>=200)
     {
-        timer->start(time);
+        mainteance_timer->start(time);
         return true;
     }
     else return false;
 }
 
-bool ClientApi::stopTimer()
+bool ClientApi::stopMainteanceTimer()
 {
-    if(timer->isActive())
+    if(mainteance_timer->isActive())
     {
-        timer->stop();
+        mainteance_timer->stop();
+        return true;
+    }
+    else return false;
+}
+
+bool ClientApi::startBme280Timer(uint time)
+{
+    if(time>=200)
+    {
+        bme280_timer->start(time);
+        return true;
+    }
+    else return false;
+}
+
+bool ClientApi::stopBme280Timer()
+{
+    if(bme280_timer->isActive())
+    {
+        bme280_timer->stop();
         return true;
     }
     else return false;

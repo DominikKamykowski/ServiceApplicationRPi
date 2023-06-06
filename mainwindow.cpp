@@ -203,13 +203,13 @@ void MainWindow::on_cbAutoRefresh_clicked()
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
         qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
-        api->startTimer(this->ui->dsbRefreshPeriod->value()*1000);
+        api->startMainteanceTimer(this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
     {
         this->ui->pbDataRefresh->setEnabled(true);
         this->ui->dsbRefreshPeriod->setEnabled(true);
-        api->stopTimer();
+        api->stopMainteanceTimer();
     }
 }
 

@@ -150,13 +150,18 @@ public:
     void getDiskUsage();
     void getUsers();
     void getMainteance();
+    void getBme280();
 
     void addEventListener(ClientApiEventListener * listener);
     void removeEventListener(ClientApiEventListener * listener);
 
-    void timerTimeout();
-    bool startTimer(uint time);
-    bool stopTimer();
+    void bme280TimerTimeout();
+    void mainteanceTimerTimeout();
+    bool startMainteanceTimer(uint time);
+    bool stopMainteanceTimer();
+    bool startBme280Timer(uint time);
+    bool stopBme280Timer();
+
 
     void httpRequest(const QString);
 
@@ -177,7 +182,8 @@ private:
     void configureNetworkManager();
     void configureTimers();
 
-    QTimer *timer = nullptr;
+    QTimer *mainteance_timer = nullptr;
+    QTimer *bme280_timer = nullptr;
 
     void compareCpuData(const QJsonObject*);
     void compareClocksData(const QJsonObject*);
@@ -210,7 +216,7 @@ public slots:
 #define __users             "/mainteance/users"
 #define __datetime          "/mainteance/detetime"
 #define __full_mainteance   "/mainteance/mainteance"
-
+#define __full_bme280       "/sensors/bme280"
 
 
 ;
