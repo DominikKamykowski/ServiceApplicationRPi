@@ -434,10 +434,10 @@ void ClientApi::compareDiskUsageData(const QJsonObject* disk_usage_json)
         return;
     }
 
-    const uint64_t _total = static_cast<uint64_t>(m_disk_usage_array.at(0).toDouble());
-    const uint64_t _used = static_cast<uint64_t>(m_disk_usage_array.at(1).toDouble());
-    const uint64_t _free = static_cast<uint64_t>(m_disk_usage_array.at(2).toDouble());
-    const float _percent = static_cast<float>(m_disk_usage_array.at(3).toDouble());
+    const uint64_t _total = static_cast<uint64_t>(m_disk_usage_array.at(DISK_TOTAL).toDouble());
+    const uint64_t _used = static_cast<uint64_t>(m_disk_usage_array.at(DISK_USED).toDouble());
+    const uint64_t _free = static_cast<uint64_t>(m_disk_usage_array.at(DISK_FREE).toDouble());
+    const float _percent = static_cast<float>(m_disk_usage_array.at(DISK_PERCENT).toDouble());
 
     if(mainteance.disk_usage.total != _total)
     {
@@ -476,17 +476,17 @@ void ClientApi::compareVirtualMemoryData(const QJsonObject* virtual_memory_json)
         return;
     }
 
-    const uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::TOTAL)).toDouble());
-    const uint64_t _available = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::AVAILABLE)).toDouble());
-    const uint64_t _used = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::USED)).toDouble());
-    const uint64_t _free = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::FREE)).toDouble());
-    const uint64_t _active = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::ACTIVE)).toDouble());
-    const uint64_t _inactive = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::INACTIVE)).toDouble());
-    const uint64_t _buffers = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::BUFFERS)).toDouble());
-    const uint64_t _cached = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::CACHED)).toDouble());
-    const uint64_t _shared = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SHARED)).toDouble());
-    const uint64_t _slab = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::SLAB)).toDouble());
-    const uint64_t _wired = static_cast<uint64_t>(m_virtual_memory_array.at(static_cast<int>(VIRTUAL_MEMORY::WIRED)).toDouble());
+    const uint64_t _total = static_cast<uint64_t>(m_virtual_memory_array.at(VM_TOTAL).toDouble());
+    const uint64_t _available = static_cast<uint64_t>(m_virtual_memory_array.at(VM_AVAILABLE).toDouble());
+    const uint64_t _used = static_cast<uint64_t>(m_virtual_memory_array.at(VM_USED).toDouble());
+    const uint64_t _free = static_cast<uint64_t>(m_virtual_memory_array.at(VM_FREE).toDouble());
+    const uint64_t _active = static_cast<uint64_t>(m_virtual_memory_array.at(VM_ACTIVE).toDouble());
+    const uint64_t _inactive = static_cast<uint64_t>(m_virtual_memory_array.at(VM_INACTIVE).toDouble());
+    const uint64_t _buffers = static_cast<uint64_t>(m_virtual_memory_array.at(VM_BUFFERS).toDouble());
+    const uint64_t _cached = static_cast<uint64_t>(m_virtual_memory_array.at(VM_CACHED).toDouble());
+    const uint64_t _shared = static_cast<uint64_t>(m_virtual_memory_array.at(VM_SHARED).toDouble());
+    const uint64_t _slab = static_cast<uint64_t>(m_virtual_memory_array.at(VM_SLAB).toDouble());
+    const uint64_t _wired = static_cast<uint64_t>(m_virtual_memory_array.at(VM_WIRED).toDouble());
 
 
     if(mainteance.virtual_memory.total != _total)

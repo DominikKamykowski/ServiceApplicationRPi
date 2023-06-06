@@ -66,18 +66,25 @@ public:
     };
 
 
-    enum class VIRTUAL_MEMORY{
-        TOTAL = 0,
-        AVAILABLE = 1,
-        USED = 2,
-        FREE = 3,
-        ACTIVE = 4,
-        INACTIVE = 5,
-        BUFFERS = 6,
-        CACHED = 7,
-        SHARED = 8,
-        SLAB = 9,
-        WIRED = 10
+    enum VIRTUAL_MEMORY{
+        VM_TOTAL = 0,
+        VM_AVAILABLE = 1,
+        VM_USED = 2,
+        VM_FREE = 3,
+        VM_ACTIVE = 4,
+        VM_INACTIVE = 5,
+        VM_BUFFERS = 6,
+        VM_CACHED = 7,
+        VM_SHARED = 8,
+        VM_SLAB = 9,
+        VM_WIRED = 10
+    };
+
+    enum DISK_USAGE{
+        DISK_TOTAL = 0,
+        DISK_USED = 1,
+        DISK_FREE = 2,
+        DISK_PERCENT = 3
     };
 
     struct VirtualMemory_t
