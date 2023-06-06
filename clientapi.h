@@ -277,6 +277,10 @@ public:
     virtual void ClientApi_onBME280HumidityChanged(float){};
     virtual void ClientApi_onBME280PressureChanged(float){};
 
+    virtual void ClientApi_onLongtitudeChanged(double){};
+    virtual void ClientApi_onLatitudeChanged(double){};
+    virtual void ClientApi_onAltitudeChanged(double){};
+
 };
 
 
