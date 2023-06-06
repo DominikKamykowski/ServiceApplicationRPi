@@ -281,6 +281,8 @@ public:
     virtual void ClientApi_onLatitudeChanged(double){};
     virtual void ClientApi_onAltitudeChanged(double){};
 
+    virtual void ClientApi_onErrorMessageOccured(std::string);
+
 };
 
 

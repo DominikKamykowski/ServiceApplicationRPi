@@ -116,6 +116,12 @@ void ClientApi::bme280TimerTimeout()
 
 void ClientApi::parseReceiveData(const QJsonObject *m_json_object)
 {
+    if(m_json_object->keys().contains("Error message"))
+    {
+        const QString error_json = m_json_object->value("Error message").toString();
+        _emit(ClientApi_onErrorMessageOccured(error_json.toStdString()));
+    }
+
     if(m_json_object->keys().contains("Full"))
     {
         const QJsonObject mainteance_json = m_json_object->value("Full").toObject();
