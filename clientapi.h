@@ -87,6 +87,12 @@ public:
         DISK_PERCENT = 3
     };
 
+    enum LOAD_AVERAGE{
+        LA_L1 = 0,
+        LA_L2 = 1,
+        LA_L3 = 2,
+    };
+
     struct VirtualMemory_t
     {
 

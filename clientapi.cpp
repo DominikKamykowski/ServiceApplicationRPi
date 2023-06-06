@@ -398,9 +398,9 @@ void ClientApi::compareLoadAvgData(const QJsonObject* load_avg_json)
         return;
     }
 
-    const float _l1 = static_cast<float>(m_load_avg_array.at(0).toDouble());
-    const float _l2 = static_cast<float>(m_load_avg_array.at(1).toDouble());
-    const float _l3 = static_cast<float>(m_load_avg_array.at(2).toDouble());
+    const float _l1 = static_cast<float>(m_load_avg_array.at(LA_L1).toDouble());
+    const float _l2 = static_cast<float>(m_load_avg_array.at(LA_L2).toDouble());
+    const float _l3 = static_cast<float>(m_load_avg_array.at(LA_L3).toDouble());
 
     if(!compareValues(mainteance.load_average.L1,_l1,0.01f))
     {
