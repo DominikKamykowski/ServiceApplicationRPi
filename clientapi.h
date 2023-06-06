@@ -151,6 +151,13 @@ public:
         float pressure = 0;
     };
 
+    struct GPS_t
+    {
+        double longtitude = 0;
+        double latitude = 0;
+        double altitude = 0;
+    };
+
     // Getters
 
     void getCpuTemperature();
@@ -206,10 +213,12 @@ private:
     void compareVirtualMemoryData(const QJsonObject*);
     void compareServerTimeData(const QJsonObject*);
 
-    Mainteance_t mainteance;
-    BME280_t bme280;
+    Mainteance_t mainteance {};
+    BME280_t bme280 {};
+    GPS_t gps {};
 
     void compareBME280Data(const QJsonObject*);
+    void compareGPSData(const QJsonObject*);
 
 public slots:
     void managerFinished(QNetworkReply *reply);

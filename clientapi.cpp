@@ -147,6 +147,14 @@ void ClientApi::parseReceiveData(const QJsonObject *m_json_object)
 
         else compareBME280Data(&bme280_json);
     }
+    else if(m_json_object->keys().contains("GPS"))
+    {
+        const QJsonObject gps_json = m_json_object->value("GPS").toObject();
+        if(gps_json.isEmpty())
+            _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
+
+        else compareGPSData(&gps_json);
+    }
     else
     {
         if (m_json_object->keys().contains("cpu temperature"))
@@ -226,6 +234,29 @@ void ClientApi::compareBME280Data(const QJsonObject * m_json_object)
     {
         bme280.pressure = _pressure;
         _emit(ClientApi_onBME280PressureChanged(bme280.pressure));
+    }
+}
+
+void ClientApi::compareGPSData(const QJsonObject * gps_json)
+{
+    const double _longtitude = gps_json->value("longtitude").toDouble();
+    const double _latitude = gps_json->value("latitude").toDouble();
+    const double _altitude = gps_json->value("altitude").toDouble();
+
+    if(!compareValues(gps.longtitude, _longtitude, double(0.0000001)))
+    {
+        gps.longtitude = _longtitude;
+        _emit(ClientApi_onLongtitudeChanged(gps.longtitude));
+    }
+    if(!compareValues(gps.latitude, _latitude, double(0.0000001)))
+    {
+        gps.latitude = _latitude;
+        _emit(ClientApi_onLatitudeChanged(gps.latitude));
+    }
+    if(!compareValues(gps.altitude, _altitude, double(0.0000001)))
+    {
+        gps.altitude = _altitude;
+        _emit(ClientApi_onAltitudeChanged(gps.altitude));
     }
 }
 

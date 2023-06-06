@@ -79,5 +79,7 @@ public:
     void ClientApi_onServerTimeChanged(std::string);
 
     void ClientApi_onErrorMessageOccured(std::string);
+    void ClientApi_onJsonParseError(std::string);
+    void ClientApi_onJsonObjectNull(std::string);
 };
 #endif // MAINWINDOW_H

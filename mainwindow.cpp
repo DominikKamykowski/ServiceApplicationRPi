@@ -197,7 +197,17 @@ void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
 
 void MainWindow::ClientApi_onErrorMessageOccured(std::string message)
 {
-    this->ui->statusbar->showMessage(QString::fromStdString(message),1000);
+    this->ui->statusbar->showMessage(QString::fromStdString("Info: " + message),500);
+}
+
+void MainWindow::ClientApi_onJsonParseError(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString("Json parse data error: " + message),500);
+}
+
+void MainWindow::ClientApi_onJsonObjectNull(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString("Json object null in: " + message),500);
 }
 
 void MainWindow::on_cbAutoRefresh_clicked()
