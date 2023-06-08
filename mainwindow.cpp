@@ -29,7 +29,6 @@ void MainWindow::uiSettings()
 {
     this->ui->pbConnect->setCheckable(true);
     this->ui->tabWidgeMain->setEnabled(false);
-
 }
 
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
@@ -196,6 +195,21 @@ void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
     this->ui->lbServerTime->setText(QString::fromStdString(m_time));
 }
 
+void MainWindow::ClientApi_onErrorMessageOccured(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString("Info: " + message),500);
+}
+
+void MainWindow::ClientApi_onJsonParseError(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString("Json parse data error: " + message),500);
+}
+
+void MainWindow::ClientApi_onJsonObjectNull(std::string message)
+{
+    this->ui->statusbar->showMessage(QString::fromStdString("Json object null in: " + message),500);
+}
+
 void MainWindow::on_cbAutoRefresh_clicked()
 {
     if(this->ui->cbAutoRefresh->isChecked())
@@ -203,13 +217,13 @@ void MainWindow::on_cbAutoRefresh_clicked()
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
         qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
-        api->startTimer(this->ui->dsbRefreshPeriod->value()*1000);
+        api->startMainteanceTimer(this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
     {
         this->ui->pbDataRefresh->setEnabled(true);
         this->ui->dsbRefreshPeriod->setEnabled(true);
-        api->stopTimer();
+        api->stopMainteanceTimer();
     }
 }
 
@@ -228,6 +242,35 @@ void MainWindow::on_pbConnect_clicked()
         this->ui->pbDataRefresh->setEnabled(true);
         api->removeEventListener(this);
         delete api;
+    }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_pbGetAllBME280_clicked()
+{
+    api->getBme280();
+}
+
+
+void MainWindow::on_cbAutoGetBME280_clicked()
+{
+    if(this->ui->cbAutoGetBME280->isChecked())
+    {
+        this->ui->pbGetAllBME280->setEnabled(false);
+        this->ui->dsbAutoBmeDuration->setEnabled(false);
+        api->startBme280Timer(this->ui->dsbAutoBmeDuration->value()*1000);
+    }
+    else
+    {
+        this->ui->pbGetAllBME280->setEnabled(true);
+        this->ui->dsbAutoBmeDuration->setEnabled(true);
+        api->stopBme280Timer();
     }
 }
 

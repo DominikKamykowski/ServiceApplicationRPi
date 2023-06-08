@@ -20,8 +20,10 @@ public:
 private slots:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
-
     void on_pbConnect_clicked();
+    void on_pushButton_clicked();
+    void on_pbGetAllBME280_clicked();
+    void on_cbAutoGetBME280_clicked();
 
 private:
     ClientApi *api = nullptr;
@@ -75,5 +77,9 @@ public:
     void ClientApi_onDiskUsagePercentChanged(float disk_percentage);
 
     void ClientApi_onServerTimeChanged(std::string);
+
+    void ClientApi_onErrorMessageOccured(std::string);
+    void ClientApi_onJsonParseError(std::string);
+    void ClientApi_onJsonObjectNull(std::string);
 };
 #endif // MAINWINDOW_H
