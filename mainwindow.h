@@ -81,5 +81,9 @@ public:
     void ClientApi_onErrorMessageOccured(std::string);
     void ClientApi_onJsonParseError(std::string);
     void ClientApi_onJsonObjectNull(std::string);
+\
+    void ClientApi_onBME280TemperatureChanged(float);
+    void ClientApi_onBME280HumidityChanged(float);
+    void ClientApi_onBME280PressureChanged(float);
 };
 #endif // MAINWINDOW_H

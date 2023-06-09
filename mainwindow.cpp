@@ -210,6 +210,21 @@ void MainWindow::ClientApi_onJsonObjectNull(std::string message)
     this->ui->statusbar->showMessage(QString::fromStdString("Json object null in: " + message),500);
 }
 
+void MainWindow::ClientApi_onBME280TemperatureChanged(float temperature)
+{
+    this->ui->dsbExternalTemp->setValue(temperature);
+}
+
+void MainWindow::ClientApi_onBME280HumidityChanged(float humidity)
+{
+    this->ui->dsbHumidity->setValue(humidity);
+}
+
+void MainWindow::ClientApi_onBME280PressureChanged(float pressure)
+{
+    this->ui->dsbPressure->setValue(pressure);
+}
+
 void MainWindow::on_cbAutoRefresh_clicked()
 {
     if(this->ui->cbAutoRefresh->isChecked())
