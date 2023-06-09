@@ -24,11 +24,6 @@ private slots:
     void on_pbGetAllBME280_clicked();
     void on_cbAutoGetBME280_clicked();
     void on_pbStopAllTimers_clicked();
-
-    void on_pbSave_clicked();
-
-    void on_cbDebugConsoleEnable_clicked();
-
     void on_pbClearDebugConsole_clicked();
 
 private:
@@ -36,6 +31,7 @@ private:
 
     Ui::MainWindow *ui;
     void uiSettings();
+
 
     // ClientApiEventListener interface
 public:

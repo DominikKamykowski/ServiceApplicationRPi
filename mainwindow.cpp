@@ -77,6 +77,7 @@ void MainWindow::ClientApi_onDisplaysMainLcdChanged(bool main_lcd)
 {
     if(main_lcd)
     {
+
         this->ui->lbMainLCDStatus->setText("Active");
     }
     else
@@ -182,11 +183,11 @@ void MainWindow::ClientApi_onDiskUsageUsedChanged(uint64_t disk_used)
 { this->ui->dsbUsedDiskSpace->setValue(disk_used/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onDiskUsageFreeChanged(uint64_t disk_free)
-{ this->ui->dsbFreeDiskSpace->setValue(disk_free/(pow(1024,3))); }
+{
+    this->ui->dsbFreeDiskSpace->setValue(disk_free/(pow(1024,3))); }
 
 void MainWindow::ClientApi_onDiskUsagePercentChanged(float disk_percentage)
 {
-    qDebug()<<disk_percentage;
     this->ui->pbUsedDiskSpace->setValue(static_cast<int>(disk_percentage));
 }
 
@@ -227,6 +228,7 @@ void MainWindow::ClientApi_onBME280PressureChanged(float pressure)
 
 void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
 {
+
     if(this->ui->cbDebugConsoleEnable->checkState())
     {
         this->ui->teDebug->append("------------- New data. Timestamp: "+QDateTime::currentDateTimeUtc().toString());
@@ -309,18 +311,6 @@ void MainWindow::on_pbStopAllTimers_clicked()
     }
 }
 
-
-void MainWindow::on_pbSave_clicked()
-{
-//    QFile file(QDateTime::currentDateTimeUtc().toString()+".log");
-//    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
-//    {
-//        QTextStream stream(&file);
-//        stream << ui->teDebug->document();
-//        file.close();
-//    }
-//    qDebug()<<this->ui->teDebug->document();
-}
 
 void MainWindow::on_pbClearDebugConsole_clicked()
 {
