@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "clientapi.h"
 #include <iostream>
+#include <QTextDocumentWriter>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,9 +22,15 @@ private slots:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
     void on_pbConnect_clicked();
-    void on_pushButton_clicked();
     void on_pbGetAllBME280_clicked();
     void on_cbAutoGetBME280_clicked();
+    void on_pbStopAllTimers_clicked();
+
+    void on_pbSave_clicked();
+
+    void on_cbDebugConsoleEnable_clicked();
+
+    void on_pbClearDebugConsole_clicked();
 
 private:
     ClientApi *api = nullptr;
@@ -85,5 +92,7 @@ public:
     void ClientApi_onBME280TemperatureChanged(float);
     void ClientApi_onBME280HumidityChanged(float);
     void ClientApi_onBME280PressureChanged(float);
+
+    void ClientApi_onRawJSON(QJsonDocument);
 };
 #endif // MAINWINDOW_H

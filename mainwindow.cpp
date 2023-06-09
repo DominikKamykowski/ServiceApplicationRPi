@@ -225,6 +225,16 @@ void MainWindow::ClientApi_onBME280PressureChanged(float pressure)
     this->ui->dsbPressure->setValue(pressure);
 }
 
+void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
+{
+    if(this->ui->cbDebugConsoleEnable->checkState())
+    {
+        this->ui->teDebug->append("------------- New data. Timestamp: "+QDateTime::currentDateTimeUtc().toString());
+        this->ui->teDebug->append(doc.toJson());
+    }
+
+}
+
 void MainWindow::on_cbAutoRefresh_clicked()
 {
     if(this->ui->cbAutoRefresh->isChecked())
@@ -260,18 +270,10 @@ void MainWindow::on_pbConnect_clicked()
     }
 }
 
-
-void MainWindow::on_pushButton_clicked()
-{
-
-}
-
-
 void MainWindow::on_pbGetAllBME280_clicked()
 {
     api->getBme280();
 }
-
 
 void MainWindow::on_cbAutoGetBME280_clicked()
 {
@@ -287,5 +289,41 @@ void MainWindow::on_cbAutoGetBME280_clicked()
         this->ui->dsbAutoBmeDuration->setEnabled(true);
         api->stopBme280Timer();
     }
+}
+
+
+void MainWindow::on_pbStopAllTimers_clicked()
+{
+    this->ui->statusbar->showMessage("All timers stopped",500);
+    if(this->ui->cbAutoGetBME280->isChecked())
+    {
+        this->ui->cbAutoGetBME280->click();
+    }
+    if(this->ui->cbAutoRefresh->isChecked())
+    {
+        this->ui->cbAutoRefresh->click();
+    }
+    if(this->ui->cbGpsAuto->isChecked())
+    {
+        this->ui->cbGpsAuto->click();
+    }
+}
+
+
+void MainWindow::on_pbSave_clicked()
+{
+    qDebug()<<this->ui->teDebug->document();
+}
+
+
+void MainWindow::on_cbDebugConsoleEnable_clicked()
+{
+
+}
+
+
+void MainWindow::on_pbClearDebugConsole_clicked()
+{
+    this->ui->teDebug->clear();
 }
 

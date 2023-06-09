@@ -321,6 +321,9 @@ public:
 
     virtual void ClientApi_onErrorMessageOccured(std::string){};
 
+    virtual void ClientApi_onRawJSON(QJsonDocument){};
+
+
 };
 
 

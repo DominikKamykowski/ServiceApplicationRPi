@@ -616,6 +616,7 @@ void ClientApi::managerFinished(QNetworkReply *reply)
             }
             else
             {
+                _emit(ClientApi_onRawJSON(doc));
                 parseReceiveData(&obj);
             }
         }
