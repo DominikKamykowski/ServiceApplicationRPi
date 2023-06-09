@@ -312,15 +312,15 @@ void MainWindow::on_pbStopAllTimers_clicked()
 
 void MainWindow::on_pbSave_clicked()
 {
-    qDebug()<<this->ui->teDebug->document();
+//    QFile file(QDateTime::currentDateTimeUtc().toString()+".log");
+//    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+//    {
+//        QTextStream stream(&file);
+//        stream << ui->teDebug->document();
+//        file.close();
+//    }
+//    qDebug()<<this->ui->teDebug->document();
 }
-
-
-void MainWindow::on_cbDebugConsoleEnable_clicked()
-{
-
-}
-
 
 void MainWindow::on_pbClearDebugConsole_clicked()
 {

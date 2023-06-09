@@ -4,8 +4,7 @@
 #include <QMainWindow>
 #include "clientapi.h"
 #include <iostream>
-#include <QTextDocumentWriter>
-
+#include <QFile>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
