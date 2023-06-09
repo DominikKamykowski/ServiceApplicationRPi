@@ -185,12 +185,27 @@
              <property name="readOnly">
               <bool>true</bool>
              </property>
+             <property name="suffix">
+              <string> hPa</string>
+             </property>
+             <property name="decimals">
+              <number>4</number>
+             </property>
+             <property name="maximum">
+              <double>5000.000000000000000</double>
+             </property>
             </widget>
            </item>
            <item row="2" column="1">
             <widget class="QDoubleSpinBox" name="dsbHumidity">
              <property name="readOnly">
               <bool>true</bool>
+             </property>
+             <property name="suffix">
+              <string> %</string>
+             </property>
+             <property name="decimals">
+              <number>4</number>
              </property>
             </widget>
            </item>
@@ -205,6 +220,12 @@
             <widget class="QDoubleSpinBox" name="dsbExternalTemp">
              <property name="readOnly">
               <bool>true</bool>
+             </property>
+             <property name="suffix">
+              <string> °C</string>
+             </property>
+             <property name="decimals">
+              <number>4</number>
              </property>
             </widget>
            </item>
@@ -227,8 +248,11 @@
              <property name="suffix">
               <string> [s]</string>
              </property>
+             <property name="decimals">
+              <number>1</number>
+             </property>
              <property name="minimum">
-              <double>0.200000000000000</double>
+              <double>1.000000000000000</double>
              </property>
              <property name="singleStep">
               <double>0.500000000000000</double>
@@ -1249,7 +1273,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
