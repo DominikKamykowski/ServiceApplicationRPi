@@ -19,10 +19,13 @@ class ClientApi : public QObject
 
     typedef std::vector<ClientApiEventListener *> ClientApiEventListeners_t;
 public:
+    // --------------------------------------- Constructors ------------------------------------------
     ClientApi(std::string api_address, int port);
     ClientApi(std::string api_address);
     ~ClientApi();
 
+
+    // --------------------------------------- Templates ------------------------------------------
     //! \brief Porownanie dwoch liczb (double, float).
     //! \param Liczba 1.
     //! \param Liczba 2.
@@ -33,7 +36,36 @@ public:
         return(fabs(a - b) <= epsilon);
     }
 
+    // --------------------------------------- Enums ------------------------------------------
+    enum VIRTUAL_MEMORY{
+        VM_TOTAL = 0,
+        VM_AVAILABLE = 1,
+        VM_USED = 2,
+        VM_FREE = 3,
+        VM_ACTIVE = 4,
+        VM_INACTIVE = 5,
+        VM_BUFFERS = 6,
+        VM_CACHED = 7,
+        VM_SHARED = 8,
+        VM_SLAB = 9,
+        VM_WIRED = 10
+    };
 
+    enum DISK_USAGE{
+        DISK_TOTAL = 0,
+        DISK_USED = 1,
+        DISK_FREE = 2,
+        DISK_PERCENT = 3
+    };
+
+    enum LOAD_AVERAGE{
+        LA_L1 = 0,
+        LA_L2 = 1,
+        LA_L3 = 2,
+    };
+
+
+    // --------------------------------------- Structures ------------------------------------------
     struct Clocks_t
     {
         uint32_t ARM_cores = 0;
@@ -63,34 +95,6 @@ public:
         float L1 = 0;
         float L2 = 0;
         float L3 = 0;
-    };
-
-
-    enum VIRTUAL_MEMORY{
-        VM_TOTAL = 0,
-        VM_AVAILABLE = 1,
-        VM_USED = 2,
-        VM_FREE = 3,
-        VM_ACTIVE = 4,
-        VM_INACTIVE = 5,
-        VM_BUFFERS = 6,
-        VM_CACHED = 7,
-        VM_SHARED = 8,
-        VM_SLAB = 9,
-        VM_WIRED = 10
-    };
-
-    enum DISK_USAGE{
-        DISK_TOTAL = 0,
-        DISK_USED = 1,
-        DISK_FREE = 2,
-        DISK_PERCENT = 3
-    };
-
-    enum LOAD_AVERAGE{
-        LA_L1 = 0,
-        LA_L2 = 1,
-        LA_L3 = 2,
     };
 
     struct VirtualMemory_t
@@ -173,19 +177,18 @@ public:
     void getBme280();
 
     // --------------------------Sensors
-
     void getExtermalTemperature();
     void getHumidity();
     void getPressure();
     void getBME280AllData();
 
 
-
-
-
+    // --------------------------------------- Listener ------------------------------------------
     void addEventListener(ClientApiEventListener * listener);
     void removeEventListener(ClientApiEventListener * listener);
 
+
+    // --------------------------------------- Timers ------------------------------------------
     void bme280TimerTimeout();
     void mainteanceTimerTimeout();
     bool startMainteanceTimer(uint time);
@@ -193,29 +196,32 @@ public:
     bool startBme280Timer(uint time);
     bool stopBme280Timer();
 
-
+    // --------------------------------------- HTTP Request ------------------------------------------
     void httpRequest(const QString);
 
 private:
     ClientApiEventListeners_t listenersVector;
     ClientApiEventListener * mlistener = nullptr;
 
+
+    // --------------------------------------- Network configure ------------------------------------------
+    void configureNetworkManager();
     QNetworkAccessManager *manager = nullptr;
     QNetworkRequest request;
-
     std::string apiAddress = "";
     int apiPort = 0;
-
-    void parseReceiveData(const QJsonObject*);
-    std::vector<std::string> split(std::string, std::string);
     std::string httpApiAddress();
-    bool strToBool(const QString);
-    void configureNetworkManager();
-    void configureTimers();
 
+    // --------------------------------------- Timers ------------------------------------------
+    void configureTimers();
     QTimer *mainteance_timer = nullptr;
     QTimer *bme280_timer = nullptr;
 
+
+    // --------------------------------------- Data analyze ------------------------------------------
+    void parseReceiveData(const QJsonObject*);
+    void compareBME280Data(const QJsonObject*);
+    void compareGPSData(const QJsonObject*);
     void compareCpuData(const QJsonObject*);
     void compareClocksData(const QJsonObject*);
     void compareDisplaysData(const QJsonObject*);
@@ -224,19 +230,22 @@ private:
     void compareVirtualMemoryData(const QJsonObject*);
     void compareServerTimeData(const QJsonObject*);
 
+    // --------------------------------------- Structure initialize ------------------------------------------
     Mainteance_t mainteance {};
     BME280_t bme280 {};
     GPS_t gps {};
 
-    void compareBME280Data(const QJsonObject*);
-    void compareGPSData(const QJsonObject*);
+    // --------------------------------------- Others ------------------------------------------
+    bool strToBool(const QString);
+    std::vector<std::string> split(std::string, std::string);
+
 
 public slots:
     void managerFinished(QNetworkReply *reply);
 
 }
 
-//Url defines
+// --------------------------------------- URL Defines ------------------------------------------
 #define __temperature       "/mainteance/temperature"
 #define __cpu_volts         "/mainteance/volts"
 #define __clocks            "/mainteance/clock"
@@ -251,14 +260,14 @@ public slots:
 #define __full_mainteance   "/mainteance/mainteance"
 #define __full_bme280       "/sensors/bme280"
 
-// API Json Keys
+// --------------------------------------- API JSON keys ------------------------------------------
 #define __FullMainteanceKey "Full"
 #define __FullBME280All     "BME280All"
 
 
 
 ;
-
+// --------------------------------------- Listener ------------------------------------------
 class ClientApiEventListener{
 public:
     virtual ~ClientApiEventListener(){};
