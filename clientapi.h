@@ -99,7 +99,6 @@ public:
 
     struct VirtualMemory_t
     {
-
         uint64_t total = 0;       //: total physical memory (exclusive swap).
         uint64_t available = 0;   //: the memory that can be given instantly to processes without the system going into swap. This is calculated by summing different memory values depending on the platform and it is supposed to be used to monitor actual memory usage in a cross platform fashion.
         uint64_t used = 0;        //: memory used, calculated differently depending on the platform and designed for informational purposes only. total - free does not necessarily match used.
@@ -116,7 +115,6 @@ public:
 
     struct Users_t
     {
-
         std::string name = "";           //: the name of the user.
         std::string terminal = "";       //: the tty or pseudo-tty associated with the user, if any, else None.
         std::string host = "";           //: the host name associated with the entry, if any.
@@ -219,16 +217,16 @@ private:
 
 
     // --------------------------------------- Data analyze ------------------------------------------
-    void parseReceiveData(const QJsonObject*);
-    void compareBME280Data(const QJsonObject*);
-    void compareGPSData(const QJsonObject*);
-    void compareCpuData(const QJsonObject*);
-    void compareClocksData(const QJsonObject*);
-    void compareDisplaysData(const QJsonObject*);
-    void compareLoadAvgData(const QJsonObject*);
-    void compareDiskUsageData(const QJsonObject*);
-    void compareVirtualMemoryData(const QJsonObject*);
-    void compareServerTimeData(const QJsonObject*);
+    void parseReceiveData(const QJsonObject* const);
+    void compareBME280Data(const QJsonObject* const);
+    void compareGPSData(const QJsonObject* const);
+    void compareCpuData(const QJsonObject* const) ;
+    void compareClocksData(const QJsonObject* const);
+    void compareDisplaysData(const QJsonObject* const);
+    void compareLoadAvgData(const QJsonObject* const);
+    void compareDiskUsageData(const QJsonObject* const);
+    void compareVirtualMemoryData(const QJsonObject* const);
+    void compareServerTimeData(const QJsonObject* const);
 
     // --------------------------------------- Structure initialize ------------------------------------------
     Mainteance_t mainteance {};
@@ -263,9 +261,6 @@ public slots:
 // --------------------------------------- API JSON keys ------------------------------------------
 #define __FullMainteanceKey "Full"
 #define __FullBME280All     "BME280All"
-
-
-
 ;
 // --------------------------------------- Listener ------------------------------------------
 class ClientApiEventListener{

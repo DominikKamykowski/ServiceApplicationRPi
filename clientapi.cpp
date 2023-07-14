@@ -33,7 +33,7 @@ ClientApi::~ClientApi()
 }
 
 // --------------------------------------- Parsing received data ------------------------------------------
-void ClientApi::parseReceiveData(const QJsonObject *m_json_object)
+void ClientApi::parseReceiveData(const QJsonObject * const m_json_object)
 {
     if(m_json_object->keys().contains("Error message"))
     {
@@ -154,7 +154,7 @@ void ClientApi::configureNetworkManager()
 
 
 // --------------------------------------- Data compares ------------------------------------------
-void ClientApi::compareServerTimeData(const QJsonObject *server_time_json)
+void ClientApi::compareServerTimeData(const QJsonObject * const server_time_json)
 {
     const QJsonObject m_server_time_obj = server_time_json->value("Time").toObject();
     if(m_server_time_obj.isEmpty())
@@ -169,7 +169,7 @@ void ClientApi::compareServerTimeData(const QJsonObject *server_time_json)
     }
 }
 
-void ClientApi::compareVirtualMemoryData(const QJsonObject* virtual_memory_json)
+void ClientApi::compareVirtualMemoryData(const QJsonObject* const virtual_memory_json)
 {
     const QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
     if(m_virtual_memory_obj.isEmpty())
@@ -254,7 +254,7 @@ void ClientApi::compareVirtualMemoryData(const QJsonObject* virtual_memory_json)
     }
 }
 
-void ClientApi::compareDiskUsageData(const QJsonObject* disk_usage_json)
+void ClientApi::compareDiskUsageData(const QJsonObject* const disk_usage_json)
 {
     const QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
     if(m_disk_usage_obj.isEmpty())
@@ -296,7 +296,7 @@ void ClientApi::compareDiskUsageData(const QJsonObject* disk_usage_json)
     }
 }
 
-void ClientApi::compareLoadAvgData(const QJsonObject* load_avg_json)
+void ClientApi::compareLoadAvgData(const QJsonObject* const load_avg_json)
 {
     const QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
     if(m_load_avg_obj.isEmpty())
@@ -332,7 +332,7 @@ void ClientApi::compareLoadAvgData(const QJsonObject* load_avg_json)
     }
 }
 
-void ClientApi::compareDisplaysData(const QJsonObject* display_json)
+void ClientApi::compareDisplaysData(const QJsonObject* const display_json)
 {
     const QJsonObject m_displays = display_json->value("displays").toObject();
     //    qDebug()<<m_displays;
@@ -375,7 +375,7 @@ void ClientApi::compareDisplaysData(const QJsonObject* display_json)
     }
 }
 
-void ClientApi::compareClocksData(const QJsonObject* clock_json)
+void ClientApi::compareClocksData(const QJsonObject* const clock_json)
 {
     const QJsonObject m_clocks = clock_json->value("clocks").toObject();
     //    qDebug()<<m_clocks;
@@ -455,7 +455,7 @@ void ClientApi::compareClocksData(const QJsonObject* clock_json)
     }
 }
 
-void ClientApi::compareCpuData(const QJsonObject* cpu_json)
+void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
 {
     const QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
     if(m_cpu_usage.isEmpty())
@@ -485,7 +485,7 @@ void ClientApi::compareCpuData(const QJsonObject* cpu_json)
     }
 }
 
-void ClientApi::compareGPSData(const QJsonObject * gps_json)
+void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
     const double _longtitude = gps_json->value("longtitude").toDouble();
     const double _latitude = gps_json->value("latitude").toDouble();
@@ -508,7 +508,7 @@ void ClientApi::compareGPSData(const QJsonObject * gps_json)
     }
 }
 
-void ClientApi::compareBME280Data(const QJsonObject * m_json_object)
+void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)
 {
     const float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
     const float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
