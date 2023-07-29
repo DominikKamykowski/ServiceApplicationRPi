@@ -522,7 +522,7 @@ void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)
     const float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
     const float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
 
-    qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
+//    qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
 
     if(!compareValues(bme280.temperature, _temperature, 0.01f))
     {
