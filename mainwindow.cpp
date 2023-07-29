@@ -237,6 +237,26 @@ void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
 
 }
 
+void MainWindow::ClientApi_onLongtitudeChanged(double longitude)
+{
+    this->ui->dsbLongtitude->setValue(longitude);
+}
+
+void MainWindow::ClientApi_onLatitudeChanged(double latitude)
+{
+    this->ui->dsbLatitude->setValue(latitude);
+}
+
+void MainWindow::ClientApi_onAltitudeChanged(double altitude)
+{
+    this->ui->dsbAltitude->setValue(altitude);
+}
+
+void MainWindow::ClientApi_onNewTimestamp(std::string _timestamp)
+{
+    this->ui->lbTimestamp->setText(QString::fromStdString(_timestamp));
+}
+
 void MainWindow::on_cbAutoRefresh_clicked()
 {
     if(this->ui->cbAutoRefresh->isChecked())
@@ -315,5 +335,11 @@ void MainWindow::on_pbStopAllTimers_clicked()
 void MainWindow::on_pbClearDebugConsole_clicked()
 {
     this->ui->teDebug->clear();
+}
+
+
+void MainWindow::on_pbGetGPSData_clicked()
+{
+    api->getGPS();
 }
 

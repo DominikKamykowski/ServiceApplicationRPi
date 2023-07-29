@@ -173,6 +173,7 @@ public:
     void getUsers();
     void getMainteance();
     void getBme280();
+    void getGPS();
 
     // --------------------------Sensors
     void getExtermalTemperature();
@@ -257,6 +258,7 @@ public slots:
 #define __datetime          "/mainteance/detetime"
 #define __full_mainteance   "/mainteance/mainteance"
 #define __full_bme280       "/sensors/bme280"
+#define __gps               "/sensors/gps"
 
 // --------------------------------------- API JSON keys ------------------------------------------
 #define __FullMainteanceKey "Full"
@@ -322,6 +324,7 @@ public:
     virtual void ClientApi_onLongtitudeChanged(double){};
     virtual void ClientApi_onLatitudeChanged(double){};
     virtual void ClientApi_onAltitudeChanged(double){};
+    virtual void ClientApi_onNewTimestamp(std::string){};
 
     virtual void ClientApi_onErrorMessageOccured(std::string){};
 

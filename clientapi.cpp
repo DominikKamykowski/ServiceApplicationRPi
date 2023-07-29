@@ -487,9 +487,10 @@ void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
 
 void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
-    const double _longtitude = gps_json->value("longtitude").toDouble();
-    const double _latitude = gps_json->value("latitude").toDouble();
-    const double _altitude = gps_json->value("altitude").toDouble();
+    const QJsonObject coordinates = gps_json->value("coordinates").toObject();
+    const double _longtitude = coordinates.value("longtitude").toDouble();
+    const double _latitude = coordinates.value("latitude").toDouble();
+    const double _altitude = coordinates.value("altitude").toDouble();
 
     if(!compareValues(gps.longtitude, _longtitude, double(0.0000001)))
     {
@@ -506,6 +507,13 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
         gps.altitude = _altitude;
         _emit(ClientApi_onAltitudeChanged(gps.altitude));
     }
+
+    const QString timestamp = gps_json->value("timestamp UTC").toString();
+    if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
+    {
+        _emit(ClientApi_onNewTimestamp(timestamp.toStdString()));
+    }
+
 }
 
 void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)
@@ -676,6 +684,11 @@ void ClientApi::getMainteance()
 void ClientApi::getBme280()
 {
     httpRequest(__full_bme280);
+}
+
+void ClientApi::getGPS()
+{
+    httpRequest(__gps);
 }
 
 // --------------------------------------- Event Listener ------------------------------------------

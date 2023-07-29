@@ -26,6 +26,8 @@ private slots:
     void on_pbStopAllTimers_clicked();
     void on_pbClearDebugConsole_clicked();
 
+    void on_pbGetGPSData_clicked();
+
 private:
     ClientApi *api = nullptr;
 
@@ -89,5 +91,10 @@ public:
     void ClientApi_onBME280PressureChanged(float);
 
     void ClientApi_onRawJSON(QJsonDocument);
+
+    void ClientApi_onLongtitudeChanged(double);
+    void ClientApi_onLatitudeChanged(double);
+    void ClientApi_onAltitudeChanged(double);
+    void ClientApi_onNewTimestamp(std::string);
 };
 #endif // MAINWINDOW_H
