@@ -487,33 +487,98 @@ void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
 
 void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
+    changed = false;
+    const QString timestamp = gps_json->value("timestamp UTC").toString();
+    if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
+    {
+        if(gps.timestamp == timestamp.toStdString())
+        {
+            gps.timestamp = timestamp.toStdString();
+            changed = true;
+        }
+    }
+
     const QJsonObject coordinates = gps_json->value("coordinates").toObject();
     const double _longtitude = coordinates.value("longtitude").toDouble();
     const double _latitude = coordinates.value("latitude").toDouble();
     const double _altitude = coordinates.value("altitude").toDouble();
 
-    if(!compareValues(gps.longtitude, _longtitude, double(0.0000001)))
+    if(!compareValues(gps.coordinates.longitude, _longtitude, double(0.0000001)))
     {
-        gps.longtitude = _longtitude;
-        _emit(ClientApi_onLongtitudeChanged(gps.longtitude));
+        gps.coordinates.longitude = _longtitude;
+        changed = true;
     }
-    if(!compareValues(gps.latitude, _latitude, double(0.0000001)))
+    if(!compareValues(gps.coordinates.latitude, _latitude, double(0.0000001)))
     {
-        gps.latitude = _latitude;
-        _emit(ClientApi_onLatitudeChanged(gps.latitude));
+        gps.coordinates.latitude = _latitude;
+        changed = true;
     }
-    if(!compareValues(gps.altitude, _altitude, double(0.0000001)))
+    if(!compareValues(gps.coordinates.altitude, _altitude, double(0.0000001)))
     {
-        gps.altitude = _altitude;
-        _emit(ClientApi_onAltitudeChanged(gps.altitude));
-    }
-
-    const QString timestamp = gps_json->value("timestamp UTC").toString();
-    if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
-    {
-        _emit(ClientApi_onNewTimestamp(timestamp.toStdString()));
+        gps.coordinates.altitude = _altitude;
+        changed = true;
     }
 
+    compareGPSPrecision(gps_json);
+
+    const double _speed = gps_json->value("speed").toDouble();
+    if(!compareValues(gps.speed, _speed, double(0.01)))
+    {
+        gps.speed = _speed;
+        changed = true;
+    }
+    compareGPSFix(gps_json);
+
+
+
+    //emit
+    if(changed) _emit(ClientApi_onGPSDataChanged(gps));
+
+}
+
+void ClientApi::compareGPSPrecision(const QJsonObject * const precision)
+{
+    QJsonObject _precision = precision->value("coordinates precise").toObject();
+    const double longiutde_prec = _precision.value("longtitude").toDouble();
+    const double latitude_prec = _precision.value("lattitude").toDouble();
+    if(!compareValues(gps.precise.longitude, longiutde_prec, double(0.001)))
+    {
+        gps.precise.longitude = longiutde_prec;
+        changed = true;
+    }
+    if(!compareValues(gps.precise.latitude, latitude_prec, double(0.001)))
+    {
+        gps.precise.latitude = latitude_prec;
+        changed = true;
+    }
+
+}
+
+void ClientApi::compareGPSFix(const QJsonObject * const fix)
+{
+    QJsonObject _fix = fix->value("fix data").toObject();
+    const uint8_t _fix_quality = _fix.value("fix quality").toInt();
+    const uint8_t _fix_quality_3d = _fix.value("fix quality 3d").toInt();
+    if(gps.fix.fix_quality != _fix_quality || gps.fix.fix_quality_3d != _fix_quality_3d)
+    {
+        gps.fix.fix_quality = _fix_quality;
+        gps.fix.fix_quality_3d = _fix_quality_3d;
+        changed = true;
+    }
+
+}
+
+void ClientApi::compareGPSSatelites(const QJsonObject * const sats)
+{
+    QJsonObject _sats = sats->value("satellites data").toObject();
+    const uint8_t _sats_number = _sats.value("satelites number").toInt();
+    if(gps.satelites.satelites_number != _sats_number)
+    {
+        gps.satelites.satelites_number = _sats_number;
+        changed = true;
+    }
+
+    //TODO szczegoly satelit
 }
 
 void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)

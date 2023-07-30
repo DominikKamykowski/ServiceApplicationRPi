@@ -153,12 +153,42 @@ public:
         float pressure = 0;
     };
 
-    struct GPS_t
+    struct GPS_Satelites_t
     {
-        double longtitude = 0;
+        uint8_t satelites_number = 0;
+        //TODO szczegoly satelit
+    };
+
+    struct GPS_Fix_t
+    {
+        uint8_t fix_quality = 0;
+        uint8_t fix_quality_3d = 0;
+    };
+
+    struct GPS_Coordinates_t
+    {
+        double longitude = 0;
         double latitude = 0;
         double altitude = 0;
     };
+
+    struct GPS_CoordinatesPrecise_t
+    {
+        double longitude = 0;
+        double latitude = 0;
+    };
+
+    struct GPS_t
+    {
+        std::string timestamp = "";
+        GPS_Coordinates_t coordinates = {};
+        GPS_CoordinatesPrecise_t precise = {};
+        double speed = 0;
+        GPS_Fix_t fix = {};
+        GPS_Satelites_t satelites = {};
+    };
+
+
 
     // --------------------------------------- Getters ------------------------------------------
     // --------------------------Mainteance
@@ -221,6 +251,9 @@ private:
     void parseReceiveData(const QJsonObject* const);
     void compareBME280Data(const QJsonObject* const);
     void compareGPSData(const QJsonObject* const);
+    void compareGPSPrecision(const QJsonObject* const);
+    void compareGPSFix(const QJsonObject* const);
+    void compareGPSSatelites(const QJsonObject* const);
     void compareCpuData(const QJsonObject* const) ;
     void compareClocksData(const QJsonObject* const);
     void compareDisplaysData(const QJsonObject* const);
@@ -235,6 +268,7 @@ private:
     GPS_t gps {};
 
     // --------------------------------------- Others ------------------------------------------
+    bool changed = false;
     bool strToBool(const QString);
     std::vector<std::string> split(std::string, std::string);
 
@@ -321,10 +355,8 @@ public:
     virtual void ClientApi_onBME280HumidityChanged(float){};
     virtual void ClientApi_onBME280PressureChanged(float){};
 
-    virtual void ClientApi_onLongtitudeChanged(double){};
-    virtual void ClientApi_onLatitudeChanged(double){};
-    virtual void ClientApi_onAltitudeChanged(double){};
-    virtual void ClientApi_onNewTimestamp(std::string){};
+    virtual void ClientApi_onGPSDataChanged(ClientApi::GPS_t){};
+
 
     virtual void ClientApi_onErrorMessageOccured(std::string){};
 

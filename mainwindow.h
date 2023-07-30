@@ -92,9 +92,6 @@ public:
 
     void ClientApi_onRawJSON(QJsonDocument);
 
-    void ClientApi_onLongtitudeChanged(double);
-    void ClientApi_onLatitudeChanged(double);
-    void ClientApi_onAltitudeChanged(double);
-    void ClientApi_onNewTimestamp(std::string);
+    void ClientApi_onGPSDataChanged(ClientApi::GPS_t);
 };
 #endif // MAINWINDOW_H

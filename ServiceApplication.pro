@@ -2,7 +2,7 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17 sanitize_memory sanitize_address
+CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -15,7 +15,6 @@ SOURCES += \
 
 HEADERS += \
     clientapi.h \
-    http.hpp \
     mainwindow.h
 
 FORMS += \

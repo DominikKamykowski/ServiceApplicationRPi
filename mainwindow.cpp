@@ -237,24 +237,15 @@ void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
 
 }
 
-void MainWindow::ClientApi_onLongtitudeChanged(double longitude)
+void MainWindow::ClientApi_onGPSDataChanged(ClientApi::GPS_t _gps)
 {
-    this->ui->dsbLongtitude->setValue(longitude);
-}
+    this->ui->dsbLongtitude->setValue(_gps.coordinates.longitude);
+    this->ui->dsbLatitude->setValue(_gps.coordinates.latitude);
+    this->ui->dsbAltitude->setValue(_gps.coordinates.altitude);
+    this->ui->lbTimestamp->setText(QString::fromStdString(_gps.timestamp));
 
-void MainWindow::ClientApi_onLatitudeChanged(double latitude)
-{
-    this->ui->dsbLatitude->setValue(latitude);
-}
-
-void MainWindow::ClientApi_onAltitudeChanged(double altitude)
-{
-    this->ui->dsbAltitude->setValue(altitude);
-}
-
-void MainWindow::ClientApi_onNewTimestamp(std::string _timestamp)
-{
-    this->ui->lbTimestamp->setText(QString::fromStdString(_timestamp));
+    this->ui->dsbPreciseLatitude->setValue(_gps.precise.latitude);
+    this->ui->dsbPreciseLongitude->setValue(_gps.precise.longitude);
 }
 
 void MainWindow::on_cbAutoRefresh_clicked()

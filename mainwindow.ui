@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>826</width>
     <height>600</height>
    </rect>
   </property>
@@ -72,70 +72,6 @@
            <string>GPS</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_12">
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Longtitude</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QDoubleSpinBox" name="dsbGpsDuration">
-             <property name="suffix">
-              <string> [s]</string>
-             </property>
-             <property name="minimum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.500000000000000</double>
-             </property>
-             <property name="value">
-              <double>1.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>Altitude</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QPushButton" name="pbGetGPSData">
-             <property name="text">
-              <string>Get GPS</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Latitude</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="cbGpsAuto">
-             <property name="text">
-              <string>Auto</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <spacer name="verticalSpacer_8">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item row="1" column="1">
             <widget class="QDoubleSpinBox" name="dsbLongtitude">
              <property name="readOnly">
@@ -168,6 +104,47 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="cbGpsAuto">
+             <property name="text">
+              <string>Auto</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_15">
+             <property name="text">
+              <string>longitude:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>timestamp UTC:</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Longtitude</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLabel" name="lbTimestamp">
+             <property name="text">
+              <string>no data</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
            <item row="3" column="1">
             <widget class="QDoubleSpinBox" name="dsbAltitude">
              <property name="readOnly">
@@ -184,23 +161,73 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="label_13">
-             <property name="text">
-              <string>timestamp UTC:</string>
+           <item row="0" column="2">
+            <widget class="QDoubleSpinBox" name="dsbGpsDuration">
+             <property name="suffix">
+              <string> [s]</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <property name="minimum">
+              <double>1.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.500000000000000</double>
+             </property>
+             <property name="value">
+              <double>1.000000000000000</double>
              </property>
             </widget>
            </item>
-           <item row="2" column="2">
-            <widget class="QLabel" name="lbTimestamp">
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>no data</string>
+              <string>Latitude</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="pbGetGPSData">
+             <property name="text">
+              <string>Get GPS</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>Altitude</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <spacer name="verticalSpacer_8">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="label_16">
+             <property name="text">
+              <string>latitude</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QDoubleSpinBox" name="dsbPreciseLongitude"/>
+           </item>
+           <item row="5" column="2">
+            <widget class="QDoubleSpinBox" name="dsbPreciseLatitude"/>
+           </item>
+           <item row="4" column="0" rowspan="2">
+            <widget class="QLabel" name="label_14">
+             <property name="text">
+              <string>Precise:</string>
              </property>
             </widget>
            </item>
@@ -1254,8 +1281,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>826</width>
+     <height>20</height>
     </rect>
    </property>
   </widget>
