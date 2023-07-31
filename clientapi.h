@@ -37,6 +37,24 @@ public:
     }
 
     // --------------------------------------- Enums ------------------------------------------
+    enum FIX_QUALITY{
+        NO_FIX = 0,
+        GPS_FIX,
+        DIFFERENTIAL_GPS_FIX,
+        PPS_FIX,
+        REAL_TIME_KINEMATIC,
+        FLOAT_RTK,
+        ESTIMATED,
+        MANUAL_INPUT_MODE,
+        SIMULATION_MODE
+    };
+
+    enum FIX_TYPE{
+        NO_FIX_TYPE = 0,
+        FIX_2D,
+        FIX_3D
+    };
+
     enum VIRTUAL_MEMORY{
         VM_TOTAL = 0,
         VM_AVAILABLE = 1,
@@ -135,14 +153,14 @@ public:
 
     struct Mainteance_t
     {
-        float cpu_temperature;
-        float cpu_volts;
-        Clocks_t clocks;
-        Displays_t displays;
-        float cpu_usage;
-        LoadAvg_t load_average;
-        DiskUsage_t disk_usage;
-        VirtualMemory_t virtual_memory;
+        float cpu_temperature = 0;
+        float cpu_volts = 0;
+        Clocks_t clocks = {};
+        Displays_t displays = {};
+        float cpu_usage = 0;
+        LoadAvg_t load_average = {};
+        DiskUsage_t disk_usage = {};
+        VirtualMemory_t virtual_memory = {};
 
     };
 
@@ -267,8 +285,17 @@ private:
     BME280_t bme280 {};
     GPS_t gps {};
 
+
+    // --------------------------------------- Flags ------------------------------------------
+    bool gps_changed = false;
+    bool vt_changed = false;
+    bool disk_changed = false;
+    bool load_avg_changed = false;
+    bool displays_changed = false;
+    bool clocks_changed = false;
+
     // --------------------------------------- Others ------------------------------------------
-    bool changed = false;
+
     bool strToBool(const QString);
     std::vector<std::string> split(std::string, std::string);
 
@@ -296,7 +323,9 @@ public slots:
 
 // --------------------------------------- API JSON keys ------------------------------------------
 #define __FullMainteanceKey "Full"
-#define __FullBME280All     "BME280All"
+#define __FullBME280        "BME280"
+#define __FullGPS           "GPS"
+#define __CpuTemp           "cpu temperature"
 ;
 // --------------------------------------- Listener ------------------------------------------
 class ClientApiEventListener{
@@ -310,44 +339,15 @@ public:
     virtual void ClientApi_onCpuVoltsChanged(float){};
     virtual void ClientApi_onCpuUsageChanged(float){};
 
-    virtual void ClientApi_onClockArmCoresChanged(uint32_t){};
-    virtual void ClientApi_onClockVC4Changed(uint32_t){};
-    virtual void ClientApi_onClockISPChanged(uint32_t){};
-    virtual void ClientApi_onClockBlock3DChanged(uint32_t){};
-    virtual void ClientApi_onClockUARTChanged(uint32_t){};
-    virtual void ClientApi_onClockPWMChanged(uint32_t){};
-    virtual void ClientApi_onClockEMMCChanged(uint32_t){};
-    virtual void ClientApi_onClockPixelChanged(uint32_t){};
-    virtual void ClientApi_onClockAVEChanged(uint32_t){};
-    virtual void ClientApi_onClockHDMIChanged(uint32_t){};
-    virtual void ClientApi_onClockDPIChanged(uint32_t){};
+    virtual void ClientApi_onClocksChanged(ClientApi::Clocks_t){};
 
-    virtual void ClientApi_onDisplaysMainLcdChanged(bool){};
-    virtual void ClientApi_onDisplaysSecondaryLcdChanged(bool){};
-    virtual void ClientApi_onDisplaysHDMI0Changed(bool){};
-    virtual void ClientApi_onDisplaysCompositeChanged(bool){};
-    virtual void ClientApi_onDisplaysHDMI1Changed(bool){};
+    virtual void ClientApi_onDisplayChanged(ClientApi::Displays_t){};
 
-    virtual void ClientApi_onLoadAvgL1Changed(float){};
-    virtual void ClientApi_onLoadAvgL2Changed(float){};
-    virtual void ClientApi_onLoadAvgL3Changed(float){};
+    virtual void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t){};
 
-    virtual void ClientApi_onVirtualMemoryTotalChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryAvailableChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryUsedChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryFreeChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryActiveChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryInactiveChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryBuffersChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryCachedChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemorySharedChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemorySlabChanged(uint64_t){};
-    virtual void ClientApi_onVirtualMemoryWiredChanged(uint64_t){};
+    virtual void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t){};
 
-    virtual void ClientApi_onDiskUsageTotalChanged(uint64_t){};
-    virtual void ClientApi_onDiskUsageUsedChanged(uint64_t){};
-    virtual void ClientApi_onDiskUsageFreeChanged(uint64_t){};
-    virtual void ClientApi_onDiskUsagePercentChanged(float){};
+    virtual void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t){};
 
     virtual void ClientApi_onServerTimeChanged(std::string){};
 
@@ -356,7 +356,6 @@ public:
     virtual void ClientApi_onBME280PressureChanged(float){};
 
     virtual void ClientApi_onGPSDataChanged(ClientApi::GPS_t){};
-
 
     virtual void ClientApi_onErrorMessageOccured(std::string){};
 

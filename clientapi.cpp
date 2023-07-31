@@ -1,4 +1,4 @@
-#include "clientapi.h"
+    #include "clientapi.h"
 
 #define _emit(x) for (uint8_t i = 0; i < listenersVector.size(); i++) \
     listenersVector.at(i)->x
@@ -41,9 +41,9 @@ void ClientApi::parseReceiveData(const QJsonObject * const m_json_object)
         _emit(ClientApi_onErrorMessageOccured(error_json.toStdString()));
     }
 
-    else if(m_json_object->keys().contains("Full"))
+    else if(m_json_object->keys().contains(__FullMainteanceKey))
     {
-        const QJsonObject mainteance_json = m_json_object->value("Full").toObject();
+        const QJsonObject mainteance_json = m_json_object->value(__FullMainteanceKey).toObject();
         if(mainteance_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
@@ -58,17 +58,17 @@ void ClientApi::parseReceiveData(const QJsonObject * const m_json_object)
             compareServerTimeData(&mainteance_json);
         }
     }
-    else if(m_json_object->keys().contains("BME280"))
+    else if(m_json_object->keys().contains(__FullBME280))
     {
-        const QJsonObject bme280_json = m_json_object->value("BME280").toObject();
+        const QJsonObject bme280_json = m_json_object->value(__FullBME280).toObject();
         if(bme280_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
         else compareBME280Data(&bme280_json);
     }
-    else if(m_json_object->keys().contains("GPS"))
+    else if(m_json_object->keys().contains(__FullGPS))
     {
-        const QJsonObject gps_json = m_json_object->value("GPS").toObject();
+        const QJsonObject gps_json = m_json_object->value(__FullGPS).toObject();
         if(gps_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
@@ -76,9 +76,9 @@ void ClientApi::parseReceiveData(const QJsonObject * const m_json_object)
     }
     else
     {
-        if (m_json_object->keys().contains("cpu temperature"))
+        if (m_json_object->keys().contains(__CpuTemp))
         {
-            const float _cpu_temp = static_cast<float>(m_json_object->value("cpu temperature").toDouble());
+            const float _cpu_temp = static_cast<float>(m_json_object->value(__CpuTemp).toDouble());
             _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
         }
         else if (m_json_object->keys().contains("cpu volts"))
@@ -171,6 +171,7 @@ void ClientApi::compareServerTimeData(const QJsonObject * const server_time_json
 
 void ClientApi::compareVirtualMemoryData(const QJsonObject* const virtual_memory_json)
 {
+    vt_changed = false;
     const QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
     if(m_virtual_memory_obj.isEmpty())
     {
@@ -200,62 +201,67 @@ void ClientApi::compareVirtualMemoryData(const QJsonObject* const virtual_memory
     if(mainteance.virtual_memory.total != _total)
     {
         mainteance.virtual_memory.total = _total;
-        _emit(ClientApi_onVirtualMemoryTotalChanged(mainteance.virtual_memory.total));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.available != _available )
     {
         mainteance.virtual_memory.available = _available ;
-        _emit(ClientApi_onVirtualMemoryAvailableChanged(mainteance.virtual_memory.available));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.used != _used )
     {
         mainteance.virtual_memory.used = _used ;
-        _emit(ClientApi_onVirtualMemoryUsedChanged(mainteance.virtual_memory.used));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.free != _free )
     {
         mainteance.virtual_memory.free = _free ;
-        _emit(ClientApi_onVirtualMemoryFreeChanged(mainteance.virtual_memory.free));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.active != _active )
     {
         mainteance.virtual_memory.active = _active ;
-        _emit(ClientApi_onVirtualMemoryActiveChanged(mainteance.virtual_memory.active));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.inactive != _inactive )
     {
         mainteance.virtual_memory.inactive = _inactive ;
-        _emit(ClientApi_onVirtualMemoryInactiveChanged(mainteance.virtual_memory.inactive));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.buffers != _buffers )
     {
         mainteance.virtual_memory.buffers = _buffers ;
-        _emit(ClientApi_onVirtualMemoryBuffersChanged(mainteance.virtual_memory.buffers));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.cached != _cached )
     {
         mainteance.virtual_memory.cached = _cached ;
-        _emit(ClientApi_onVirtualMemoryCachedChanged(mainteance.virtual_memory.cached));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.shared != _shared )
     {
         mainteance.virtual_memory.shared = _shared ;
-        _emit(ClientApi_onVirtualMemorySharedChanged(mainteance.virtual_memory.shared));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.slab != _slab )
     {
         mainteance.virtual_memory.slab = _slab ;
-        _emit(ClientApi_onVirtualMemorySlabChanged(mainteance.virtual_memory.slab));
+        vt_changed = true;
     }
     if(mainteance.virtual_memory.wired != _wired )
     {
         mainteance.virtual_memory.wired = _wired ;
-        _emit(ClientApi_onVirtualMemoryWiredChanged(mainteance.virtual_memory.wired));
+        vt_changed = true;
+    }
+    if(vt_changed)
+    {
+        _emit(ClientApi_onVirtualMemoryChanged(mainteance.virtual_memory));
     }
 }
 
 void ClientApi::compareDiskUsageData(const QJsonObject* const disk_usage_json)
 {
+    disk_changed = false;
     const QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
     if(m_disk_usage_obj.isEmpty())
     {
@@ -277,27 +283,33 @@ void ClientApi::compareDiskUsageData(const QJsonObject* const disk_usage_json)
     if(mainteance.disk_usage.total != _total)
     {
         mainteance.disk_usage.total = _total;
-        _emit(ClientApi_onDiskUsageTotalChanged(mainteance.disk_usage.total));
+        disk_changed = true;
     }
     if(mainteance.disk_usage.used != _used )
     {
         mainteance.disk_usage.used = _used ;
-        _emit(ClientApi_onDiskUsageUsedChanged(mainteance.disk_usage.used));
+        disk_changed = true;
     }
     if(mainteance.disk_usage.free != _free)
     {
         mainteance.disk_usage.free = _free;
-        _emit(ClientApi_onDiskUsageFreeChanged(mainteance.disk_usage.free));
+        disk_changed = true;
     }
     if(!compareValues(mainteance.disk_usage.percent,_percent ,0.01f))
     {
         mainteance.disk_usage.percent = _percent ;
-        _emit(ClientApi_onDiskUsagePercentChanged(mainteance.disk_usage.percent));
+        disk_changed = true;
+    }
+
+    if(disk_changed)
+    {
+        _emit(ClientApi_onDiskDataChanged(mainteance.disk_usage));
     }
 }
 
 void ClientApi::compareLoadAvgData(const QJsonObject* const load_avg_json)
 {
+    load_avg_changed = false;
     const QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
     if(m_load_avg_obj.isEmpty())
     {
@@ -318,22 +330,27 @@ void ClientApi::compareLoadAvgData(const QJsonObject* const load_avg_json)
     if(!compareValues(mainteance.load_average.L1,_l1,0.01f))
     {
         mainteance.load_average.L1 = _l1;
-        _emit(ClientApi_onLoadAvgL1Changed(mainteance.load_average.L1));
+        load_avg_changed = true;
     }
     if(!compareValues(mainteance.load_average.L2,_l2,0.01f))
     {
         mainteance.load_average.L2 = _l2;
-        _emit(ClientApi_onLoadAvgL2Changed(mainteance.load_average.L2));
+        load_avg_changed = true;
     }
     if(!compareValues(mainteance.load_average.L3,_l3 ,0.01f))
     {
-        mainteance.load_average.L3 = _l3 ;
-        _emit(ClientApi_onLoadAvgL3Changed(mainteance.load_average.L3));
+        mainteance.load_average.L3 = _l3;
+        load_avg_changed = true;
+    }
+    if(load_avg_changed)
+    {
+        _emit(ClientApi_onLoadAvgChanged(mainteance.load_average));
     }
 }
 
 void ClientApi::compareDisplaysData(const QJsonObject* const display_json)
 {
+    displays_changed = false;
     const QJsonObject m_displays = display_json->value("displays").toObject();
     //    qDebug()<<m_displays;
     if(m_displays.isEmpty())
@@ -351,32 +368,37 @@ void ClientApi::compareDisplaysData(const QJsonObject* const display_json)
     if(mainteance.displays.Composite != _composite )
     {
         mainteance.displays.Composite = _composite ;
-        _emit(ClientApi_onDisplaysCompositeChanged(mainteance.displays.Composite));
+        displays_changed = true;
     }
     if(mainteance.displays.MainLCD != _main_lcd )
     {
         mainteance.displays.MainLCD = _main_lcd ;
-        _emit(ClientApi_onDisplaysMainLcdChanged(mainteance.displays.MainLCD));
+        displays_changed = true;
     }
     if(mainteance.displays.SecondaryLCD != _secondary_lcd )
     {
         mainteance.displays.SecondaryLCD = _secondary_lcd ;
-        _emit(ClientApi_onDisplaysSecondaryLcdChanged(mainteance.displays.SecondaryLCD));
+        displays_changed = true;
     }
     if(mainteance.displays.HDMI0 != _hdmi0)
     {
         mainteance.displays.HDMI0 = _hdmi0;
-        _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI0));
+        displays_changed = true;
     }
     if(mainteance.displays.HDMI1 != _hdmi1)
     {
         mainteance.displays.HDMI1 = _hdmi1;
-        _emit(ClientApi_onDisplaysHDMI0Changed(mainteance.displays.HDMI1));
+        displays_changed = true;
+    }
+    if(displays_changed)
+    {
+        _emit(ClientApi_onDisplayChanged(mainteance.displays));
     }
 }
 
 void ClientApi::compareClocksData(const QJsonObject* const clock_json)
 {
+    clocks_changed = false;
     const QJsonObject m_clocks = clock_json->value("clocks").toObject();
     //    qDebug()<<m_clocks;
 
@@ -401,57 +423,61 @@ void ClientApi::compareClocksData(const QJsonObject* const clock_json)
     if(mainteance.clocks.ARM_cores != _arm)
     {
         mainteance.clocks.ARM_cores = _arm;
-        _emit(ClientApi_onClockArmCoresChanged(mainteance.clocks.ARM_cores));
+        clocks_changed = true;
     }
     if(mainteance.clocks.VC4 != _vc4)
     {
         mainteance.clocks.VC4 = _vc4;
-        _emit(ClientApi_onClockVC4Changed(mainteance.clocks.VC4));
+        clocks_changed = true;
     }
     if(mainteance.clocks.ISP != _isp)
     {
         mainteance.clocks.ISP = _isp;
-        _emit(ClientApi_onClockISPChanged(mainteance.clocks.ISP));
+        clocks_changed = true;
     }
     if(mainteance.clocks.block_3D != _3d)
     {
         mainteance.clocks.block_3D = _3d;
-        _emit(ClientApi_onClockBlock3DChanged(mainteance.clocks.block_3D));
+        clocks_changed = true;
     }
     if(mainteance.clocks.UART != _uart)
     {
         mainteance.clocks.UART = _uart;
-        _emit(ClientApi_onClockUARTChanged(mainteance.clocks.UART));
+        clocks_changed = true;
     }
     if(mainteance.clocks.PWM != _pwm)
     {
         mainteance.clocks.PWM = _pwm;
-        _emit(ClientApi_onClockPWMChanged(mainteance.clocks.PWM));
+        clocks_changed = true;
     }
     if(mainteance.clocks.EMMC != _emmc)
     {
         mainteance.clocks.EMMC = _emmc;
-        _emit(ClientApi_onClockEMMCChanged(mainteance.clocks.EMMC));
+        clocks_changed = true;
     }
     if(mainteance.clocks.Pixel != _pix)
     {
         mainteance.clocks.Pixel = _pix;
-        _emit(ClientApi_onClockPixelChanged(mainteance.clocks.Pixel));
+        clocks_changed = true;
     }
     if(mainteance.clocks.AVE != _ave)
     {
         mainteance.clocks.AVE = _ave;
-        _emit(ClientApi_onClockAVEChanged(mainteance.clocks.AVE));
+        clocks_changed = true;
     }
     if(mainteance.clocks.HDMI != _hdmi)
     {
         mainteance.clocks.HDMI = _hdmi;
-        _emit(ClientApi_onClockHDMIChanged(mainteance.clocks.HDMI));
+        clocks_changed = true;
     }
     if(mainteance.clocks.DPI != _dpi)
     {
         mainteance.clocks.DPI = _dpi;
-        _emit(ClientApi_onClockDPIChanged(mainteance.clocks.DPI));
+        clocks_changed = true;
+    }
+    if(clocks_changed)
+    {
+        _emit(ClientApi_onClocksChanged(mainteance.clocks));
     }
 }
 
@@ -487,14 +513,14 @@ void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
 
 void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
-    changed = false;
+    gps_changed = false;
     const QString timestamp = gps_json->value("timestamp UTC").toString();
     if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
     {
         if(gps.timestamp == timestamp.toStdString())
         {
             gps.timestamp = timestamp.toStdString();
-            changed = true;
+            gps_changed = true;
         }
     }
 
@@ -506,17 +532,17 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
     if(!compareValues(gps.coordinates.longitude, _longtitude, double(0.0000001)))
     {
         gps.coordinates.longitude = _longtitude;
-        changed = true;
+        gps_changed = true;
     }
     if(!compareValues(gps.coordinates.latitude, _latitude, double(0.0000001)))
     {
         gps.coordinates.latitude = _latitude;
-        changed = true;
+        gps_changed = true;
     }
     if(!compareValues(gps.coordinates.altitude, _altitude, double(0.0000001)))
     {
         gps.coordinates.altitude = _altitude;
-        changed = true;
+        gps_changed = true;
     }
 
     compareGPSPrecision(gps_json);
@@ -525,14 +551,14 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
     if(!compareValues(gps.speed, _speed, double(0.01)))
     {
         gps.speed = _speed;
-        changed = true;
+        gps_changed = true;
     }
     compareGPSFix(gps_json);
 
 
 
     //emit
-    if(changed) _emit(ClientApi_onGPSDataChanged(gps));
+    if(gps_changed) _emit(ClientApi_onGPSDataChanged(gps));
 
 }
 
@@ -544,12 +570,12 @@ void ClientApi::compareGPSPrecision(const QJsonObject * const precision)
     if(!compareValues(gps.precise.longitude, longiutde_prec, double(0.001)))
     {
         gps.precise.longitude = longiutde_prec;
-        changed = true;
+        gps_changed = true;
     }
     if(!compareValues(gps.precise.latitude, latitude_prec, double(0.001)))
     {
         gps.precise.latitude = latitude_prec;
-        changed = true;
+        gps_changed = true;
     }
 
 }
@@ -563,7 +589,7 @@ void ClientApi::compareGPSFix(const QJsonObject * const fix)
     {
         gps.fix.fix_quality = _fix_quality;
         gps.fix.fix_quality_3d = _fix_quality_3d;
-        changed = true;
+        gps_changed = true;
     }
 
 }
@@ -575,7 +601,7 @@ void ClientApi::compareGPSSatelites(const QJsonObject * const sats)
     if(gps.satelites.satelites_number != _sats_number)
     {
         gps.satelites.satelites_number = _sats_number;
-        changed = true;
+        gps_changed = true;
     }
 
     //TODO szczegoly satelit
