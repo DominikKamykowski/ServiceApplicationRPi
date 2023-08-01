@@ -36,7 +36,15 @@ public:
         return(fabs(a - b) <= epsilon);
     }
 
+
     // --------------------------------------- Enums ------------------------------------------
+    enum TIMERS
+    {
+        MAINTEANCE = 0,
+        BME280,
+        GPS
+    };
+
     enum FIX_QUALITY{
         NO_FIX = 0,
         GPS_FIX,
@@ -86,26 +94,26 @@ public:
     // --------------------------------------- Structures ------------------------------------------
     struct Clocks_t
     {
-        uint32_t ARM_cores = 0;
-        uint32_t VC4 = 0;
-        uint32_t ISP = 0;
-        uint32_t block_3D = 0;
-        uint32_t UART = 0;
-        uint32_t PWM = 0;
-        uint32_t EMMC = 0;
-        uint32_t Pixel = 0;
-        uint32_t AVE = 0;
-        uint32_t HDMI = 0;
-        uint32_t DPI = 0;
+        uint32_t ARM_cores  = 0;
+        uint32_t VC4        = 0;
+        uint32_t ISP        = 0;
+        uint32_t block_3D   = 0;
+        uint32_t UART       = 0;
+        uint32_t PWM        = 0;
+        uint32_t EMMC       = 0;
+        uint32_t Pixel      = 0;
+        uint32_t AVE        = 0;
+        uint32_t HDMI       = 0;
+        uint32_t DPI        = 0;
     };
 
     struct Displays_t
     {
-        bool MainLCD = false;
-        bool SecondaryLCD = false;
-        bool HDMI0 = false;
-        bool Composite = false;
-        bool HDMI1 = false;
+        bool MainLCD        = false;
+        bool SecondaryLCD   = false;
+        bool HDMI0          = false;
+        bool Composite      = false;
+        bool HDMI1          = false;
     };
 
     struct LoadAvg_t
@@ -128,7 +136,6 @@ public:
         uint64_t shared = 0;      //(Linux, BSD): memory that may be simultaneously accessed by multiple processes.
         uint64_t slab = 0;        //(Linux): in-kernel data structures cache.
         uint64_t wired = 0;       //(BSD, macOS): memory that is marked to always stay in RAM. It is never moved to disk.
-
     };
 
     struct Users_t
@@ -138,7 +145,6 @@ public:
         std::string host = "";           //: the host name associated with the entry, if any.
         uint64_t started = 0;            //: the creation time as a floating point number expressed in seconds since the epoch.
         uint32_t pid = 0;                //: the PID of the login process (like sshd, tmux, gdm-session-worker, …). On Windows and OpenBSD this is always set to None.
-
     };
 
     struct DiskUsage_t
@@ -161,7 +167,6 @@ public:
         LoadAvg_t load_average = {};
         DiskUsage_t disk_usage = {};
         VirtualMemory_t virtual_memory = {};
-
     };
 
     struct BME280_t
@@ -236,12 +241,17 @@ public:
 
 
     // --------------------------------------- Timers ------------------------------------------
+    // --------------------------BME280
     void bme280TimerTimeout();
+
+    // --------------------------GPS
+    void gpsTimerTimeout();
+
+    // --------------------------Mainteance
     void mainteanceTimerTimeout();
-    bool startMainteanceTimer(uint time);
-    bool stopMainteanceTimer();
-    bool startBme280Timer(uint time);
-    bool stopBme280Timer();
+
+    bool stopTimer(TIMERS);
+    bool startTimer(TIMERS,uint time);
 
     // --------------------------------------- HTTP Request ------------------------------------------
     void httpRequest(const QString);
@@ -263,22 +273,23 @@ private:
     void configureTimers();
     QTimer *mainteance_timer = nullptr;
     QTimer *bme280_timer = nullptr;
+    QTimer *gps_timer = nullptr;
 
 
     // --------------------------------------- Data analyze ------------------------------------------
-    void parseReceiveData(const QJsonObject* const);
-    void compareBME280Data(const QJsonObject* const);
-    void compareGPSData(const QJsonObject* const);
-    void compareGPSPrecision(const QJsonObject* const);
-    void compareGPSFix(const QJsonObject* const);
-    void compareGPSSatelites(const QJsonObject* const);
-    void compareCpuData(const QJsonObject* const) ;
-    void compareClocksData(const QJsonObject* const);
-    void compareDisplaysData(const QJsonObject* const);
-    void compareLoadAvgData(const QJsonObject* const);
-    void compareDiskUsageData(const QJsonObject* const);
-    void compareVirtualMemoryData(const QJsonObject* const);
-    void compareServerTimeData(const QJsonObject* const);
+    void parseReceiveData           (const QJsonObject* const);
+    void compareBME280Data          (const QJsonObject* const);
+    void compareGPSData             (const QJsonObject* const);
+    void compareGPSPrecision        (const QJsonObject* const);
+    void compareGPSFix              (const QJsonObject* const);
+    void compareGPSSatelites        (const QJsonObject* const);
+    void compareCpuData             (const QJsonObject* const);
+    void compareClocksData          (const QJsonObject* const);
+    void compareDisplaysData        (const QJsonObject* const);
+    void compareLoadAvgData         (const QJsonObject* const);
+    void compareDiskUsageData       (const QJsonObject* const);
+    void compareVirtualMemoryData   (const QJsonObject* const);
+    void compareServerTimeData      (const QJsonObject* const);
 
     // --------------------------------------- Structure initialize ------------------------------------------
     Mainteance_t mainteance {};
@@ -287,12 +298,13 @@ private:
 
 
     // --------------------------------------- Flags ------------------------------------------
-    bool gps_changed = false;
-    bool vt_changed = false;
-    bool disk_changed = false;
-    bool load_avg_changed = false;
-    bool displays_changed = false;
-    bool clocks_changed = false;
+    bool gps_changed        = false;
+    bool vt_changed         = false;
+    bool disk_changed       = false;
+    bool load_avg_changed   = false;
+    bool displays_changed   = false;
+    bool clocks_changed     = false;
+    bool bme280_changed     = false;
 
     // --------------------------------------- Others ------------------------------------------
 
@@ -351,20 +363,13 @@ public:
 
     virtual void ClientApi_onServerTimeChanged(std::string){};
 
-    virtual void ClientApi_onBME280TemperatureChanged(float){};
-    virtual void ClientApi_onBME280HumidityChanged(float){};
-    virtual void ClientApi_onBME280PressureChanged(float){};
+    virtual void ClientApi_onBME280TDataChanged(ClientApi::BME280_t){};
 
     virtual void ClientApi_onGPSDataChanged(ClientApi::GPS_t){};
 
     virtual void ClientApi_onErrorMessageOccured(std::string){};
 
     virtual void ClientApi_onRawJSON(QJsonDocument){};
-
-
 };
-
-
-
 
 #endif // CLIENTAPI_H

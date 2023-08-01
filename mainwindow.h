@@ -17,18 +17,14 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private slots:
+private:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
     void on_pbConnect_clicked();
-    void on_pbGetAllBME280_clicked();
     void on_cbAutoGetBME280_clicked();
     void on_pbStopAllTimers_clicked();
     void on_pbClearDebugConsole_clicked();
 
-    void on_pbGetGPSData_clicked();
-
-private:
     ClientApi *api = nullptr;
 
     Ui::MainWindow *ui;

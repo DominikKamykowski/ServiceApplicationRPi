@@ -7,13 +7,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     uiSettings();
+
+    QObject::connect(ui->pbGetAllBME280, &QPushButton::clicked,
+                     api, &ClientApi::getBme280);
+
+
+    QObject::connect(ui->pbGetGPSData, &QPushButton::clicked,
+                     api, &ClientApi::getGPS);
+
 }
 
 MainWindow::~MainWindow()
 {
     if(api != nullptr)
     {
-        qDebug()<<"Destroy api";
         delete api;
     }
 
@@ -253,13 +260,13 @@ void MainWindow::on_cbAutoRefresh_clicked()
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
         qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
-        api->startMainteanceTimer(this->ui->dsbRefreshPeriod->value()*1000);
+        api->startTimer(ClientApi::TIMERS::MAINTEANCE,this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
     {
         this->ui->pbDataRefresh->setEnabled(true);
         this->ui->dsbRefreshPeriod->setEnabled(true);
-        api->stopMainteanceTimer();
+        api->stopTimer(ClientApi::TIMERS::MAINTEANCE);
     }
 }
 
@@ -281,24 +288,19 @@ void MainWindow::on_pbConnect_clicked()
     }
 }
 
-void MainWindow::on_pbGetAllBME280_clicked()
-{
-    api->getBme280();
-}
-
 void MainWindow::on_cbAutoGetBME280_clicked()
 {
     if(this->ui->cbAutoGetBME280->isChecked())
     {
         this->ui->pbGetAllBME280->setEnabled(false);
         this->ui->dsbAutoBmeDuration->setEnabled(false);
-        api->startBme280Timer(this->ui->dsbAutoBmeDuration->value()*1000);
+        api->startTimer(ClientApi::TIMERS::BME280,this->ui->dsbAutoBmeDuration->value()*1000);
     }
     else
     {
         this->ui->pbGetAllBME280->setEnabled(true);
         this->ui->dsbAutoBmeDuration->setEnabled(true);
-        api->stopBme280Timer();
+        api->stopTimer(ClientApi::TIMERS::BME280);
     }
 }
 
@@ -327,8 +329,8 @@ void MainWindow::on_pbClearDebugConsole_clicked()
 }
 
 
-void MainWindow::on_pbGetGPSData_clicked()
-{
-    api->getGPS();
-}
+//void MainWindow::on_pbGetGPSData_clicked()
+//{
+//    api->getGPS();
+//}
 

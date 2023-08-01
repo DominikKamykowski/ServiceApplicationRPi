@@ -30,6 +30,7 @@ ClientApi::ClientApi(std::string api_address)
 ClientApi::~ClientApi()
 {
     delete mainteance_timer;
+    delete bme280_timer;
 }
 
 // --------------------------------------- Parsing received data ------------------------------------------
@@ -609,26 +610,29 @@ void ClientApi::compareGPSSatelites(const QJsonObject * const sats)
 
 void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)
 {
+    bme280_changed = false;
     const float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
     const float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
     const float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
 
-//    qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
-
     if(!compareValues(bme280.temperature, _temperature, 0.01f))
     {
         bme280.temperature = _temperature;
-        _emit(ClientApi_onBME280TemperatureChanged(bme280.temperature));
+        bme280_changed = true;
     }
     if(!compareValues(bme280.humidity, _humidity, 0.01f))
     {
         bme280.humidity = _humidity;
-        _emit(ClientApi_onBME280HumidityChanged(bme280.humidity));
+        bme280_changed = true;
     }
     if(!compareValues(bme280.pressure, _pressure, 0.01f))
     {
         bme280.pressure = _pressure;
-        _emit(ClientApi_onBME280PressureChanged(bme280.pressure));
+        bme280_changed = true;
+    }
+    if(bme280_changed)
+    {
+        _emit(ClientApi_onBME280TDataChanged(bme280));
     }
 }
 
@@ -648,49 +652,67 @@ void ClientApi::mainteanceTimerTimeout()
     getMainteance();
 }
 
-bool ClientApi::startMainteanceTimer(uint time)
+bool ClientApi::stopTimer(TIMERS timer)
 {
-    if(time>=200)
+    QTimer* selected_timer = nullptr;
+
+    switch (timer)
     {
-        mainteance_timer->start(time);
+    case TIMERS::MAINTEANCE:
+        selected_timer = mainteance_timer;
+        break;
+
+    case TIMERS::BME280:
+        selected_timer = bme280_timer;
+        break;
+
+    case TIMERS::GPS:
+        selected_timer = gps_timer;
+        break;
+    }
+
+    if (selected_timer && selected_timer->isActive())
+    {
+        selected_timer->stop();
         return true;
     }
     else return false;
 }
 
-bool ClientApi::stopMainteanceTimer()
+bool ClientApi::startTimer(TIMERS timer, uint time)
 {
-    if(mainteance_timer->isActive())
-    {
-        mainteance_timer->stop();
-        return true;
+    if(time< 200) return false;
+    else{
+        QTimer * selected_timer = nullptr;
+        switch(timer)
+        {
+        case TIMERS::MAINTEANCE:
+            selected_timer = mainteance_timer;
+            break;
+        case TIMERS::BME280:
+            selected_timer = bme280_timer;
+            break;
+        case TIMERS::GPS:
+            selected_timer = gps_timer;
+            break;
+        }
+        if(selected_timer)
+        {
+            selected_timer->start(time);
+            return true;
+        }
+        else return false;
     }
-    else return false;
-}
-
-bool ClientApi::startBme280Timer(uint time)
-{
-    if(time>=200)
-    {
-        bme280_timer->start(time);
-        return true;
-    }
-    else return false;
-}
-
-bool ClientApi::stopBme280Timer()
-{
-    if(bme280_timer->isActive())
-    {
-        bme280_timer->stop();
-        return true;
-    }
-    else return false;
 }
 
 void ClientApi::bme280TimerTimeout()
 {
     getBme280();
+}
+
+void ClientApi::gpsTimerTimeout()
+{
+    getGPS();
 }
 
 void ClientApi::configureTimers()
@@ -700,6 +722,9 @@ void ClientApi::configureTimers()
 
     bme280_timer = new QTimer(this);
     QObject::connect(bme280_timer, &QTimer::timeout, this, &ClientApi::bme280TimerTimeout);
+
+    gps_timer = new QTimer(this);
+//    QObject::connect(gps_timer, &QTimer::timeout, this, &ClientApi::);
 }
 
 // --------------------------------------- Other ------------------------------------------
