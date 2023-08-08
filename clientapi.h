@@ -232,7 +232,6 @@ public:
     void getExtermalTemperature();
     void getHumidity();
     void getPressure();
-    void getBME280AllData();
 
 
     // --------------------------------------- Listener ------------------------------------------

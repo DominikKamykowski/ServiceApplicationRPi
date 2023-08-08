@@ -17,14 +17,20 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
+private slots:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
     void on_pbConnect_clicked();
     void on_cbAutoGetBME280_clicked();
     void on_pbStopAllTimers_clicked();
     void on_pbClearDebugConsole_clicked();
+    void on_pbGetAllBME280_clicked();
 
+    void on_pbGetGPSData_clicked();
+
+    void on_cbGpsAuto_clicked();
+
+private:
     ClientApi *api = nullptr;
 
     Ui::MainWindow *ui;
@@ -44,10 +50,6 @@ public:
     void ClientApi_onErrorMessageOccured(std::string);
     void ClientApi_onJsonParseError(std::string);
     void ClientApi_onJsonObjectNull(std::string);
-\
-    void ClientApi_onBME280TemperatureChanged(float);
-    void ClientApi_onBME280HumidityChanged(float);
-    void ClientApi_onBME280PressureChanged(float);
 
     void ClientApi_onRawJSON(QJsonDocument);
 
@@ -58,5 +60,6 @@ public:
     void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t);
     void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t);
     void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t);
+    void ClientApi_onBME280TDataChanged(ClientApi::BME280_t);
 };
 #endif // MAINWINDOW_H

@@ -724,7 +724,7 @@ void ClientApi::configureTimers()
     QObject::connect(bme280_timer, &QTimer::timeout, this, &ClientApi::bme280TimerTimeout);
 
     gps_timer = new QTimer(this);
-//    QObject::connect(gps_timer, &QTimer::timeout, this, &ClientApi::);
+    QObject::connect(gps_timer, &QTimer::timeout, this, &ClientApi::getGPS);
 }
 
 // --------------------------------------- Other ------------------------------------------
