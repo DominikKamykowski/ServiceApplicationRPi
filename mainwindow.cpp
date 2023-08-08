@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QObject>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -8,17 +9,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     uiSettings();
 
-    QObject::connect(ui->pbGetAllBME280, &QPushButton::clicked,
-                     api, &ClientApi::getBme280);
-
-
-    QObject::connect(ui->pbGetGPSData, &QPushButton::clicked,
-                     api, &ClientApi::getGPS);
-
+    fixQualityMap = new std::map<ClientApi::FIX_QUALITY, QString> {
+        {ClientApi::FIX_QUALITY::NO_FIX, "No fix"},
+        {ClientApi::FIX_QUALITY::GPS_FIX, "GPS fix"},
+        {ClientApi::FIX_QUALITY::DIFFERENTIAL_GPS_FIX, "Differential GPS fix"},
+        {ClientApi::FIX_QUALITY::PPS_FIX, "PPS fix"},
+        {ClientApi::FIX_QUALITY::REAL_TIME_KINEMATIC, "Real time kinematic"},
+        {ClientApi::FIX_QUALITY::FLOAT_RTK, "Float RTK"},
+        {ClientApi::FIX_QUALITY::ESTIMATED, "Estimated"},
+        {ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE, "Manual input mode"},
+        {ClientApi::FIX_QUALITY::SIMULATION_MODE, "Simulation mode"}
+    };
 }
 
 MainWindow::~MainWindow()
 {
+    delete fixQualityMap;
     if(api != nullptr)
     {
         delete api;
@@ -93,6 +99,16 @@ void MainWindow::fixGPSUiChange(ClientApi::GPS_Fix_t _fix)
         break;
     }
     }
+
+    //Proponowane
+//    if (fixQualityMap->find(_fix.fix_quality) != fixQualityMap->end())
+//    {
+//        this->ui->lbFixQualityValue->setText(fixQualityMap->at(_fix.fix_quality));
+//    }
+//    else
+//    {
+//        this->ui->lbFixQualityValue->setText("Nieznany typ");
+//    }
 
     //FIX type
     switch(_fix.fix_quality_3d)
@@ -259,7 +275,6 @@ void MainWindow::on_cbAutoRefresh_clicked()
     {
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
-        qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
         api->startTimer(ClientApi::TIMERS::MAINTEANCE,this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
@@ -275,6 +290,13 @@ void MainWindow::on_pbConnect_clicked()
     if(this->ui->pbConnect->isChecked())
     {
         api = new ClientApi("192.168.1.25:8000");
+        QObject::connect(this->ui->pbGetAllBME280, &QPushButton::clicked,
+                         api, &ClientApi::getBme280);
+
+
+        QObject::connect(this->ui->pbGetGPSData, &QPushButton::clicked,
+                         api, &ClientApi::getGPS);
+
         api->addEventListener(this);
         this->ui->tabWidgeMain->setEnabled(true);
     }
@@ -333,4 +355,27 @@ void MainWindow::on_pbClearDebugConsole_clicked()
 //{
 //    api->getGPS();
 //}
+
+
+void MainWindow::on_pbGetGPSData_clicked()
+{
+
+}
+
+
+void MainWindow::on_cbGpsAuto_clicked()
+{
+    if(this->ui->cbGpsAuto->isChecked())
+    {
+        this->ui->pbGetGPSData->setEnabled(false);
+        this->ui->dsbGpsDuration->setEnabled(false);
+        api->startTimer(ClientApi::TIMERS::GPS,this->ui->dsbGpsDuration->value()*1000);
+    }
+    else
+    {
+        this->ui->pbGetGPSData->setEnabled(true);
+        this->ui->dsbGpsDuration->setEnabled(true);
+        api->stopTimer(ClientApi::TIMERS::GPS);
+    }
+}
 

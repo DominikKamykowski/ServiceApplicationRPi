@@ -17,15 +17,20 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
+private slots:
     void on_pbDataRefresh_clicked();
     void on_cbAutoRefresh_clicked();
     void on_pbConnect_clicked();
     void on_cbAutoGetBME280_clicked();
     void on_pbStopAllTimers_clicked();
     void on_pbClearDebugConsole_clicked();
+    void on_pbGetGPSData_clicked();
+    void on_cbGpsAuto_clicked();
 
+private:
     ClientApi *api = nullptr;
+
+    std::map<ClientApi::FIX_QUALITY, QString> * fixQualityMap = nullptr;
 
     Ui::MainWindow *ui;
     void uiSettings();
@@ -58,5 +63,6 @@ public:
     void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t);
     void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t);
     void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t);
+
 };
 #endif // MAINWINDOW_H

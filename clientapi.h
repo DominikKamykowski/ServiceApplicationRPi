@@ -184,8 +184,8 @@ public:
 
     struct GPS_Fix_t
     {
-        uint8_t fix_quality = 0;
-        uint8_t fix_quality_3d = 0;
+        FIX_QUALITY fix_quality;
+        FIX_TYPE fix_quality_3d;
     };
 
     struct GPS_Coordinates_t
@@ -223,17 +223,11 @@ public:
     void getLoadAverage();
     void getVirtualMemory();
     void getDiskUsage();
-    void getUsers();
     void getMainteance();
-    void getBme280();
-    void getGPS();
 
     // --------------------------Sensors
-    void getExtermalTemperature();
-    void getHumidity();
-    void getPressure();
-    void getBME280AllData();
-
+    void getBme280();
+    void getGPS();
 
     // --------------------------------------- Listener ------------------------------------------
     void addEventListener(ClientApiEventListener * listener);
@@ -277,19 +271,19 @@ private:
 
 
     // --------------------------------------- Data analyze ------------------------------------------
-    void parseReceiveData           (const QJsonObject* const);
-    void compareBME280Data          (const QJsonObject* const);
-    void compareGPSData             (const QJsonObject* const);
-    void compareGPSPrecision        (const QJsonObject* const);
-    void compareGPSFix              (const QJsonObject* const);
-    void compareGPSSatelites        (const QJsonObject* const);
-    void compareCpuData             (const QJsonObject* const);
-    void compareClocksData          (const QJsonObject* const);
-    void compareDisplaysData        (const QJsonObject* const);
-    void compareLoadAvgData         (const QJsonObject* const);
-    void compareDiskUsageData       (const QJsonObject* const);
-    void compareVirtualMemoryData   (const QJsonObject* const);
-    void compareServerTimeData      (const QJsonObject* const);
+    void parseReceiveData           (const QJsonObject);
+    void compareBME280Data          (const QJsonObject);
+    void compareGPSData             (const QJsonObject);
+    void compareGPSPrecision        (const QJsonObject);
+    void compareGPSFix              (const QJsonObject);
+    void compareGPSSatelites        (const QJsonObject);
+    void compareCpuData             (const QJsonObject);
+    void compareClocksData          (const QJsonObject);
+    void compareDisplaysData        (const QJsonObject);
+    void compareLoadAvgData         (const QJsonObject);
+    void compareDiskUsageData       (const QJsonObject);
+    void compareVirtualMemoryData   (const QJsonObject);
+    void compareServerTimeData      (const QJsonObject);
 
     // --------------------------------------- Structure initialize ------------------------------------------
     Mainteance_t mainteance {};
