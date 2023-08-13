@@ -517,7 +517,6 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
     gps_changed = false;
     const QString timestamp = gps_json->value("timestamp UTC").toString();
-    qDebug()<<timestamp;
     if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
     {
         if(gps.timestamp != timestamp.toStdString())
