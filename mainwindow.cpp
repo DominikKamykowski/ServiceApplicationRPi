@@ -227,6 +227,7 @@ void MainWindow::ClientApi_onGPSDataChanged(ClientApi::GPS_t _gps)
     this->ui->dsbLongtitude->setValue(_gps.coordinates.longitude);
     this->ui->dsbLatitude->setValue(_gps.coordinates.latitude);
     this->ui->dsbAltitude->setValue(_gps.coordinates.altitude);
+    qDebug()<<QString::fromStdString(_gps.timestamp);
     this->ui->lbTimestamp->setText(QString::fromStdString(_gps.timestamp));
 
     this->ui->dsbPreciseLatitude->setValue(_gps.precise.latitude);

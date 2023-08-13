@@ -31,6 +31,7 @@ ClientApi::~ClientApi()
 {
     delete mainteance_timer;
     delete bme280_timer;
+    delete gps_timer;
 }
 
 // --------------------------------------- Parsing received data ------------------------------------------
@@ -516,9 +517,10 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 {
     gps_changed = false;
     const QString timestamp = gps_json->value("timestamp UTC").toString();
+    qDebug()<<timestamp;
     if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
     {
-        if(gps.timestamp == timestamp.toStdString())
+        if(gps.timestamp != timestamp.toStdString())
         {
             gps.timestamp = timestamp.toStdString();
             gps_changed = true;
