@@ -29,7 +29,6 @@ MainWindow::~MainWindow()
     {
         delete api;
     }
-
     delete ui;
 }
 
@@ -135,6 +134,20 @@ void MainWindow::fixGPSUiChange(ClientApi::GPS_Fix_t _fix)
     }
 }
 
+void MainWindow::setLabelState(QLabel * label, bool state)
+{
+    if(state)
+    {
+        label->setText("Active");
+        label->setStyleSheet("{color: #00FF00}");
+    }
+    else
+    {
+        label->setText("Inactive");
+        label->setStyleSheet("{color: #FF0000}");
+    }
+}
+
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
 { this->ui->dsbCpuTemp->setValue(static_cast<double>(cpu_temperature)); }
 
@@ -161,20 +174,11 @@ void MainWindow::ClientApi_onClocksChanged(ClientApi::Clocks_t _clocks)
 
 void MainWindow::ClientApi_onDisplayChanged(ClientApi::Displays_t _displays)
 {
-    if(_displays.MainLCD) this->ui->lbMainLCDStatus->setText("Active");
-    else this->ui->lbMainLCDStatus->setText("Inactive");
-
-    if(_displays.SecondaryLCD) this->ui->lbSecondaryLCDStatus->setText("Active");
-    else this->ui->lbSecondaryLCDStatus->setText("Inactive");
-
-    if(_displays.HDMI0) this->ui->lbHDMI0Status->setText("Active");
-    else this->ui->lbHDMI0Status->setText("Inactive");
-
-    if(_displays.Composite) this->ui->lbCompositeStatus->setText("Active");
-    else this->ui->lbCompositeStatus->setText("Inactive");
-
-    if(_displays.HDMI1) this->ui->lbHDMI1Status->setText("Active");
-    else this->ui->lbHDMI1Status->setText("Inactive");
+    setLabelState(this->ui->lbMainLCDStatus,_displays.MainLCD);
+    setLabelState(this->ui->lbSecondaryLCDStatus,_displays.SecondaryLCD);
+    setLabelState(this->ui->lbHDMI0Status,_displays.HDMI0);
+    setLabelState(this->ui->lbCompositeStatus,_displays.Composite);
+    setLabelState(this->ui->lbHDMI1Status,_displays.HDMI1);
 }
 
 void MainWindow::ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t _load)
@@ -289,7 +293,7 @@ void MainWindow::on_pbConnect_clicked()
 {
     if(this->ui->pbConnect->isChecked())
     {
-        api = new ClientApi("192.168.1.25:8000");
+        api = new ClientApi("192.168.1.25:8000"); //TODO
         QObject::connect(this->ui->pbGetAllBME280, &QPushButton::clicked,
                          api, &ClientApi::getBme280);
 
@@ -329,7 +333,7 @@ void MainWindow::on_cbAutoGetBME280_clicked()
 
 void MainWindow::on_pbStopAllTimers_clicked()
 {
-    this->ui->statusbar->showMessage("All timers stopped",500);
+    this->ui->statusbar->showMessage("All timers stopped", 500);
     if(this->ui->cbAutoGetBME280->isChecked())
     {
         this->ui->cbAutoGetBME280->click();

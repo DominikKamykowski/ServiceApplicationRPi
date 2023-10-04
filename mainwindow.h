@@ -5,6 +5,7 @@
 #include "clientapi.h"
 #include <iostream>
 #include <QFile>
+#include <QLabel>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -36,6 +37,8 @@ private:
     void uiSettings();
 
     void fixGPSUiChange(ClientApi::GPS_Fix_t);
+
+    void setLabelState(QLabel*, bool);
 
 
     // ClientApiEventListener interface
