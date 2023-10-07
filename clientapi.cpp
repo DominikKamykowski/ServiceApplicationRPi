@@ -30,74 +30,76 @@ ClientApi::ClientApi(std::string api_address)
 ClientApi::~ClientApi()
 {
     delete mainteance_timer;
+    delete bme280_timer;
+    delete gps_timer;
 }
 
 // --------------------------------------- Parsing received data ------------------------------------------
-void ClientApi::parseReceiveData(const QJsonObject * const m_json_object)
+void ClientApi::parseReceiveData(const QJsonObject m_json_object)
 {
-    if(m_json_object->keys().contains("Error message"))
+    if(m_json_object.keys().contains("Error message"))
     {
-        const QString error_json = m_json_object->value("Error message").toString();
+        const QString error_json = m_json_object.value("Error message").toString();
         _emit(ClientApi_onErrorMessageOccured(error_json.toStdString()));
     }
 
-    else if(m_json_object->keys().contains(__FullMainteanceKey))
+    else if(m_json_object.keys().contains(__FullMainteanceKey))
     {
-        const QJsonObject mainteance_json = m_json_object->value(__FullMainteanceKey).toObject();
+        const QJsonObject mainteance_json = m_json_object.value(__FullMainteanceKey).toObject();
         if(mainteance_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
         else
         {
-            compareCpuData(&mainteance_json);
-            compareClocksData(&mainteance_json);
-            compareDisplaysData(&mainteance_json);
-            compareLoadAvgData(&mainteance_json);
-            compareDiskUsageData(&mainteance_json);
-            compareVirtualMemoryData(&mainteance_json);
-            compareServerTimeData(&mainteance_json);
+            compareCpuData(mainteance_json);
+            compareClocksData(mainteance_json);
+            compareDisplaysData(mainteance_json);
+            compareLoadAvgData(mainteance_json);
+            compareDiskUsageData(mainteance_json);
+            compareVirtualMemoryData(mainteance_json);
+            compareServerTimeData(mainteance_json);
         }
     }
-    else if(m_json_object->keys().contains(__FullBME280))
+    else if(m_json_object.keys().contains(__FullBME280))
     {
-        const QJsonObject bme280_json = m_json_object->value(__FullBME280).toObject();
+        const QJsonObject bme280_json = m_json_object.value(__FullBME280).toObject();
         if(bme280_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
-        else compareBME280Data(&bme280_json);
+        else compareBME280Data(bme280_json);
     }
-    else if(m_json_object->keys().contains(__FullGPS))
+    else if(m_json_object.keys().contains(__FullGPS))
     {
-        const QJsonObject gps_json = m_json_object->value(__FullGPS).toObject();
+        const QJsonObject gps_json = m_json_object.value(__FullGPS).toObject();
         if(gps_json.isEmpty())
             _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
 
-        else compareGPSData(&gps_json);
+        else compareGPSData(gps_json);
     }
     else
     {
-        if (m_json_object->keys().contains(__CpuTemp))
+        if (m_json_object.keys().contains(__CpuTemp))
         {
-            const float _cpu_temp = static_cast<float>(m_json_object->value(__CpuTemp).toDouble());
+            const float _cpu_temp = static_cast<float>(m_json_object.value(__CpuTemp).toDouble());
             _emit(ClientApi_onCpuTemperatureChanged(_cpu_temp));
         }
-        else if (m_json_object->keys().contains("cpu volts"))
+        else if (m_json_object.keys().contains("cpu volts"))
         {
-            const float _cpu_volts = static_cast<float>(m_json_object->value("cpu volts").toDouble());
+            const float _cpu_volts = static_cast<float>(m_json_object.value("cpu volts").toDouble());
             _emit(ClientApi_onCpuVoltsChanged(_cpu_volts));
         }
-        else if (m_json_object->keys().contains("Cpu usage"))
+        else if (m_json_object.keys().contains("Cpu usage"))
         {
-            const QJsonObject m_cpu_usage = m_json_object->value("Cpu usage").toObject();
+            const QJsonObject m_cpu_usage = m_json_object.value("Cpu usage").toObject();
             const float _cpu_usage = static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
             _emit(ClientApi_onCpuUsageChanged(_cpu_usage));
         }
-        else if (m_json_object->keys().contains("clocks")) compareClocksData(m_json_object);
-        else if (m_json_object->keys().contains("displays")) compareDisplaysData(m_json_object);
-        else if (m_json_object->keys().contains("Load average")) compareLoadAvgData(m_json_object);
-        else if (m_json_object->keys().contains("Virtual memory")) compareVirtualMemoryData(m_json_object);
-        else if (m_json_object->keys().contains("Disk usage")) compareDiskUsageData(m_json_object);
-        else if (m_json_object->keys().contains("Time")) compareServerTimeData(m_json_object);
+        else if (m_json_object.keys().contains("clocks")) compareClocksData(m_json_object);
+        else if (m_json_object.keys().contains("displays")) compareDisplaysData(m_json_object);
+        else if (m_json_object.keys().contains("Load average")) compareLoadAvgData(m_json_object);
+        else if (m_json_object.keys().contains("Virtual memory")) compareVirtualMemoryData(m_json_object);
+        else if (m_json_object.keys().contains("Disk usage")) compareDiskUsageData(m_json_object);
+        else if (m_json_object.keys().contains("Time")) compareServerTimeData(m_json_object);
 
     }
 }
@@ -128,7 +130,7 @@ void ClientApi::managerFinished(QNetworkReply *reply)
             else
             {
                 _emit(ClientApi_onRawJSON(doc));
-                parseReceiveData(&obj);
+                parseReceiveData(obj);
             }
         }
     }
@@ -154,9 +156,9 @@ void ClientApi::configureNetworkManager()
 
 
 // --------------------------------------- Data compares ------------------------------------------
-void ClientApi::compareServerTimeData(const QJsonObject * const server_time_json)
+void ClientApi::compareServerTimeData(const QJsonObject server_time_json)
 {
-    const QJsonObject m_server_time_obj = server_time_json->value("Time").toObject();
+    const QJsonObject m_server_time_obj = server_time_json.value("Time").toObject();
     if(m_server_time_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -169,10 +171,10 @@ void ClientApi::compareServerTimeData(const QJsonObject * const server_time_json
     }
 }
 
-void ClientApi::compareVirtualMemoryData(const QJsonObject* const virtual_memory_json)
+void ClientApi::compareVirtualMemoryData(const QJsonObject virtual_memory_json)
 {
     vt_changed = false;
-    const QJsonObject m_virtual_memory_obj = virtual_memory_json->value("Virtual memory").toObject();
+    const QJsonObject m_virtual_memory_obj = virtual_memory_json.value("Virtual memory").toObject();
     if(m_virtual_memory_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -259,10 +261,10 @@ void ClientApi::compareVirtualMemoryData(const QJsonObject* const virtual_memory
     }
 }
 
-void ClientApi::compareDiskUsageData(const QJsonObject* const disk_usage_json)
+void ClientApi::compareDiskUsageData(const QJsonObject disk_usage_json)
 {
     disk_changed = false;
-    const QJsonObject m_disk_usage_obj = disk_usage_json->value("Disk usage").toObject();
+    const QJsonObject m_disk_usage_obj = disk_usage_json.value("Disk usage").toObject();
     if(m_disk_usage_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -307,10 +309,10 @@ void ClientApi::compareDiskUsageData(const QJsonObject* const disk_usage_json)
     }
 }
 
-void ClientApi::compareLoadAvgData(const QJsonObject* const load_avg_json)
+void ClientApi::compareLoadAvgData(const QJsonObject load_avg_json)
 {
     load_avg_changed = false;
-    const QJsonObject m_load_avg_obj = load_avg_json->value("Load average").toObject();
+    const QJsonObject m_load_avg_obj = load_avg_json.value("Load average").toObject();
     if(m_load_avg_obj.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
@@ -348,10 +350,10 @@ void ClientApi::compareLoadAvgData(const QJsonObject* const load_avg_json)
     }
 }
 
-void ClientApi::compareDisplaysData(const QJsonObject* const display_json)
+void ClientApi::compareDisplaysData(const QJsonObject display_json)
 {
     displays_changed = false;
-    const QJsonObject m_displays = display_json->value("displays").toObject();
+    const QJsonObject m_displays = display_json.value("displays").toObject();
     //    qDebug()<<m_displays;
     if(m_displays.isEmpty())
     {
@@ -396,10 +398,10 @@ void ClientApi::compareDisplaysData(const QJsonObject* const display_json)
     }
 }
 
-void ClientApi::compareClocksData(const QJsonObject* const clock_json)
+void ClientApi::compareClocksData(const QJsonObject clock_json)
 {
     clocks_changed = false;
-    const QJsonObject m_clocks = clock_json->value("clocks").toObject();
+    const QJsonObject m_clocks = clock_json.value("clocks").toObject();
     //    qDebug()<<m_clocks;
 
     if(m_clocks.isEmpty())
@@ -481,17 +483,17 @@ void ClientApi::compareClocksData(const QJsonObject* const clock_json)
     }
 }
 
-void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
+void ClientApi::compareCpuData(const QJsonObject cpu_json)
 {
-    const QJsonObject m_cpu_usage = cpu_json->value("Cpu usage").toObject();
+    const QJsonObject m_cpu_usage = cpu_json.value("Cpu usage").toObject();
     if(m_cpu_usage.isEmpty())
     {
         _emit(ClientApi_onJsonObjectNull(Q_FUNC_INFO));
         return;
     }
 
-    const float _cpu_temperature =    static_cast<float>(cpu_json->value("cpu temperature").toDouble());
-    const float _cpu_volts =          static_cast<float>(cpu_json->value("cpu volts").toDouble());
+    const float _cpu_temperature =    static_cast<float>(cpu_json.value("cpu temperature").toDouble());
+    const float _cpu_volts =          static_cast<float>(cpu_json.value("cpu volts").toDouble());
     const float _cpu_usage =          static_cast<float>(m_cpu_usage.value("Cpu usage").toDouble());
 
     if(!compareValues(mainteance.cpu_temperature,_cpu_temperature,0.01f))
@@ -511,10 +513,10 @@ void ClientApi::compareCpuData(const QJsonObject* const cpu_json)
     }
 }
 
-void ClientApi::compareGPSData(const QJsonObject * const gps_json)
+void ClientApi::compareGPSData(const QJsonObject gps_json)
 {
     gps_changed = false;
-    const QString timestamp = gps_json->value("timestamp UTC").toString();
+    const QString timestamp = gps_json.value("timestamp UTC").toString();
     if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
     {
         if(gps.timestamp == timestamp.toStdString())
@@ -524,7 +526,7 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
         }
     }
 
-    const QJsonObject coordinates = gps_json->value("coordinates").toObject();
+    const QJsonObject coordinates = gps_json.value("coordinates").toObject();
     const double _longtitude = coordinates.value("longtitude").toDouble();
     const double _latitude = coordinates.value("latitude").toDouble();
     const double _altitude = coordinates.value("altitude").toDouble();
@@ -547,7 +549,7 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 
     compareGPSPrecision(gps_json);
 
-    const double _speed = gps_json->value("speed").toDouble();
+    const double _speed = gps_json.value("speed").toDouble();
     if(!compareValues(gps.speed, _speed, double(0.01)))
     {
         gps.speed = _speed;
@@ -562,9 +564,9 @@ void ClientApi::compareGPSData(const QJsonObject * const gps_json)
 
 }
 
-void ClientApi::compareGPSPrecision(const QJsonObject * const precision)
+void ClientApi::compareGPSPrecision(const QJsonObject precision)
 {
-    QJsonObject _precision = precision->value("coordinates precise").toObject();
+    QJsonObject _precision = precision.value("coordinates precise").toObject();
     const double longiutde_prec = _precision.value("longtitude").toDouble();
     const double latitude_prec = _precision.value("lattitude").toDouble();
     if(!compareValues(gps.precise.longitude, longiutde_prec, double(0.001)))
@@ -580,23 +582,23 @@ void ClientApi::compareGPSPrecision(const QJsonObject * const precision)
 
 }
 
-void ClientApi::compareGPSFix(const QJsonObject * const fix)
+void ClientApi::compareGPSFix(const QJsonObject fix)
 {
-    QJsonObject _fix = fix->value("fix data").toObject();
+    QJsonObject _fix = fix.value("fix data").toObject();
     const uint8_t _fix_quality = _fix.value("fix quality").toInt();
     const uint8_t _fix_quality_3d = _fix.value("fix quality 3d").toInt();
     if(gps.fix.fix_quality != _fix_quality || gps.fix.fix_quality_3d != _fix_quality_3d)
     {
-        gps.fix.fix_quality = _fix_quality;
-        gps.fix.fix_quality_3d = _fix_quality_3d;
+        gps.fix.fix_quality = static_cast<FIX_QUALITY>(_fix_quality);
+        gps.fix.fix_quality_3d = static_cast<FIX_TYPE>(_fix_quality_3d);
         gps_changed = true;
     }
 
 }
 
-void ClientApi::compareGPSSatelites(const QJsonObject * const sats)
+void ClientApi::compareGPSSatelites(const QJsonObject sats)
 {
-    QJsonObject _sats = sats->value("satellites data").toObject();
+    QJsonObject _sats = sats.value("satellites data").toObject();
     const uint8_t _sats_number = _sats.value("satelites number").toInt();
     if(gps.satelites.satelites_number != _sats_number)
     {
@@ -607,28 +609,30 @@ void ClientApi::compareGPSSatelites(const QJsonObject * const sats)
     //TODO szczegoly satelit
 }
 
-void ClientApi::compareBME280Data(const QJsonObject * const m_json_object)
+void ClientApi::compareBME280Data(const QJsonObject m_json_object)
 {
-    const float _temperature = static_cast<float>(m_json_object->value("temperature").toDouble());
-    const float _humidity = static_cast<float>(m_json_object->value("humidity").toDouble());
-    const float _pressure = static_cast<float>(m_json_object->value("pressure").toDouble());
-
-//    qDebug()<<"temperatura: "<<_temperature << ", wilgotnosc: " << _humidity << ", cisnienie: " << _pressure;
-
+    bme280_changed = false;
+    const float _temperature = static_cast<float>(m_json_object.value("temperature").toDouble());
+    const float _humidity = static_cast<float>(m_json_object.value("humidity").toDouble());
+    const float _pressure = static_cast<float>(m_json_object.value("pressure").toDouble());
     if(!compareValues(bme280.temperature, _temperature, 0.01f))
     {
         bme280.temperature = _temperature;
-        _emit(ClientApi_onBME280TemperatureChanged(bme280.temperature));
+        bme280_changed = true;
     }
     if(!compareValues(bme280.humidity, _humidity, 0.01f))
     {
         bme280.humidity = _humidity;
-        _emit(ClientApi_onBME280HumidityChanged(bme280.humidity));
+        bme280_changed = true;
     }
     if(!compareValues(bme280.pressure, _pressure, 0.01f))
     {
         bme280.pressure = _pressure;
-        _emit(ClientApi_onBME280PressureChanged(bme280.pressure));
+        bme280_changed = true;
+    }
+    if(bme280_changed)
+    {
+        _emit(ClientApi_onBME280TDataChanged(bme280));
     }
 }
 
@@ -648,49 +652,67 @@ void ClientApi::mainteanceTimerTimeout()
     getMainteance();
 }
 
-bool ClientApi::startMainteanceTimer(uint time)
+bool ClientApi::stopTimer(TIMERS timer)
 {
-    if(time>=200)
+    QTimer* selected_timer = nullptr;
+
+    switch (timer)
     {
-        mainteance_timer->start(time);
+    case TIMERS::MAINTEANCE:
+        selected_timer = mainteance_timer;
+        break;
+
+    case TIMERS::BME280:
+        selected_timer = bme280_timer;
+        break;
+
+    case TIMERS::GPS:
+        selected_timer = gps_timer;
+        break;
+    }
+
+    if (selected_timer && selected_timer->isActive())
+    {
+        selected_timer->stop();
         return true;
     }
     else return false;
 }
 
-bool ClientApi::stopMainteanceTimer()
+bool ClientApi::startTimer(TIMERS timer, uint time)
 {
-    if(mainteance_timer->isActive())
-    {
-        mainteance_timer->stop();
-        return true;
+    if(time< 200) return false;
+    else{
+        QTimer * selected_timer = nullptr;
+        switch(timer)
+        {
+        case TIMERS::MAINTEANCE:
+            selected_timer = mainteance_timer;
+            break;
+        case TIMERS::BME280:
+            selected_timer = bme280_timer;
+            break;
+        case TIMERS::GPS:
+            selected_timer = gps_timer;
+            break;
+        }
+        if(selected_timer)
+        {
+            selected_timer->start(time);
+            return true;
+        }
+        else return false;
     }
-    else return false;
-}
-
-bool ClientApi::startBme280Timer(uint time)
-{
-    if(time>=200)
-    {
-        bme280_timer->start(time);
-        return true;
-    }
-    else return false;
-}
-
-bool ClientApi::stopBme280Timer()
-{
-    if(bme280_timer->isActive())
-    {
-        bme280_timer->stop();
-        return true;
-    }
-    else return false;
 }
 
 void ClientApi::bme280TimerTimeout()
 {
     getBme280();
+}
+
+void ClientApi::gpsTimerTimeout()
+{
+    getGPS();
 }
 
 void ClientApi::configureTimers()
@@ -700,6 +722,9 @@ void ClientApi::configureTimers()
 
     bme280_timer = new QTimer(this);
     QObject::connect(bme280_timer, &QTimer::timeout, this, &ClientApi::bme280TimerTimeout);
+
+    gps_timer = new QTimer(this);
+    QObject::connect(gps_timer, &QTimer::timeout, this, &ClientApi::gpsTimerTimeout);
 }
 
 // --------------------------------------- Other ------------------------------------------

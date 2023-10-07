@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QObject>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -7,16 +8,27 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     uiSettings();
+
+    fixQualityMap = new std::map<ClientApi::FIX_QUALITY, QString> {
+        {ClientApi::FIX_QUALITY::NO_FIX, "No fix"},
+        {ClientApi::FIX_QUALITY::GPS_FIX, "GPS fix"},
+        {ClientApi::FIX_QUALITY::DIFFERENTIAL_GPS_FIX, "Differential GPS fix"},
+        {ClientApi::FIX_QUALITY::PPS_FIX, "PPS fix"},
+        {ClientApi::FIX_QUALITY::REAL_TIME_KINEMATIC, "Real time kinematic"},
+        {ClientApi::FIX_QUALITY::FLOAT_RTK, "Float RTK"},
+        {ClientApi::FIX_QUALITY::ESTIMATED, "Estimated"},
+        {ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE, "Manual input mode"},
+        {ClientApi::FIX_QUALITY::SIMULATION_MODE, "Simulation mode"}
+    };
 }
 
 MainWindow::~MainWindow()
 {
+    delete fixQualityMap;
     if(api != nullptr)
     {
-        qDebug()<<"Destroy api";
         delete api;
     }
-
     delete ui;
 }
 
@@ -87,6 +99,16 @@ void MainWindow::fixGPSUiChange(ClientApi::GPS_Fix_t _fix)
     }
     }
 
+    //Proponowane
+//    if (fixQualityMap->find(_fix.fix_quality) != fixQualityMap->end())
+//    {
+//        this->ui->lbFixQualityValue->setText(fixQualityMap->at(_fix.fix_quality));
+//    }
+//    else
+//    {
+//        this->ui->lbFixQualityValue->setText("Nieznany typ");
+//    }
+
     //FIX type
     switch(_fix.fix_quality_3d)
     {
@@ -109,6 +131,20 @@ void MainWindow::fixGPSUiChange(ClientApi::GPS_Fix_t _fix)
     {
         break;
     }
+    }
+}
+
+void MainWindow::setLabelState(QLabel * label, bool state)
+{
+    if(state)
+    {
+        label->setText("Active");
+//        label->setStyleSheet("{color: #00FF00}");
+    }
+    else
+    {
+        label->setText("Inactive");
+//        label->setStyleSheet("{color: #FF0000}");
     }
 }
 
@@ -138,20 +174,11 @@ void MainWindow::ClientApi_onClocksChanged(ClientApi::Clocks_t _clocks)
 
 void MainWindow::ClientApi_onDisplayChanged(ClientApi::Displays_t _displays)
 {
-    if(_displays.MainLCD) this->ui->lbMainLCDStatus->setText("Active");
-    else this->ui->lbMainLCDStatus->setText("Inactive");
-
-    if(_displays.SecondaryLCD) this->ui->lbSecondaryLCDStatus->setText("Active");
-    else this->ui->lbSecondaryLCDStatus->setText("Inactive");
-
-    if(_displays.HDMI0) this->ui->lbHDMI0Status->setText("Active");
-    else this->ui->lbHDMI0Status->setText("Inactive");
-
-    if(_displays.Composite) this->ui->lbCompositeStatus->setText("Active");
-    else this->ui->lbCompositeStatus->setText("Inactive");
-
-    if(_displays.HDMI1) this->ui->lbHDMI1Status->setText("Active");
-    else this->ui->lbHDMI1Status->setText("Inactive");
+    setLabelState(this->ui->lbMainLCDStatus,_displays.MainLCD);
+    setLabelState(this->ui->lbSecondaryLCDStatus,_displays.SecondaryLCD);
+    setLabelState(this->ui->lbHDMI0Status,_displays.HDMI0);
+    setLabelState(this->ui->lbCompositeStatus,_displays.Composite);
+    setLabelState(this->ui->lbHDMI1Status,_displays.HDMI1);
 }
 
 void MainWindow::ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t _load)
@@ -184,6 +211,13 @@ void MainWindow::ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t _disk)
     this->ui->pbUsedDiskSpace->setValue(static_cast<int>(_disk.percent));
 }
 
+void MainWindow::ClientApi_onBME280TDataChanged(ClientApi::BME280_t bme)
+{
+    this->ui->dsbExternalTemp->setValue(bme.temperature);
+    this->ui->dsbHumidity->setValue(bme.humidity);
+    this->ui->dsbPressure->setValue(bme.pressure);
+}
+
 void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
 {
     this->ui->lbServerTime->setText(QString::fromStdString(m_time));
@@ -202,21 +236,6 @@ void MainWindow::ClientApi_onJsonParseError(std::string message)
 void MainWindow::ClientApi_onJsonObjectNull(std::string message)
 {
     this->ui->statusbar->showMessage(QString::fromStdString("Json object null in: " + message),500);
-}
-
-void MainWindow::ClientApi_onBME280TemperatureChanged(float temperature)
-{
-    this->ui->dsbExternalTemp->setValue(temperature);
-}
-
-void MainWindow::ClientApi_onBME280HumidityChanged(float humidity)
-{
-    this->ui->dsbHumidity->setValue(humidity);
-}
-
-void MainWindow::ClientApi_onBME280PressureChanged(float pressure)
-{
-    this->ui->dsbPressure->setValue(pressure);
 }
 
 void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
@@ -252,14 +271,13 @@ void MainWindow::on_cbAutoRefresh_clicked()
     {
         this->ui->pbDataRefresh->setEnabled(false);
         this->ui->dsbRefreshPeriod->setEnabled(false);
-        qDebug()<<this->ui->dsbRefreshPeriod->value()*1000;
-        api->startMainteanceTimer(this->ui->dsbRefreshPeriod->value()*1000);
+        api->startTimer(ClientApi::TIMERS::MAINTEANCE,this->ui->dsbRefreshPeriod->value()*1000);
     }
     else
     {
         this->ui->pbDataRefresh->setEnabled(true);
         this->ui->dsbRefreshPeriod->setEnabled(true);
-        api->stopMainteanceTimer();
+        api->stopTimer(ClientApi::TIMERS::MAINTEANCE);
     }
 }
 
@@ -267,7 +285,14 @@ void MainWindow::on_pbConnect_clicked()
 {
     if(this->ui->pbConnect->isChecked())
     {
-        api = new ClientApi("192.168.1.25:8000");
+        api = new ClientApi("192.168.1.25:8000"); //TODO
+        QObject::connect(this->ui->pbGetAllBME280, &QPushButton::clicked,
+                         api, &ClientApi::getBme280);
+
+
+        QObject::connect(this->ui->pbGetGPSData, &QPushButton::clicked,
+                         api, &ClientApi::getGPS);
+
         api->addEventListener(this);
         this->ui->tabWidgeMain->setEnabled(true);
     }
@@ -281,31 +306,26 @@ void MainWindow::on_pbConnect_clicked()
     }
 }
 
-void MainWindow::on_pbGetAllBME280_clicked()
-{
-    api->getBme280();
-}
-
 void MainWindow::on_cbAutoGetBME280_clicked()
 {
     if(this->ui->cbAutoGetBME280->isChecked())
     {
         this->ui->pbGetAllBME280->setEnabled(false);
         this->ui->dsbAutoBmeDuration->setEnabled(false);
-        api->startBme280Timer(this->ui->dsbAutoBmeDuration->value()*1000);
+        api->startTimer(ClientApi::TIMERS::BME280,this->ui->dsbAutoBmeDuration->value()*1000);
     }
     else
     {
         this->ui->pbGetAllBME280->setEnabled(true);
         this->ui->dsbAutoBmeDuration->setEnabled(true);
-        api->stopBme280Timer();
+        api->stopTimer(ClientApi::TIMERS::BME280);
     }
 }
 
 
 void MainWindow::on_pbStopAllTimers_clicked()
 {
-    this->ui->statusbar->showMessage("All timers stopped",500);
+    this->ui->statusbar->showMessage("All timers stopped", 500);
     if(this->ui->cbAutoGetBME280->isChecked())
     {
         this->ui->cbAutoGetBME280->click();
@@ -327,8 +347,31 @@ void MainWindow::on_pbClearDebugConsole_clicked()
 }
 
 
+//void MainWindow::on_pbGetGPSData_clicked()
+//{
+//    api->getGPS();
+//}
+
+
 void MainWindow::on_pbGetGPSData_clicked()
 {
-    api->getGPS();
+
+}
+
+
+void MainWindow::on_cbGpsAuto_clicked()
+{
+    if(this->ui->cbGpsAuto->isChecked())
+    {
+        this->ui->pbGetGPSData->setEnabled(false);
+        this->ui->dsbGpsDuration->setEnabled(false);
+        api->startTimer(ClientApi::TIMERS::GPS,this->ui->dsbGpsDuration->value()*1000);
+    }
+    else
+    {
+        this->ui->pbGetGPSData->setEnabled(true);
+        this->ui->dsbGpsDuration->setEnabled(true);
+        api->stopTimer(ClientApi::TIMERS::GPS);
+    }
 }
 
