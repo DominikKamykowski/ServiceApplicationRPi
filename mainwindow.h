@@ -46,26 +46,17 @@ public:
     void ClientApi_onCpuTemperatureChanged(float);
     void ClientApi_onCpuVoltsChanged(float);
     void ClientApi_onCpuUsageChanged(float);
-
     void ClientApi_onServerTimeChanged(std::string);
-
     void ClientApi_onErrorMessageOccured(std::string);
     void ClientApi_onJsonParseError(std::string);
     void ClientApi_onJsonObjectNull(std::string);
-\
-    void ClientApi_onBME280TemperatureChanged(float);
-    void ClientApi_onBME280HumidityChanged(float);
-    void ClientApi_onBME280PressureChanged(float);
-
     void ClientApi_onRawJSON(QJsonDocument);
-
     void ClientApi_onGPSDataChanged(ClientApi::GPS_t);
-
     void ClientApi_onClocksChanged(ClientApi::Clocks_t);
     void ClientApi_onDisplayChanged(ClientApi::Displays_t);
     void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t);
     void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t);
     void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t);
-
+    void ClientApi_onBME280TDataChanged(ClientApi::BME280_t);
 };
 #endif // MAINWINDOW_H

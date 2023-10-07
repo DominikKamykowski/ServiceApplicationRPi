@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>934</width>
-    <height>332</height>
+    <width>835</width>
+    <height>347</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -307,8 +307,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>404</width>
-                <height>349</height>
+                <width>354</width>
+                <height>368</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -321,14 +321,14 @@
                   <item>
                    <layout class="QHBoxLayout" name="horizontalLayout">
                     <item>
-                     <widget class="QLabel" name="label_10">
+                     <widget class="QLabel" name="label_11">
                       <property name="text">
-                       <string>Longtitude</string>
+                       <string>Latitude</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="dsbLongtitude">
+                     <widget class="QDoubleSpinBox" name="dsbLatitude">
                       <property name="readOnly">
                        <bool>true</bool>
                       </property>
@@ -348,14 +348,14 @@
                   <item>
                    <layout class="QHBoxLayout" name="horizontalLayout_2">
                     <item>
-                     <widget class="QLabel" name="label_11">
+                     <widget class="QLabel" name="label_10">
                       <property name="text">
-                       <string>Latitude</string>
+                       <string>Longtitude</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="dsbLatitude">
+                     <widget class="QDoubleSpinBox" name="dsbLongtitude">
                       <property name="readOnly">
                        <bool>true</bool>
                       </property>
@@ -722,6 +722,9 @@
                   <property name="value">
                    <number>0</number>
                   </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -758,293 +761,248 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>609</width>
-                 <height>136</height>
+                 <width>659</width>
+                 <height>142</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_6">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                 <layout class="QVBoxLayout" name="verticalLayout_9">
                   <item>
-                   <widget class="QLabel" name="lbArmCores">
-                    <property name="text">
-                     <string>ARM cores</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbArmCores">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_4">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbUART">
-                    <property name="text">
-                     <string>UART</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbUART">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_5">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbAVE">
-                    <property name="text">
-                     <string>AVE</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbAVE">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_16">
-                  <item>
-                   <widget class="QLabel" name="lbVC4">
-                    <property name="text">
-                     <string>VC4</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbVC4">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_6">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbPWM">
-                    <property name="text">
-                     <string>PWM</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbPWM">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_7">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbDPI">
-                    <property name="text">
-                     <string>DPI</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbDPI">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_17">
-                  <item>
-                   <widget class="QLabel" name="lbISP">
-                    <property name="text">
-                     <string>ISP</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbISP">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_8">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbEMMC">
-                    <property name="text">
-                     <string>EMMC</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbEMMC">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_9">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbHDMI">
-                    <property name="text">
-                     <string>HDMI</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbHDMI">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_18">
-                  <item>
-                   <widget class="QLabel" name="lbPixel">
-                    <property name="text">
-                     <string>Pixel</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dsbPixel">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="Line" name="line_10">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="lbBlock3D">
-                    <property name="text">
-                     <string>block 3D</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QDoubleSpinBox" name="dspBlock3D">
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="suffix">
-                     <string> MHz</string>
-                    </property>
-                    <property name="maximum">
-                     <double>999999999.000000000000000</double>
-                    </property>
-                   </widget>
+                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <item>
+                     <layout class="QFormLayout" name="formLayout">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="lbArmCores">
+                        <property name="text">
+                         <string>ARM cores</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbArmCores">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="lbVC4">
+                        <property name="text">
+                         <string>VC4</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbVC4">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="lbISP">
+                        <property name="text">
+                         <string>ISP</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbISP">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="lbPixel">
+                        <property name="text">
+                         <string>Pixel</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbPixel">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QFormLayout" name="formLayout_4">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="lbUART">
+                        <property name="text">
+                         <string>UART</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbUART">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="lbPWM">
+                        <property name="text">
+                         <string>PWM</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbPWM">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="lbEMMC">
+                        <property name="text">
+                         <string>EMMC</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbEMMC">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="lbBlock3D">
+                        <property name="text">
+                         <string>block 3D</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QDoubleSpinBox" name="dspBlock3D">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QFormLayout" name="formLayout_5">
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="lbAVE">
+                        <property name="text">
+                         <string>AVE</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbAVE">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="lbDPI">
+                        <property name="text">
+                         <string>DPI</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbDPI">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="lbHDMI">
+                        <property name="text">
+                         <string>HDMI</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QDoubleSpinBox" name="dsbHDMI">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="suffix">
+                         <string> MHz</string>
+                        </property>
+                        <property name="maximum">
+                         <double>999999999.000000000000000</double>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
@@ -1069,163 +1027,82 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>748</width>
-                 <height>152</height>
+                 <width>673</width>
+                 <height>128</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_20">
-                  <item>
+                 <layout class="QFormLayout" name="formLayout_6">
+                  <item row="0" column="0">
                    <widget class="QLabel" name="lbMainLCD">
                     <property name="text">
                      <string>Main LCD</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item row="0" column="1">
                    <widget class="QLabel" name="lbMainLCDStatus">
                     <property name="text">
                      <string>Inactive</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <spacer name="horizontalSpacer_4">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_21">
-                  <item>
+                  <item row="1" column="0">
                    <widget class="QLabel" name="lbSecondaryLCD">
                     <property name="text">
                      <string>Secondary LCD</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item row="1" column="1">
                    <widget class="QLabel" name="lbSecondaryLCDStatus">
                     <property name="text">
                      <string>Inactive</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <spacer name="horizontalSpacer_2">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_22">
-                  <item>
+                  <item row="2" column="0">
                    <widget class="QLabel" name="lbHDMI0">
                     <property name="text">
                      <string>HDMI0</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item row="2" column="1">
                    <widget class="QLabel" name="lbHDMI0Status">
                     <property name="text">
                      <string>Inactive</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <spacer name="horizontalSpacer_3">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_23">
-                  <item>
+                  <item row="3" column="0">
                    <widget class="QLabel" name="lbHDMI1">
                     <property name="text">
                      <string>HDMI1</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item row="3" column="1">
                    <widget class="QLabel" name="lbHDMI1Status">
                     <property name="text">
                      <string>Inactive</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <spacer name="horizontalSpacer_6">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_24">
-                  <item>
+                  <item row="4" column="0">
                    <widget class="QLabel" name="lbComposite">
                     <property name="text">
                      <string>Composite</string>
                     </property>
                    </widget>
                   </item>
-                  <item>
+                  <item row="4" column="1">
                    <widget class="QLabel" name="lbCompositeStatus">
                     <property name="text">
                      <string>Inactive</string>
                     </property>
                    </widget>
-                  </item>
-                  <item>
-                   <spacer name="horizontalSpacer_7">
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>40</width>
-                      <height>20</height>
-                     </size>
-                    </property>
-                   </spacer>
                   </item>
                  </layout>
                 </item>
@@ -1735,8 +1612,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>934</width>
-     <height>20</height>
+     <width>835</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

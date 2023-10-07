@@ -139,12 +139,12 @@ void MainWindow::setLabelState(QLabel * label, bool state)
     if(state)
     {
         label->setText("Active");
-        label->setStyleSheet("{color: #00FF00}");
+//        label->setStyleSheet("{color: #00FF00}");
     }
     else
     {
         label->setText("Inactive");
-        label->setStyleSheet("{color: #FF0000}");
+//        label->setStyleSheet("{color: #FF0000}");
     }
 }
 
@@ -211,6 +211,13 @@ void MainWindow::ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t _disk)
     this->ui->pbUsedDiskSpace->setValue(static_cast<int>(_disk.percent));
 }
 
+void MainWindow::ClientApi_onBME280TDataChanged(ClientApi::BME280_t bme)
+{
+    this->ui->dsbExternalTemp->setValue(bme.temperature);
+    this->ui->dsbHumidity->setValue(bme.humidity);
+    this->ui->dsbPressure->setValue(bme.pressure);
+}
+
 void MainWindow::ClientApi_onServerTimeChanged(std::string m_time)
 {
     this->ui->lbServerTime->setText(QString::fromStdString(m_time));
@@ -229,21 +236,6 @@ void MainWindow::ClientApi_onJsonParseError(std::string message)
 void MainWindow::ClientApi_onJsonObjectNull(std::string message)
 {
     this->ui->statusbar->showMessage(QString::fromStdString("Json object null in: " + message),500);
-}
-
-void MainWindow::ClientApi_onBME280TemperatureChanged(float temperature)
-{
-    this->ui->dsbExternalTemp->setValue(temperature);
-}
-
-void MainWindow::ClientApi_onBME280HumidityChanged(float humidity)
-{
-    this->ui->dsbHumidity->setValue(humidity);
-}
-
-void MainWindow::ClientApi_onBME280PressureChanged(float pressure)
-{
-    this->ui->dsbPressure->setValue(pressure);
 }
 
 void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)

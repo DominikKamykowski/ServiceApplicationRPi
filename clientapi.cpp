@@ -615,7 +615,6 @@ void ClientApi::compareBME280Data(const QJsonObject m_json_object)
     const float _temperature = static_cast<float>(m_json_object.value("temperature").toDouble());
     const float _humidity = static_cast<float>(m_json_object.value("humidity").toDouble());
     const float _pressure = static_cast<float>(m_json_object.value("pressure").toDouble());
-
     if(!compareValues(bme280.temperature, _temperature, 0.01f))
     {
         bme280.temperature = _temperature;
