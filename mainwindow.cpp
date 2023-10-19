@@ -1,13 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QObject>
+#include "ipconnectiondialog.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ip_dialog = new IpConnectionDialog(this);
+    connect(ip_dialog,&IpConnectionDialog::accepted,this,&MainWindow::setConnection_string);
 
     uiSettings();
+    readStyleFiles();
 
     fixQualityMap = new std::map<ClientApi::FIX_QUALITY, QString> {
         {ClientApi::FIX_QUALITY::NO_FIX, "No fix"},
@@ -19,6 +24,11 @@ MainWindow::MainWindow(QWidget *parent)
         {ClientApi::FIX_QUALITY::ESTIMATED, "Estimated"},
         {ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE, "Manual input mode"},
         {ClientApi::FIX_QUALITY::SIMULATION_MODE, "Simulation mode"}
+    };
+    fixTypeMap = new std::map<ClientApi::FIX_TYPE, QString> {
+        {ClientApi::FIX_TYPE::NO_FIX_TYPE, "No fix type"},
+        {ClientApi::FIX_TYPE::FIX_2D, "2D fix"},
+        {ClientApi::FIX_TYPE::FIX_3D, "3D fix"},
     };
 }
 
@@ -41,96 +51,39 @@ void MainWindow::uiSettings()
 {
     this->ui->pbConnect->setCheckable(true);
     this->ui->tabWidgeMain->setEnabled(false);
+    setConnection_string();
+    this->ui->pbConnect->setStyleSheet("color:red");
+
+    setLabelState(this->ui->lbHDMI0Status,false);
+    setLabelState(this->ui->lbHDMI1Status,false);
+    setLabelState(this->ui->lbSecondaryLCDStatus,false);
+    setLabelState(this->ui->lbMainLCDStatus,false);
+    setLabelState(this->ui->lbCompositeStatus,false);
+    setProgressBarStyle(this->ui->pbCpuUsage,true);
+    setProgressBarStyle(this->ui->pbUsedDiskSpace,true);
+
 }
 
 void MainWindow::fixGPSUiChange(ClientApi::GPS_Fix_t _fix)
 {
     //FIX quality
-    switch(_fix.fix_quality)
+    if (fixQualityMap->find(_fix.fix_quality) != fixQualityMap->end())
     {
-    case ClientApi::FIX_QUALITY::NO_FIX:
+        this->ui->lbFixQualityValue->setText(fixQualityMap->at(_fix.fix_quality));
+    }
+    else
     {
-        this->ui->lbFixQualityValue->setText("No fix");
-        break;
+        this->ui->lbFixQualityValue->setText("---");
     }
-    case ClientApi::FIX_QUALITY::GPS_FIX:
-    {
-        this->ui->lbFixQualityValue->setText("GPS fix");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::DIFFERENTIAL_GPS_FIX:
-    {
-        this->ui->lbFixQualityValue->setText("Differential GPS fix");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::PPS_FIX:
-    {
-        this->ui->lbFixQualityValue->setText("PPS fix");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::REAL_TIME_KINEMATIC:
-    {
-        this->ui->lbFixQualityValue->setText("Real time kinematic");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::FLOAT_RTK:
-    {
-        this->ui->lbFixQualityValue->setText("Float RTK");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::ESTIMATED:
-    {
-        this->ui->lbFixQualityValue->setText("Estimated");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE:
-    {
-        this->ui->lbFixQualityValue->setText("Manual input mode");
-        break;
-    }
-    case ClientApi::FIX_QUALITY::SIMULATION_MODE:
-    {
-        this->ui->lbFixQualityValue->setText("Simulation mode");
-        break;
-    }
-    default:
-    {
-        break;
-    }
-    }
-
-    //Proponowane
-//    if (fixQualityMap->find(_fix.fix_quality) != fixQualityMap->end())
-//    {
-//        this->ui->lbFixQualityValue->setText(fixQualityMap->at(_fix.fix_quality));
-//    }
-//    else
-//    {
-//        this->ui->lbFixQualityValue->setText("Nieznany typ");
-//    }
 
     //FIX type
-    switch(_fix.fix_quality_3d)
+    if (fixTypeMap->find(_fix.fix_quality_3d) != fixTypeMap->end())
     {
-    case ClientApi::FIX_TYPE::NO_FIX_TYPE:
-    {
-
-        break;
+        this->ui->lbFixTypeValue->setText(fixTypeMap->at(_fix.fix_quality_3d));
     }
-    case ClientApi::FIX_TYPE::FIX_2D:
+    else
     {
-
-        break;
-    }
-    case ClientApi::FIX_TYPE::FIX_3D:
-    {
-
-        break;
-    }
-    default:
-    {
-        break;
-    }
+        this->ui->lbFixTypeValue->setText("---");
     }
 }
 
@@ -139,13 +92,39 @@ void MainWindow::setLabelState(QLabel * label, bool state)
     if(state)
     {
         label->setText("Active");
-//        label->setStyleSheet("{color: #00FF00}");
+        label->setStyleSheet("color: green");
     }
     else
     {
         label->setText("Inactive");
-//        label->setStyleSheet("{color: #FF0000}");
+        label->setStyleSheet("color: red");
     }
+}
+
+void MainWindow::setConnection_string()
+{
+    connection_string = ip_dialog->getConnectionString();
+    this->ui->lbConnectionString->setText(connection_string);
+}
+
+void MainWindow::readStyleFiles()
+{
+    style_names.append(&css_progressBar_bad_data);
+    style_names.append(&css_progressBar_good_data);
+
+    QFile file;
+    for (int var = 0; var < style_files.count(); ++var) {
+        file.setFileName(style_files.at(var));
+        file.open(QFile::ReadOnly);
+        *style_names.at(var) = QLatin1String(file.readAll());
+        file.close();
+    }
+}
+
+void MainWindow::setProgressBarStyle(QProgressBar * const progressBar, bool state)
+{
+    if(state) progressBar->setStyleSheet(css_progressBar_good_data);
+    else progressBar->setStyleSheet(css_progressBar_bad_data);
 }
 
 void MainWindow::ClientApi_onCpuTemperatureChanged(float cpu_temperature)
@@ -155,7 +134,11 @@ void MainWindow::ClientApi_onCpuVoltsChanged(float cpu_volts)
 { this->ui->dsbCpuVolts->setValue(static_cast<double>(cpu_volts)); }
 
 void MainWindow::ClientApi_onCpuUsageChanged(float cpu_usage)
-{ this->ui->pbCpuUsage->setValue(static_cast<int>(cpu_usage)); }
+{
+    this->ui->pbCpuUsage->setValue(static_cast<int>(cpu_usage));
+    if(cpu_usage > 80) setProgressBarStyle(this->ui->pbCpuUsage,false);
+    else setProgressBarStyle(this->ui->pbCpuUsage,true);
+}
 
 void MainWindow::ClientApi_onClocksChanged(ClientApi::Clocks_t _clocks)
 {
@@ -209,6 +192,8 @@ void MainWindow::ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t _disk)
     this->ui->dsbUsedDiskSpace->setValue(_disk.used/(pow(1024,3)));
     this->ui->dsbFreeDiskSpace->setValue(_disk.free/(pow(1024,3)));
     this->ui->pbUsedDiskSpace->setValue(static_cast<int>(_disk.percent));
+    if(_disk.percent > 90) setProgressBarStyle(this->ui->pbUsedDiskSpace,false);
+    else setProgressBarStyle(this->ui->pbUsedDiskSpace,true);
 }
 
 void MainWindow::ClientApi_onBME280TDataChanged(ClientApi::BME280_t bme)
@@ -240,13 +225,11 @@ void MainWindow::ClientApi_onJsonObjectNull(std::string message)
 
 void MainWindow::ClientApi_onRawJSON(QJsonDocument doc)
 {
-
     if(this->ui->cbDebugConsoleEnable->checkState())
     {
         this->ui->teDebug->append("------------- New data. Timestamp: "+QDateTime::currentDateTimeUtc().toString());
         this->ui->teDebug->append(doc.toJson());
     }
-
 }
 
 void MainWindow::ClientApi_onGPSDataChanged(ClientApi::GPS_t _gps)
@@ -255,11 +238,11 @@ void MainWindow::ClientApi_onGPSDataChanged(ClientApi::GPS_t _gps)
     this->ui->dsbLatitude->setValue(_gps.coordinates.latitude);
     this->ui->dsbAltitude->setValue(_gps.coordinates.altitude);
     this->ui->lbTimestamp->setText(QString::fromStdString(_gps.timestamp));
-
     this->ui->dsbPreciseLatitude->setValue(_gps.precise.latitude);
     this->ui->dsbPreciseLongitude->setValue(_gps.precise.longitude);
 
     this->ui->dsbGPSSpeed->setValue(_gps.speed);
+    qDebug()<< _gps.precise.longitude;
 
     fixGPSUiChange(_gps.fix);
 }
@@ -285,7 +268,7 @@ void MainWindow::on_pbConnect_clicked()
 {
     if(this->ui->pbConnect->isChecked())
     {
-        api = new ClientApi("192.168.1.25:8000"); //TODO
+        api = new ClientApi(connection_string.toStdString());
         QObject::connect(this->ui->pbGetAllBME280, &QPushButton::clicked,
                          api, &ClientApi::getBme280);
 
@@ -295,6 +278,8 @@ void MainWindow::on_pbConnect_clicked()
 
         api->addEventListener(this);
         this->ui->tabWidgeMain->setEnabled(true);
+        this->ui->pbConnectConfigure->setEnabled(false);
+        this->ui->pbConnect->setStyleSheet("color:green");
     }
     else
     {
@@ -302,6 +287,9 @@ void MainWindow::on_pbConnect_clicked()
         this->ui->cbAutoRefresh->setCheckState(Qt::CheckState::Unchecked);
         this->ui->pbDataRefresh->setEnabled(true);
         api->removeEventListener(this);
+        this->ui->pbConnectConfigure->setEnabled(true);
+        this->ui->pbConnect->setStyleSheet("color:red");
+
         delete api;
     }
 }
@@ -373,5 +361,10 @@ void MainWindow::on_cbGpsAuto_clicked()
         this->ui->dsbGpsDuration->setEnabled(true);
         api->stopTimer(ClientApi::TIMERS::GPS);
     }
+}
+
+void MainWindow::on_pbConnectConfigure_clicked()
+{
+    ip_dialog->exec();
 }
 

@@ -58,7 +58,7 @@ public:
     };
 
     enum FIX_TYPE{
-        NO_FIX_TYPE = 0,
+        NO_FIX_TYPE = 1,
         FIX_2D,
         FIX_3D
     };

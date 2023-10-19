@@ -519,13 +519,12 @@ void ClientApi::compareGPSData(const QJsonObject gps_json)
     const QString timestamp = gps_json.value("timestamp UTC").toString();
     if(!(timestamp == "") || !(timestamp == "Null") || !(timestamp == "null"))
     {
-        if(gps.timestamp == timestamp.toStdString())
+        if(gps.timestamp != timestamp.toStdString())
         {
             gps.timestamp = timestamp.toStdString();
             gps_changed = true;
         }
     }
-
     const QJsonObject coordinates = gps_json.value("coordinates").toObject();
     const double _longtitude = coordinates.value("longtitude").toDouble();
     const double _latitude = coordinates.value("latitude").toDouble();
@@ -567,8 +566,9 @@ void ClientApi::compareGPSData(const QJsonObject gps_json)
 void ClientApi::compareGPSPrecision(const QJsonObject precision)
 {
     QJsonObject _precision = precision.value("coordinates precise").toObject();
-    const double longiutde_prec = _precision.value("longtitude").toDouble();
-    const double latitude_prec = _precision.value("lattitude").toDouble();
+    const double longiutde_prec = _precision.value("longtitude").toString().toDouble();
+    const double latitude_prec = _precision.value("latitude").toString().toDouble();
+
     if(!compareValues(gps.precise.longitude, longiutde_prec, double(0.001)))
     {
         gps.precise.longitude = longiutde_prec;

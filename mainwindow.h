@@ -6,6 +6,9 @@
 #include <iostream>
 #include <QFile>
 #include <QLabel>
+#include "ipconnectiondialog.h"
+#include <QProgressBar>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -27,11 +30,13 @@ private slots:
     void on_pbClearDebugConsole_clicked();
     void on_pbGetGPSData_clicked();
     void on_cbGpsAuto_clicked();
+    void on_pbConnectConfigure_clicked();
 
 private:
     ClientApi *api = nullptr;
 
     std::map<ClientApi::FIX_QUALITY, QString> * fixQualityMap = nullptr;
+    std::map<ClientApi::FIX_TYPE, QString> * fixTypeMap = nullptr;
 
     Ui::MainWindow *ui;
     void uiSettings();
@@ -40,6 +45,19 @@ private:
 
     void setLabelState(QLabel*, bool);
 
+    IpConnectionDialog * ip_dialog = nullptr;
+    QString connection_string = "";
+    void setConnection_string();
+
+
+    //--- Style
+    void readStyleFiles();
+    void setProgressBarStyle(QProgressBar * const, bool);
+    QStringList style_files{":/css/style/ProgressBarBad.qss",
+                            ":/css/style/ProgressBarGood.qss"};
+    QList<QString*> style_names;
+    QString css_progressBar_bad_data;
+    QString css_progressBar_good_data;
 
     // ClientApiEventListener interface
 public:
@@ -58,5 +76,6 @@ public:
     void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t);
     void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t);
     void ClientApi_onBME280TDataChanged(ClientApi::BME280_t);
+
 };
 #endif // MAINWINDOW_H

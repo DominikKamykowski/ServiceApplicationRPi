@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>835</width>
-    <height>347</height>
+    <width>879</width>
+    <height>346</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -41,52 +41,34 @@
          <item>
           <widget class="QLabel" name="lbSystemIP">
            <property name="text">
-            <string>System IP:</string>
+            <string>System:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="leSystemIP">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+          <widget class="QLabel" name="lbConnectionString">
+           <property name="text">
+            <string/>
            </property>
-           <property name="maximumSize">
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>1600</width>
-             <height>16777215</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
-           <property name="text">
-            <string>192.168.1.25</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_5">
+          <widget class="QPushButton" name="pbConnectConfigure">
            <property name="text">
-            <string>System Port:</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="sbSystemPort">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum">
-            <number>50000</number>
-           </property>
-           <property name="value">
-            <number>8000</number>
-           </property>
-           <property name="displayIntegerBase">
-            <number>10</number>
+            <string>...</string>
            </property>
           </widget>
          </item>
@@ -111,7 +93,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tabSensors">
        <attribute name="title">
@@ -124,79 +106,10 @@
            <string>BME280</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_11">
-           <item row="5" column="1">
-            <spacer name="verticalSpacer_7">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="2" column="1">
-            <widget class="QDoubleSpinBox" name="dsbExternalTemp">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="suffix">
-              <string> °C</string>
-             </property>
-             <property name="decimals">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QDoubleSpinBox" name="dsbAutoBmeDuration">
-             <property name="suffix">
-              <string> [s]</string>
-             </property>
-             <property name="decimals">
-              <number>1</number>
-             </property>
-             <property name="minimum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.500000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="3">
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Humidity</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="1">
-            <widget class="QDoubleSpinBox" name="dsbHumidity">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="suffix">
-              <string> %</string>
-             </property>
-             <property name="decimals">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
             <widget class="QPushButton" name="pbGetAllBME280">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -206,45 +119,167 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_9">
-             <property name="text">
-              <string>Pressure</string>
+           <item row="1" column="0" colspan="2">
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QDoubleSpinBox" name="dsbPressure">
-             <property name="enabled">
+           <item row="2" column="0" colspan="2">
+            <widget class="QScrollArea" name="scrollArea_5">
+             <property name="widgetResizable">
               <bool>true</bool>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="suffix">
-              <string> hPa</string>
-             </property>
-             <property name="decimals">
-              <number>4</number>
-             </property>
-             <property name="maximum">
-              <double>5000.000000000000000</double>
-             </property>
+             <widget class="QWidget" name="scrollAreaWidgetContents_5">
+              <property name="geometry">
+               <rect>
+                <x>0</x>
+                <y>-20</y>
+                <width>377</width>
+                <height>111</height>
+               </rect>
+              </property>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_8">
+                 <property name="text">
+                  <string>Humidity</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="dsbPressure">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="suffix">
+                  <string> hPa</string>
+                 </property>
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                 <property name="maximum">
+                  <double>5000.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Pressure</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="dsbHumidity">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="suffix">
+                  <string> %</string>
+                 </property>
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>External temperature</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QDoubleSpinBox" name="dsbExternalTemp">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="suffix">
+                  <string> °C</string>
+                 </property>
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <spacer name="verticalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QCheckBox" name="cbAutoGetBME280">
-             <property name="text">
-              <string>Auto</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>External temperature</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_16">
+             <item>
+              <widget class="QCheckBox" name="cbAutoGetBME280">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>Auto</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="dsbAutoBmeDuration">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="suffix">
+                <string> [s]</string>
+               </property>
+               <property name="decimals">
+                <number>1</number>
+               </property>
+               <property name="minimum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -258,7 +293,7 @@
            <item row="0" column="0">
             <widget class="QPushButton" name="pbGetGPSData">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -268,30 +303,7 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="cbGpsAuto">
-             <property name="text">
-              <string>Auto</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QDoubleSpinBox" name="dsbGpsDuration">
-             <property name="suffix">
-              <string> [s]</string>
-             </property>
-             <property name="minimum">
-              <double>1.000000000000000</double>
-             </property>
-             <property name="singleStep">
-              <double>0.500000000000000</double>
-             </property>
-             <property name="value">
-              <double>1.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0" colspan="3">
+           <item row="2" column="0" colspan="4">
             <widget class="QScrollArea" name="scrollArea">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -306,9 +318,9 @@
               <property name="geometry">
                <rect>
                 <x>0</x>
-                <y>0</y>
-                <width>354</width>
-                <height>368</height>
+                <y>-277</y>
+                <width>376</width>
+                <height>374</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -442,7 +454,14 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="dsbPreciseLongitude"/>
+                     <widget class="QDoubleSpinBox" name="dsbPreciseLongitude">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="maximum">
+                       <double>10000.000000000000000</double>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </item>
@@ -456,7 +475,14 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QDoubleSpinBox" name="dsbPreciseLatitude"/>
+                     <widget class="QDoubleSpinBox" name="dsbPreciseLatitude">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="maximum">
+                       <double>10000.000000000000000</double>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </item>
@@ -471,6 +497,9 @@
                     </item>
                     <item>
                      <widget class="QDoubleSpinBox" name="dsbGPSSpeed">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
                       <property name="suffix">
                        <string> m/s</string>
                       </property>
@@ -523,6 +552,19 @@
                     </item>
                    </layout>
                   </item>
+                  <item>
+                   <spacer name="verticalSpacer_6">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
                  </layout>
                 </widget>
                </item>
@@ -530,12 +572,39 @@
              </widget>
             </widget>
            </item>
-           <item row="1" column="0" colspan="3">
+           <item row="1" column="0" colspan="4">
             <widget class="Line" name="line_2">
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
             </widget>
+           </item>
+           <item row="0" column="1" colspan="3">
+            <layout class="QHBoxLayout" name="horizontalLayout_17">
+             <item>
+              <widget class="QCheckBox" name="cbGpsAuto">
+               <property name="text">
+                <string>Auto</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="dsbGpsDuration">
+               <property name="suffix">
+                <string> [s]</string>
+               </property>
+               <property name="minimum">
+                <double>1.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>0.500000000000000</double>
+               </property>
+               <property name="value">
+                <double>1.000000000000000</double>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -654,9 +723,9 @@
            <enum>QTabWidget::North</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
-          <widget class="QWidget" name="tab">
+          <widget class="QWidget" name="tabCPU">
            <attribute name="title">
             <string>CPU</string>
            </attribute>
@@ -746,7 +815,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_2">
+          <widget class="QWidget" name="tabClocks">
            <attribute name="title">
             <string>Clocks</string>
            </attribute>
@@ -761,7 +830,7 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>659</width>
+                 <width>564</width>
                  <height>142</height>
                 </rect>
                </property>
@@ -1012,7 +1081,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_3">
+          <widget class="QWidget" name="tabDisplays">
            <attribute name="title">
             <string>Displays</string>
            </attribute>
@@ -1027,8 +1096,8 @@
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>673</width>
-                 <height>128</height>
+                 <width>147</width>
+                 <height>124</height>
                 </rect>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -1112,7 +1181,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_4">
+          <widget class="QWidget" name="tabLoadAvg">
            <attribute name="title">
             <string>Load average</string>
            </attribute>
@@ -1175,7 +1244,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_5">
+          <widget class="QWidget" name="tabDisk">
            <attribute name="title">
             <string>Disk</string>
            </attribute>
@@ -1269,249 +1338,271 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_6">
+          <widget class="QWidget" name="tabVirtualMem">
            <attribute name="title">
             <string>Virtual memory</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_9">
-            <item row="0" column="6">
-             <widget class="QLabel" name="lbCachedVM">
-              <property name="text">
-               <string>Cached</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="5">
-             <widget class="QDoubleSpinBox" name="dsbSharedVM">
-              <property name="readOnly">
+            <item row="0" column="0" rowspan="3">
+             <widget class="QScrollArea" name="scrollArea_4">
+              <property name="widgetResizable">
                <bool>true</bool>
               </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
+              <widget class="QWidget" name="scrollAreaWidgetContents_4">
+               <property name="geometry">
+                <rect>
+                 <x>0</x>
+                 <y>0</y>
+                 <width>532</width>
+                 <height>140</height>
+                </rect>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                  <item>
+                   <layout class="QFormLayout" name="formLayout_2">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="lbTotalVM">
+                      <property name="text">
+                       <string>Total</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbTotalVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="prefix">
+                       <string/>
+                      </property>
+                      <property name="suffix">
+                       <string> GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="lbAvailableVM">
+                      <property name="text">
+                       <string>Available</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbAvailableVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="prefix">
+                       <string/>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="lbUsedVM">
+                      <property name="text">
+                       <string>Used</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbUsedVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QFormLayout" name="formLayout_3">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="lbActiveVM">
+                      <property name="text">
+                       <string>Active</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbActiveVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="lbInactiveVM">
+                      <property name="text">
+                       <string>Inactive</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbInactiveVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="lbBuffersVM">
+                      <property name="text">
+                       <string>Buffers</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbBuffersVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QLabel" name="lbCachedVM">
+                      <property name="text">
+                       <string>Cached</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbCachedVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QFormLayout" name="formLayout_9">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="lbWired">
+                      <property name="text">
+                       <string>Wired</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbWiredVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="lbSharedCM">
+                      <property name="text">
+                       <string>Shared</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbSharedVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="0">
+                     <widget class="QLabel" name="lbSlabVM">
+                      <property name="text">
+                       <string>Slab</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="2" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbSlabVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0">
+                     <widget class="QLabel" name="lbFreeVM">
+                      <property name="text">
+                       <string>Free</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="1">
+                     <widget class="QDoubleSpinBox" name="dsbFreeVM">
+                      <property name="readOnly">
+                       <bool>true</bool>
+                      </property>
+                      <property name="suffix">
+                       <string>  GB</string>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </widget>
              </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QLabel" name="lbBuffersVM">
-              <property name="text">
-               <string>Buffers</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="4">
-             <widget class="QLabel" name="lbSlabVM">
-              <property name="text">
-               <string>Slab</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="lbActiveVM">
-              <property name="text">
-               <string>Active</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="4">
-             <widget class="QLabel" name="lbWired">
-              <property name="text">
-               <string>Wired</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="7">
-             <widget class="QDoubleSpinBox" name="dsbCachedVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="3">
-             <widget class="QDoubleSpinBox" name="dsbBuffersVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="3">
-             <widget class="QDoubleSpinBox" name="dsbInactiveVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="5">
-             <widget class="QDoubleSpinBox" name="dsbWiredVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="lbUsedVM">
-              <property name="text">
-               <string>Used</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="5">
-             <widget class="QDoubleSpinBox" name="dsbSlabVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="dsbTotalVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="prefix">
-               <string/>
-              </property>
-              <property name="suffix">
-               <string> GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QDoubleSpinBox" name="dsbActiveVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="dsbAvailableVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="prefix">
-               <string/>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbTotalVM">
-              <property name="text">
-               <string>Total</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="lbAvailableVM">
-              <property name="text">
-               <string>Available</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="6">
-             <widget class="QLabel" name="lbFreeVM">
-              <property name="text">
-               <string>Free</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="7">
-             <widget class="QDoubleSpinBox" name="dsbFreeVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="dsbUsedVM">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-              <property name="suffix">
-               <string>  GB</string>
-              </property>
-              <property name="maximum">
-               <double>999999999.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QLabel" name="lbInactiveVM">
-              <property name="text">
-               <string>Inactive</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="4">
-             <widget class="QLabel" name="lbSharedCM">
-              <property name="text">
-               <string>Shared</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2">
-             <spacer name="verticalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
             </item>
            </layout>
           </widget>
@@ -1533,7 +1624,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Clear</string>
+           <string>Clear console</string>
           </property>
          </widget>
         </item>
@@ -1612,7 +1703,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>835</width>
+     <width>879</width>
      <height>21</height>
     </rect>
    </property>
