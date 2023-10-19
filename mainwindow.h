@@ -28,15 +28,28 @@ private slots:
     void on_cbAutoGetBME280_clicked();
     void on_pbStopAllTimers_clicked();
     void on_pbClearDebugConsole_clicked();
-    void on_pbGetGPSData_clicked();
     void on_cbGpsAuto_clicked();
     void on_pbConnectConfigure_clicked();
 
 private:
     ClientApi *api = nullptr;
 
-    std::map<ClientApi::FIX_QUALITY, QString> * fixQualityMap = nullptr;
-    std::map<ClientApi::FIX_TYPE, QString> * fixTypeMap = nullptr;
+    std::map<ClientApi::FIX_QUALITY, QString> * fixQualityMap = new std::map<ClientApi::FIX_QUALITY, QString> {
+        {ClientApi::FIX_QUALITY::NO_FIX, "No fix"},
+        {ClientApi::FIX_QUALITY::GPS_FIX, "GPS fix"},
+        {ClientApi::FIX_QUALITY::DIFFERENTIAL_GPS_FIX, "Differential GPS fix"},
+        {ClientApi::FIX_QUALITY::PPS_FIX, "PPS fix"},
+        {ClientApi::FIX_QUALITY::REAL_TIME_KINEMATIC, "Real time kinematic"},
+        {ClientApi::FIX_QUALITY::FLOAT_RTK, "Float RTK"},
+        {ClientApi::FIX_QUALITY::ESTIMATED, "Estimated"},
+        {ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE, "Manual input mode"},
+        {ClientApi::FIX_QUALITY::SIMULATION_MODE, "Simulation mode"}
+    };
+    std::map<ClientApi::FIX_TYPE, QString> * fixTypeMap = new std::map<ClientApi::FIX_TYPE, QString> {
+        {ClientApi::FIX_TYPE::NO_FIX_TYPE, "No fix type"},
+        {ClientApi::FIX_TYPE::FIX_2D, "2D fix"},
+        {ClientApi::FIX_TYPE::FIX_3D, "3D fix"},
+    };
 
     Ui::MainWindow *ui;
     void uiSettings();
@@ -53,11 +66,15 @@ private:
     //--- Style
     void readStyleFiles();
     void setProgressBarStyle(QProgressBar * const, bool);
-    QStringList style_files{":/css/style/ProgressBarBad.qss",
-                            ":/css/style/ProgressBarGood.qss"};
+    QStringList style_files{":/css/style/ProgressBarBad.css",
+                            ":/css/style/ProgressBarGood.css",
+                            ":/css/style/LabelScreenActive.css",
+                            ":/css/style/LabelScreenOFF.css"};
     QList<QString*> style_names;
     QString css_progressBar_bad_data;
     QString css_progressBar_good_data;
+    QString css_label_screen_ON;
+    QString css_label_screen_OFF;
 
     // ClientApiEventListener interface
 public:

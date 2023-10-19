@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/new/prefix1"/>
     <qresource prefix="/css">
-        <file>style/LineEditBad.qss</file>
-        <file>style/LineEditGood.qss</file>
-        <file>style/ProgressBarBad.qss</file>
-        <file>style/ProgressBarGood.qss</file>
+        <file>style/LineEditBad.css</file>
+        <file>style/LineEditGood.css</file>
+        <file>style/ProgressBarBad.css</file>
+        <file>style/ProgressBarGood.css</file>
+        <file>style/LabelScreenActive.css</file>
+        <file>style/LabelScreenOFF.css</file>
     </qresource>
 </RCC>

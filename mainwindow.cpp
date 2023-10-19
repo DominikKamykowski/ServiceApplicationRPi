@@ -13,23 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     uiSettings();
     readStyleFiles();
-
-    fixQualityMap = new std::map<ClientApi::FIX_QUALITY, QString> {
-        {ClientApi::FIX_QUALITY::NO_FIX, "No fix"},
-        {ClientApi::FIX_QUALITY::GPS_FIX, "GPS fix"},
-        {ClientApi::FIX_QUALITY::DIFFERENTIAL_GPS_FIX, "Differential GPS fix"},
-        {ClientApi::FIX_QUALITY::PPS_FIX, "PPS fix"},
-        {ClientApi::FIX_QUALITY::REAL_TIME_KINEMATIC, "Real time kinematic"},
-        {ClientApi::FIX_QUALITY::FLOAT_RTK, "Float RTK"},
-        {ClientApi::FIX_QUALITY::ESTIMATED, "Estimated"},
-        {ClientApi::FIX_QUALITY::MANUAL_INPUT_MODE, "Manual input mode"},
-        {ClientApi::FIX_QUALITY::SIMULATION_MODE, "Simulation mode"}
-    };
-    fixTypeMap = new std::map<ClientApi::FIX_TYPE, QString> {
-        {ClientApi::FIX_TYPE::NO_FIX_TYPE, "No fix type"},
-        {ClientApi::FIX_TYPE::FIX_2D, "2D fix"},
-        {ClientApi::FIX_TYPE::FIX_3D, "3D fix"},
-    };
 }
 
 MainWindow::~MainWindow()
@@ -92,12 +75,12 @@ void MainWindow::setLabelState(QLabel * label, bool state)
     if(state)
     {
         label->setText("Active");
-        label->setStyleSheet("color: green");
+        label->setStyleSheet(css_label_screen_ON);
     }
     else
     {
         label->setText("Inactive");
-        label->setStyleSheet("color: red");
+        label->setStyleSheet(css_label_screen_OFF);
     }
 }
 
@@ -111,6 +94,8 @@ void MainWindow::readStyleFiles()
 {
     style_names.append(&css_progressBar_bad_data);
     style_names.append(&css_progressBar_good_data);
+    style_names.append(&css_label_screen_ON);
+    style_names.append(&css_label_screen_OFF);
 
     QFile file;
     for (int var = 0; var < style_files.count(); ++var) {
@@ -330,18 +315,6 @@ void MainWindow::on_pbStopAllTimers_clicked()
 void MainWindow::on_pbClearDebugConsole_clicked()
 {
     this->ui->teDebug->clear();
-}
-
-
-//void MainWindow::on_pbGetGPSData_clicked()
-//{
-//    api->getGPS();
-//}
-
-
-void MainWindow::on_pbGetGPSData_clicked()
-{
-
 }
 
 

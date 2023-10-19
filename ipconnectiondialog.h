@@ -44,8 +44,8 @@ private:
 
     //--- Style
     void readStyleFiles();
-    QStringList style_files{":/css/style/LineEditBad.qss",
-                            ":/css/style/LineEditGood.qss"};
+    QStringList style_files{":/css/style/LineEditBad.css",
+                            ":/css/style/LineEditGood.css"};
     QList<QString*> style_names;
 
     QString css_LineEdit_bad_data;
