@@ -242,8 +242,6 @@ void MainWindow::ClientApi_onGPSDataChanged(ClientApi::GPS_t _gps)
     this->ui->dsbPreciseLongitude->setValue(_gps.precise.longitude);
 
     this->ui->dsbGPSSpeed->setValue(_gps.speed);
-    qDebug()<< _gps.precise.longitude;
-
     fixGPSUiChange(_gps.fix);
 }
 
