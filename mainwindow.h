@@ -78,21 +78,21 @@ private:
 
     // ClientApiEventListener interface
 public:
-    void ClientApi_onCpuTemperatureChanged(float);
-    void ClientApi_onCpuVoltsChanged(float);
-    void ClientApi_onCpuUsageChanged(float);
-    void ClientApi_onServerTimeChanged(std::string);
-    void ClientApi_onErrorMessageOccured(std::string);
-    void ClientApi_onJsonParseError(std::string);
-    void ClientApi_onJsonObjectNull(std::string);
-    void ClientApi_onRawJSON(QJsonDocument);
-    void ClientApi_onGPSDataChanged(ClientApi::GPS_t);
-    void ClientApi_onClocksChanged(ClientApi::Clocks_t);
-    void ClientApi_onDisplayChanged(ClientApi::Displays_t);
-    void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t);
-    void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t);
-    void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t);
-    void ClientApi_onBME280TDataChanged(ClientApi::BME280_t);
+    void ClientApi_onCpuTemperatureChanged(float) override;
+    void ClientApi_onCpuVoltsChanged(float)override;
+    void ClientApi_onCpuUsageChanged(float)override;
+    void ClientApi_onServerTimeChanged(std::string)override;
+    void ClientApi_onErrorMessageOccured(std::string)override;
+    void ClientApi_onJsonParseError(std::string)override;
+    void ClientApi_onJsonObjectNull(std::string)override;
+    void ClientApi_onRawJSON(QJsonDocument)override;
+    void ClientApi_onGPSDataChanged(ClientApi::GPS_t)override;
+    void ClientApi_onClocksChanged(ClientApi::Clocks_t)override;
+    void ClientApi_onDisplayChanged(ClientApi::Displays_t)override;
+    void ClientApi_onLoadAvgChanged(ClientApi::LoadAvg_t)override;
+    void ClientApi_onVirtualMemoryChanged(ClientApi::VirtualMemory_t)override;
+    void ClientApi_onDiskDataChanged(ClientApi::DiskUsage_t)override;
+    void ClientApi_onBME280TDataChanged(ClientApi::BME280_t)override;
 
 };
 #endif // MAINWINDOW_H

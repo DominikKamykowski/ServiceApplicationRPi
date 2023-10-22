@@ -109,7 +109,7 @@ void ClientApi::parseReceiveData(const QJsonObject m_json_object)
 void ClientApi::managerFinished(QNetworkReply *reply)
 {
     if (reply->error()) {
-        qDebug() << reply->errorString();
+        qDebug() << reply->errorString(); //TODO emit error
         return;
     }
     QJsonParseError parse_error;
